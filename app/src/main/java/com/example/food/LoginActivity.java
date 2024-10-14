@@ -1,12 +1,12 @@
 package com.example.food;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,9 +25,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
     private boolean isPasswordVisible = false;
-    private TextView tvLogin;
+    private TextView tvSignUp;
     private DatabaseReference databaseReference;
     private Button btnLogin;
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
-        tvLogin = findViewById(R.id.tv_login);
+        tvSignUp = findViewById(R.id.tv_sign_up_page);
         btnLogin = findViewById(R.id.btn_login);
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
@@ -50,8 +51,8 @@ public class LoginActivity extends AppCompatActivity {
             }
             return false;
         });
-        tvLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
+        tvSignUp.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intent);
         });
         btnLogin.setOnClickListener(v -> {
