@@ -19,14 +19,18 @@
             android:name=".SignInActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".CategoryActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- MainActivity không còn là launcher -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
