@@ -3,6 +3,7 @@ package com.example.food;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,8 +35,32 @@ public class FoodCartAdapter extends RecyclerView.Adapter<FoodCartAdapter.FoodCa
         holder.itemName.setText(food.getName());
         holder.itemIngredient.setText(food.getIngredient());
         holder.itemPrice.setText(String.format("$%.2f", food.getPrice()));
-        holder.itemQuantity.setText(food.getQuantity());
+        holder.itemQuantity.setText(String.valueOf(food.getQuantity()));
 
+        holder.decreaseButton.setOnClickListener(v -> {
+            food.setQuantity(food.getQuantity() - 1);
+            if (food.getQuantity() == 0) {
+                foodList.remove(position);
+                notifyItemRemoved(position);
+                return;
+            }
+            holder.itemQuantity.setText(String.valueOf(food.getQuantity()));
+            notifyItemChanged(position);
+        });
+
+        holder.increaseButton.setOnClickListener(v -> {
+            food.setQuantity(food.getQuantity() + 1);
+            holder.itemQuantity.setText(String.valueOf(food.getQuantity()));
+            notifyItemChanged(position);
+        });
+
+        holder.removeButton.setOnClickListener(v -> {
+            foodList.remove(position);
+            food.setQuantity(0);
+            notifyItemChanged(position);
+        });
+
+        // TODO: Handle crash when the RecyclerView is empty
     }
 
     @Override
@@ -50,6 +75,10 @@ public class FoodCartAdapter extends RecyclerView.Adapter<FoodCartAdapter.FoodCa
         private TextView itemIngredient;
         private TextView itemPrice;
         private TextView itemQuantity;
+        private Button decreaseButton;
+        private Button increaseButton;
+        private Button removeButton;
+
         public FoodCartViewHolder(@NonNull View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.foodComponent);
@@ -58,6 +87,9 @@ public class FoodCartAdapter extends RecyclerView.Adapter<FoodCartAdapter.FoodCa
             itemIngredient = itemView.findViewById(R.id.itemIngredient);
             itemPrice = itemView.findViewById(R.id.pricePerItem);
             itemQuantity = itemView.findViewById(R.id.itemQuantity);
+            decreaseButton = itemView.findViewById(R.id.decreaseCartItemQuantity);
+            increaseButton = itemView.findViewById(R.id.increaseCartItemQuantity);
+            removeButton = itemView.findViewById(R.id.removeItemBtn);
         }
     }
 }

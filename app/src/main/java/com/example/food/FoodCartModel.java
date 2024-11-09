@@ -28,7 +28,7 @@ public class FoodCartModel {
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
+        this.quantity = Math.max(0, quantity);
     }
 
     public int getImgId() {
@@ -44,7 +44,7 @@ public class FoodCartModel {
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.price = Math.max(0, price);
     }
 
     public FoodCartModel(String name, String ingredient, double price, int quantity, int imgId) {
