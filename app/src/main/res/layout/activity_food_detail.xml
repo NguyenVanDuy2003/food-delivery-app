@@ -34,12 +34,11 @@
                     android:layout_height="60dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="18dp"
                     android:layout_marginTop="16dp"
-                    android:background="@android:color/white"
-                    android:text="Return"
-                    android:textSize="20sp"
-                    android:textColor="@android:color/black" />
+                    android:background="@drawable/return_button_bg"
+                    android:drawableStart="@drawable/return_button"
+                    android:padding="23dp"/>
 
                 <Button
                     android:id="@+id/fav_btn"
@@ -49,7 +48,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="18dp"
                     android:layout_marginEnd="21dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
@@ -145,24 +144,31 @@
                         android:layout_centerVertical="true">
 
                         <Button
-                            android:id="@+id/decrease_quantity_btn"
-                            android:layout_width="30dp"
-                            android:layout_height="50dp"
-                            android:text="-" />
+                            android:id="@+id/decreaseItemDetailQuantity"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:textColor="#FFF"
+                            android:background="@drawable/subtract_button_bg"
+                            android:drawableStart="@drawable/subtract_button"
+                            android:gravity="center"
+                            android:padding="12dp"/>
 
                         <TextView
                             android:id="@+id/quantity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginHorizontal="10dp"
                             android:text="02" />
 
                         <Button
-                            android:id="@+id/increase_quantity_btn"
-                            android:layout_width="30dp"
-                            android:layout_height="50dp"
-                            android:layout_marginLeft="10dp"
-                            android:text="+" />
+                            android:id="@+id/increaseItemDetailQuantity"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:textColor="#FFF"
+                            android:background="@drawable/add_button_bg"
+                            android:drawableStart="@drawable/add_button"
+                            android:gravity="center"
+                            android:padding="12dp"/>
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>
@@ -285,9 +291,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add to cart"
+        android:backgroundTint="#FF7043"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.5"
         android:layout_marginBottom="20dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
+<!-- TODO: Implement topping component and update food model attribute, fix the heart checkbox-->
+
