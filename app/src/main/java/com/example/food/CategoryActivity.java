@@ -1,6 +1,7 @@
 package com.example.food;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -9,10 +10,16 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.food.Model.food;
 import com.example.food.adapter.foodAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,11 +31,21 @@ public class CategoryActivity extends AppCompatActivity {
     ListView lvFood;
     ArrayList<food> listFood;
     foodAdapter adapterfood;
+    private DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fastfood);
+
+        // Khởi tạo danh sách và adapter
+        lvFood = findViewById(R.id.lvFood);
+        listFood = new ArrayList<>();
+        adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);
+        lvFood.setAdapter(adapterfood);
+
+        // Khởi tạo Firebase Realtime Database
+        databaseRef = FirebaseDatabase.getInstance().getReference("foods");
 
         // Xử lý chức năng thoát khi nhấn nút back
         ImageButton backbutton = findViewById(R.id.back);
@@ -99,8 +116,6 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        lvFood = findViewById(R.id.lvFood);
-
         // Khởi tạo danh sách các món ăn
         listFood = new ArrayList<>();
 
@@ -115,5 +130,70 @@ public class CategoryActivity extends AppCompatActivity {
         // Khởi tạo adapter và gán cho ListView
         adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);
         lvFood.setAdapter(adapterfood);
+
+        uploadFoodDataToFirebase();
     }
+
+    private void loadFoodDataFromFirebase() {
+        // Lắng nghe sự kiện thay đổi dữ liệu từ Firebase
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Xóa danh sách cũ để tránh trùng lặp
+                listFood.clear();
+
+                // Lặp qua tất cả các con của nút "foods"
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    // Chuyển đổi từng phần tử về đối tượng food
+                    food foodItem = snapshot.getValue(food.class);
+                    if (foodItem != null) {
+                        listFood.add(foodItem);
+                    }
+                }
+
+                // Cập nhật adapter sau khi lấy dữ liệu
+                adapterfood.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(CategoryActivity.this, "Không thể tải dữ liệu: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void uploadFoodDataToFirebase() {
+        // Reference to Firebase Realtime Database under "foods" node
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("foods");
+
+        // Loop through listFood and upload each item
+        for (food foodItem : listFood) {
+            databaseRef.push().setValue(foodItem).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(CategoryActivity.this, "Món ăn đã được thêm thành công!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Log detailed error if upload fails
+                    String error = task.getException() != null ? task.getException().getMessage() : "Unknown error";
+                    Toast.makeText(CategoryActivity.this, "Không thể thêm món ăn: " + error, Toast.LENGTH_SHORT).show();
+                    Log.e("FirebaseUpload", "Error uploading food item: " + error);
+                }
+            });
+        }
+    }
+    private void checkDatabaseConnection() {
+        DatabaseReference testRef = FirebaseDatabase.getInstance().getReference("test_connection");
+
+        testRef.setValue("connected").addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d("FirebaseConnection", "Kết nối đến database thành công.");
+            } else {
+                Log.e("FirebaseConnection", "Kết nối đến database thất bại: " + task.getException().getMessage());
+            }
+        });
+    }
+
+
+
+
+
+
 }

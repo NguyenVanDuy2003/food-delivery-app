@@ -2,6 +2,8 @@ package com.example.food.Model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class food implements Serializable {
     String nameFood;
@@ -90,5 +92,18 @@ public class food implements Serializable {
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("nameFood", nameFood);
+        map.put("price", price);
+        map.put("foodID", foodID);
+        map.put("image", image);
+        map.put("restaurantID", restaurantID);
+        map.put("description", description);
+        map.put("available", available);
+        map.put("createdAt", createdAt);
+        return map;
     }
 }

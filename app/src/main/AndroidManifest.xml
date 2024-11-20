@@ -13,21 +13,31 @@
         android:theme="@style/Theme.Food"
         tools:targetApi="31">
         <activity
+            android:name=".ThanhToanOnlActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
             android:name=".SignInActivity"
             android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".CategoryActivity"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity> &lt;!&ndash; MainActivity không còn là launcher &ndash;&gt;-->
         <activity
-            android:name=".CategoryActivity"
+            android:name=".CheckoutActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- MainActivity không còn là launcher -->
         <activity
             android:name=".MainActivity"
             android:exported="true" />
