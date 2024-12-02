@@ -1,6 +1,7 @@
 package com.example.food;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
@@ -15,17 +16,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.food.Common.CommonKey;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
-    
-    // Constants
-    private static final int SAMPLE_RESTAURANT_COUNT = 8;
-    
-    // UI Components
     private DrawerLayout drawerLayout;
     private ImageView btnToggleMenu;
     private NavigationView navigationView;
@@ -76,11 +73,22 @@ public class HomeActivity extends AppCompatActivity {
         } else if (itemId == R.id.payment_methods) {
             // Handle Payment Methods action
         } else if (itemId == R.id.nav_logout) {
-            // Handle Log Out action
+            logout();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void logout() {
+        SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void setupRecyclerView() {

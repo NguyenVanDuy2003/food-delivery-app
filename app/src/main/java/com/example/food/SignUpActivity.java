@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.food.Enum.Role;
+import com.example.food.model.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -26,6 +29,8 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+
         etFullName = findViewById(R.id.et_full_name);
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
@@ -41,9 +46,10 @@ public class SignUpActivity extends AppCompatActivity {
             String password = etPassword.getText().toString().trim();
 
             if (validateInput(fullName, email, password)) {
-                User user = new User(fullName, email, password);
-
                 String userId = databaseReference.push().getKey();
+                Role role = Role.USER;
+                User user = new User(userId, fullName, email, password, role);
+
                 databaseReference.child(userId).setValue(user)
                         .addOnSuccessListener(aVoid -> {
                             Toast.makeText(SignUpActivity.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
@@ -114,43 +120,4 @@ public class SignUpActivity extends AppCompatActivity {
         return true;
     }
 
-    public static class User {
-        public String fullName;
-        public String email;
-        public String password;
-
-        public String getFullName() {
-            return fullName;
-        }
-
-        public void setFullName(String fullName) {
-            this.fullName = fullName;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public User(){
-
-        }
-
-        public User(String fullName, String email, String password) {
-            this.fullName = fullName;
-            this.email = email;
-            this.password = password;
-        }
-    }
 }
