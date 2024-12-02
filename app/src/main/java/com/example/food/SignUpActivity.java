@@ -6,16 +6,18 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.food.Enum.Role;
+import com.example.food.model.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class SignInActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     private EditText etFullName, etEmail, etPassword;
     private Button btnSignUp;
     private TextView tvLogin;
@@ -26,7 +28,9 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_sign_up);
+
+
         etFullName = findViewById(R.id.et_full_name);
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
@@ -42,18 +46,19 @@ public class SignInActivity extends AppCompatActivity {
             String password = etPassword.getText().toString().trim();
 
             if (validateInput(fullName, email, password)) {
-                User user = new User(fullName, email, password);
-
                 String userId = databaseReference.push().getKey();
+                Role role = Role.USER;
+                User user = new User(userId, fullName, email, password, role);
+
                 databaseReference.child(userId).setValue(user)
                         .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(SignInActivity.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(SignInActivity.this, LoginActivity.class);
+                            Toast.makeText(SignUpActivity.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
                         })
                         .addOnFailureListener(e -> {
-                            Toast.makeText(SignInActivity.this, "Failed to sign up: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "Failed to sign up: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
             }
         });
@@ -71,7 +76,7 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         tvLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(SignInActivity.this, LoginActivity.class);
+            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
             startActivity(intent);
         });
     }
@@ -115,43 +120,4 @@ public class SignInActivity extends AppCompatActivity {
         return true;
     }
 
-    public static class User {
-        public String fullName;
-        public String email;
-        public String password;
-
-        public String getFullName() {
-            return fullName;
-        }
-
-        public void setFullName(String fullName) {
-            this.fullName = fullName;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public User(){
-
-        }
-
-        public User(String fullName, String email, String password) {
-            this.fullName = fullName;
-            this.email = email;
-            this.password = password;
-        }
-    }
 }
