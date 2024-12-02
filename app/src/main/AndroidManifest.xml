@@ -43,6 +43,12 @@
         <activity
             android:name=".CategoryActivity"
             android:exported="true" />
+        <activity
+            android:name=".FoodCartActivity"
+            android:exported="true" />
+        <activity
+            android:name=".FoodDetailActivity"
+            android:exported="true" />
 
     </application>
 
