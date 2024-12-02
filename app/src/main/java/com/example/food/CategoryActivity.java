@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.food.Model.food;
+import com.example.food.Model.Food;
 import com.example.food.adapter.foodAdapter;
 
 import java.util.ArrayList;
@@ -22,13 +22,27 @@ import java.util.Date;
 public class CategoryActivity extends AppCompatActivity {
 
     ListView lvFood;
-    ArrayList<food> listFood;
+    ArrayList<Food> listFood;
     foodAdapter adapterfood;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fastfood);
+
+        // Retrieve data from Intent
+        String restaurantName = getIntent().getStringExtra("restaurant_name");
+        int restaurantImage = getIntent().getIntExtra("restaurant_image", -1);
+        float restaurantRating = getIntent().getFloatExtra("restaurant_rating", 0);
+        String restaurantDeliveryTime = getIntent().getStringExtra("restaurant_delivery_time");
+
+        // Use the retrieved data as needed
+        // For example, you can set it to TextViews or ImageView in your layout
+        // TextView nameTextView = findViewById(R.id.tv_restaurant_name);
+        // nameTextView.setText(restaurantName);
+        // ImageView imageView = findViewById(R.id.iv_restaurant);
+        // imageView.setImageResource(restaurantImage);
+        // ... and so on
 
         // Xử lý chức năng thoát khi nhấn nút back
         ImageButton backbutton = findViewById(R.id.back);
@@ -65,9 +79,9 @@ public class CategoryActivity extends AppCompatActivity {
                 switch (selectedSort) {
                     case "Low to High":
                         // Sắp xếp danh sách theo giá từ thấp đến cao
-                        Collections.sort(listFood, new Comparator<food>() {
+                        Collections.sort(listFood, new Comparator<Food>() {
                             @Override
-                            public int compare(food f1, food f2) {
+                            public int compare(Food f1, Food f2) {
                                 return Double.compare(f1.getPrice(), f2.getPrice());
                             }
                         });
@@ -75,9 +89,9 @@ public class CategoryActivity extends AppCompatActivity {
 
                     case "High to Low":
                         // Sắp xếp danh sách theo giá từ cao xuống thấp
-                        Collections.sort(listFood, new Comparator<food>() {
+                        Collections.sort(listFood, new Comparator<Food>() {
                             @Override
-                            public int compare(food f1, food f2) {
+                            public int compare(Food f1, Food f2) {
                                 return Double.compare(f2.getPrice(), f1.getPrice());
                             }
                         });
@@ -105,12 +119,12 @@ public class CategoryActivity extends AppCompatActivity {
         listFood = new ArrayList<>();
 
         // Thêm dữ liệu vào danh sách
-        listFood.add(new food("Chicken Hawaiian", new Date(), true, 10.35, "Chicken, Cheese and Pineapple", 1, 101, R.drawable.a2));
-        listFood.add(new food("Pepperoni Pizza", new Date(), true, 9.99, "Pepperoni, Cheese", 1, 102, R.drawable.a3));
-        listFood.add(new food("Chicken Hawaiian", new Date(), true, 10.35, "Chicken, Cheese and Pineapple", 1, 103, R.drawable.a2));
-        listFood.add(new food("Pepperoni Pizza", new Date(), true, 9.99, "Pepperoni, Cheese", 1, 104, R.drawable.a3));
-        listFood.add(new food("Chicken Hawaiian", new Date(), true, 10.35, "Chicken, Cheese and Pineapple", 1, 107, R.drawable.a2));
-        listFood.add(new food("Pepperoni Pizza", new Date(), true, 9.99, "Pepperoni, Cheese", 1, 106, R.drawable.a3));
+        listFood.add(new Food("Chicken Hawaiian", new Date(), true, 10.35, "Chicken, Cheese and Pineapple", 1, 101, R.drawable.a2));
+        listFood.add(new Food("Pepperoni Pizza", new Date(), true, 9.99, "Pepperoni, Cheese", 1, 102, R.drawable.a3));
+        listFood.add(new Food("Chicken Hawaiian", new Date(), true, 10.35, "Chicken, Cheese and Pineapple", 1, 103, R.drawable.a2));
+        listFood.add(new Food("Pepperoni Pizza", new Date(), true, 9.99, "Pepperoni, Cheese", 1, 104, R.drawable.a3));
+        listFood.add(new Food("Chicken Hawaiian", new Date(), true, 10.35, "Chicken, Cheese and Pineapple", 1, 107, R.drawable.a2));
+        listFood.add(new Food("Pepperoni Pizza", new Date(), true, 9.99, "Pepperoni, Cheese", 1, 106, R.drawable.a3));
 
         // Khởi tạo adapter và gán cho ListView
         adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);

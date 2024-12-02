@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.food.Model.Food;
 import com.example.food.R;
 
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ import java.util.ArrayList;
 public class foodAdapter extends ArrayAdapter {
     Activity context;
     int resource;
-    ArrayList<com.example.food.Model.food> listFood;
-    public foodAdapter(Activity context, int resource , ArrayList<com.example.food.Model.food> listF){
+    ArrayList<Food> listFood;
+    public foodAdapter(Activity context, int resource , ArrayList<Food> listF){
         super(context, resource);
         this.context = context;
         this.resource = resource;
@@ -44,7 +45,7 @@ public class foodAdapter extends ArrayAdapter {
 
 
 
-        com.example.food.Model.food food = this.listFood.get(position);
+        Food food = this.listFood.get(position);
 
         image.setImageResource(food.getImage());
         tvNameFood.setText(food.getNameFood());
