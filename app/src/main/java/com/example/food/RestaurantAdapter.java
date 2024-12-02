@@ -1,5 +1,6 @@
 package com.example.food;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,16 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         holder.nameTextView.setText(restaurant.getName());
         holder.ratingTextView.setText(String.format("%.1f ★", restaurant.getRating()));
         holder.deliveryTimeTextView.setText(restaurant.getDeliveryTime());
+
+        // Add click listener to the item
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), CategoryActivity.class);
+            intent.putExtra("restaurant_name", restaurant.getName());
+            intent.putExtra("restaurant_image", restaurant.getImageResource());
+            intent.putExtra("restaurant_rating", restaurant.getRating());
+            intent.putExtra("restaurant_delivery_time", restaurant.getDeliveryTime());
+            view.getContext().startActivity(intent);
+        });
     }
 
     @Override

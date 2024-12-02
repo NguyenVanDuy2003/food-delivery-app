@@ -135,7 +135,6 @@ public class AllRestaurantsActivity extends AppCompatActivity {
     }
 
     /**
-     * Simple TextWatcher implementation with empty methods
      */
     private abstract static class SimpleTextWatcher implements TextWatcher {
         @Override

@@ -3,7 +3,7 @@ package com.example.food.Model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Food implements Serializable {
+public class food implements Serializable {
     String nameFood;
     double price;
     int foodID;
@@ -14,10 +14,10 @@ public class Food implements Serializable {
     Date createdAt;
 
 
-    public Food(){
+    public food(){
 
     }
-    public Food(String nameFood, Date createdAt, boolean available, double price, String description, int restaurantID, int foodID, int image) {
+    public food(String nameFood, Date createdAt, boolean available, double price, String description, int restaurantID, int foodID, int image) {
         this.nameFood = nameFood;
         this.createdAt = createdAt;
         this.available = available;
