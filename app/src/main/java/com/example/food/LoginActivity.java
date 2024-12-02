@@ -15,6 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.food.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,10 +27,16 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
     private boolean isPasswordVisible = false;
-    private TextView tvSignUp;
+    private TextView tvLogin;
     private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
     private Button btnLogin;
-    @SuppressLint("ClickableViewAccessibility")
+
+    // Admin credentials
+    private static final String ADMIN_EMAIL = "admin@example.com";
+    private static final String ADMIN_PASSWORD = "admin123";
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +44,11 @@ public class LoginActivity extends AppCompatActivity {
 
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
-        tvSignUp = findViewById(R.id.tv_sign_up_page);
+        tvLogin = findViewById(R.id.tv_login);
         btnLogin = findViewById(R.id.btn_login);
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
-        // xem/an mat khau
+        // Password visibility toggle
         etPassword.setOnTouchListener((v, event) -> {
             final int DRAWABLE_END = 2;
             if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -51,10 +59,14 @@ public class LoginActivity extends AppCompatActivity {
             }
             return false;
         });
-        tvSignUp.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+
+        // Navigate to the sign-up page
+        tvLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
             startActivity(intent);
         });
+
+        // Handle login button click
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
@@ -64,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
     private void togglePasswordVisibility() {
         if (isPasswordVisible) {
             etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -75,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword.setSelection(etPassword.length());
         isPasswordVisible = !isPasswordVisible;
     }
+
     private boolean validateInput(String email, String password) {
         if (TextUtils.isEmpty(email)) {
             etEmail.setError("Email is required");
@@ -94,77 +108,45 @@ public class LoginActivity extends AppCompatActivity {
             etPassword.requestFocus();
             return false;
         }
-
         return true;
     }
 
     private void checkLoginCredentials(String email, String password) {
+        // Check for admin credentials first
+        if (email.equalsIgnoreCase(ADMIN_EMAIL) && password.equals(ADMIN_PASSWORD)) {
+            Toast.makeText(LoginActivity.this, "Đăng nhập Admin thành công!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        // Check for regular user credentials in Firebase
         databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class);
-                        if (user != null && user.password.equals(password)) {
-                            Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                        if (user != null && user.getPassword().equals(password)) {
+                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Incorrect password!",
-                                    Toast.LENGTH_SHORT).show();
+                            return;
                         }
                     }
+                    Toast.makeText(LoginActivity.this, "Sai mật khẩu!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(LoginActivity.this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Tài khoản không tồn tại!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(LoginActivity.this, "Database error: "
-                        + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Lỗi cơ sở dữ liệu: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-
-    public static class User {
-        public String fullName;
-        public String email;
-        public String password;
-
-        public User() {
-        }
-
-        public String getFullName() {
-            return fullName;
-        }
-
-        public void setFullName(String fullName) {
-            this.fullName = fullName;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public User(String fullName, String email, String password) {
-            this.fullName = fullName;
-            this.email = email;
-            this.password = password;
-        }
-    }
 }

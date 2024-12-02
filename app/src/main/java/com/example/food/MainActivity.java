@@ -11,36 +11,36 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnSkip;
-    private Button btnEmaiPhone;
-
-    private TextView btnSignUp;
+    private Button btnEmailPhone;
+    private TextView btnSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Khởi tạo các View từ layout
         btnSkip = findViewById(R.id.btn_skip);
+        btnEmailPhone = findViewById(R.id.btn_email_phone);
+        btnSignIn = findViewById(R.id.tv_sign_in);
+
+        // Xử lý sự kiện cho nút Skip
         btnSkip.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         });
 
-        btnEmaiPhone = findViewById(R.id.btn_email_phone);
-        btnEmaiPhone.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+        // Xử lý sự kiện cho nút Email/Phone
+        btnEmailPhone.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SignInActivity.class);
             startActivity(intent);
         });
 
-        btnSignUp = findViewById(R.id.tv_sign_up);
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        // Xử lý sự kiện cho nút Sign Up
+        btnSignIn.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
-
 }
