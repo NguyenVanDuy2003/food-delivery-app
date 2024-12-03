@@ -1,5 +1,7 @@
 package com.example.food;
 
-public class FoodDetailActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class FoodDetailActivity extends AppCompatActivity {
 
 }

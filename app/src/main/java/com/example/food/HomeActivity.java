@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView restaurantRecyclerView;
     private EditText etSearch;
     private CardView btnSearch;
-    
+
     // Data
     private RestaurantAdapter restaurantAdapter;
     private List<Restaurant> restaurants;
@@ -38,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        
+
         initializeViews();
         setupNavigationDrawer();
         setupRecyclerView();
@@ -57,13 +57,13 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setupNavigationDrawer() {
         btnToggleMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
-        
+
         navigationView.setNavigationItemSelectedListener(this::handleNavigationItemSelected);
     }
 
     private boolean handleNavigationItemSelected(@NonNull MenuItem menuItem) {
         int itemId = menuItem.getItemId();
-        
+
         if (itemId == R.id.my_orders) {
             // Handle My Orders action
         } else if (itemId == R.id.my_profile) {
@@ -113,7 +113,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setupSearchFunctionality() {
         btnSearch.setOnClickListener(v -> performSearch());
-        
+
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 performSearch();
@@ -151,12 +151,12 @@ public class HomeActivity extends AppCompatActivity {
             restaurantRecyclerView.setAdapter(restaurantAdapter);
             return;
         }
-        
+
         List<Restaurant> filteredList = restaurants.stream()
-            .filter(restaurant -> 
+            .filter(restaurant ->
                 restaurant.getName().toLowerCase().contains(query.toLowerCase()))
             .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-            
+
         restaurantAdapter = new RestaurantAdapter(filteredList);
         restaurantRecyclerView.setAdapter(restaurantAdapter);
     }
