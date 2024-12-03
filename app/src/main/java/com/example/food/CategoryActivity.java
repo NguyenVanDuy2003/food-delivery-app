@@ -1,6 +1,8 @@
 package com.example.food;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -47,7 +49,6 @@ public class CategoryActivity extends AppCompatActivity {
         // Xử lý chức năng thoát khi nhấn nút back
         ImageButton backbutton = findViewById(R.id.back);
         backbutton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -73,6 +74,7 @@ public class CategoryActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // Hiển thị lựa chọn của người dùng (tuỳ chọn)
                 String selectedSort = parentView.getItemAtPosition(position).toString();
+                Log.d("CategoryActivity", "Toast Triggered: " + selectedSort);  // Debugging log
                 Toast.makeText(CategoryActivity.this, "Selected: " + selectedSort, Toast.LENGTH_SHORT).show();
 
                 // Sắp xếp theo tùy chọn của người dùng
@@ -129,5 +131,6 @@ public class CategoryActivity extends AppCompatActivity {
         // Khởi tạo adapter và gán cho ListView
         adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);
         lvFood.setAdapter(adapterfood);
+
     }
 }
