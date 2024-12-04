@@ -28,8 +28,10 @@ public class ThemNhaHangMainActivity extends AppCompatActivity {
     Button add_TaiKhoan;
     ImageView imgRestaurantView, qrcodeView;
 
-    private int imageSelected = 0;
+    // Biến lưu URI của các ảnh
+    private Uri selectedQrcodeUri = null;
     private Uri selectedImageUri;  // Để lưu trữ URI của ảnh đã chọn
+    private int imageSelected = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class ThemNhaHangMainActivity extends AppCompatActivity {
         imgRestaurantView = findViewById(R.id.imgRestaurantView);
         qrcodeView = findViewById(R.id.qrcodeView);
 
+
         // Phương thức cho phép chọn ảnh từ thư viện
         ActivityResultLauncher<Intent> selectImage = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -59,26 +62,27 @@ public class ThemNhaHangMainActivity extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK) {
                         Uri imageUri = result.getData().getData();
                         if (imageUri != null) {
-                            selectedImageUri = imageUri;  // Lưu URI của ảnh đã chọn
                             if (imageSelected == 1) {
+                                selectedImageUri = imageUri;  // Lưu URI ảnh nhà hàng
                                 imgRestaurantView.setImageURI(imageUri);
                             } else if (imageSelected == 2) {
+                                selectedQrcodeUri = imageUri;  // Lưu URI ảnh QR code
                                 qrcodeView.setImageURI(imageUri);
                             }
                         }
                     }
                 });
 
-        // Mở thư viện chọn ảnh khi bấm vào imgRestaurant
+        // Chọn ảnh nhà hàng
         imageResource.setOnClickListener(v -> {
-            imageSelected = 1;  // Đánh dấu chọn ảnh cho imgRestaurant
+            imageSelected = 1;
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             selectImage.launch(intent);
         });
 
-        // Mở thư viện chọn ảnh khi bấm vào qrcode
+        // Chọn ảnh QR code
         qrcode.setOnClickListener(v -> {
-            imageSelected = 2;  // Đánh dấu chọn ảnh cho qrcode
+            imageSelected = 2;
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             selectImage.launch(intent);
         });
@@ -92,48 +96,64 @@ public class ThemNhaHangMainActivity extends AppCompatActivity {
             String diaChi = address.getText().toString();
 
             // Kiểm tra xem thông tin đã được nhập đầy đủ chưa
-            if(tenCuaHang.isEmpty() || soDienThoai.isEmpty() || soTaiKhoan.isEmpty() || diaChi.isEmpty()){
+            if (tenCuaHang.isEmpty() || soDienThoai.isEmpty() || soTaiKhoan.isEmpty() || diaChi.isEmpty()) {
                 Toast.makeText(ThemNhaHangMainActivity.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // Kiểm tra nếu có ảnh đã chọn
-            if (selectedImageUri == null) {
-                Toast.makeText(ThemNhaHangMainActivity.this, "Vui lòng chọn ảnh!", Toast.LENGTH_SHORT).show();
+            if (selectedImageUri == null || selectedQrcodeUri == null) {
+                Toast.makeText(ThemNhaHangMainActivity.this, "Vui lòng chọn cả 2 ảnh!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // Tạo ID cho nhà hàng
             String restaurantId = databaseReference.push().getKey();
-            // Tạo đối tượng đại diện cho nhà hàng
             Restaurant newRestaurant = new Restaurant(tenCuaHang, soDienThoai, soTaiKhoan, diaChi);
 
-            // Lưu ảnh lên Firebase Storage
-            StorageReference fileReference = storageReference.child(restaurantId + "_image.jpg");
-            fileReference.putFile(selectedImageUri)
+            // Lưu ảnh nhà hàng lên Firebase Storage
+            StorageReference imageRef = storageReference.child(restaurantId + "_image.jpg");
+            imageRef.putFile(selectedImageUri)
                     .addOnSuccessListener(taskSnapshot -> {
-                        // Lấy URL của ảnh đã upload
-                        fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                            // Lưu URL ảnh vào Firebase Realtime Database
+                        // Lấy URL của ảnh nhà hàng
+                        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                             newRestaurant.setImageUrl(uri.toString());
-                            if (restaurantId != null) {
-                                databaseReference.child(restaurantId).setValue(newRestaurant)
-                                        .addOnSuccessListener(aVoid -> {
-                                            Toast.makeText(ThemNhaHangMainActivity.this, "Thêm nhà hàng thành công!", Toast.LENGTH_SHORT).show();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            // Lưu ảnh QR code lên Firebase Storage
+                            StorageReference qrcodeRef = storageReference.child(restaurantId + "_qrcode.jpg");
+                            qrcodeRef.putFile(selectedQrcodeUri)
+                                    .addOnSuccessListener(taskSnapshot1 -> {
+                                        // Lấy URL của ảnh QR code
+                                        qrcodeRef.getDownloadUrl().addOnSuccessListener(uriQrcode -> {
+                                            newRestaurant.setQrcodeUrl(uriQrcode.toString());
+
+                                            // Lưu thông tin nhà hàng vào Firebase Realtime Database
+                                            if (restaurantId != null) {
+                                                databaseReference.child(restaurantId).setValue(newRestaurant)
+                                                        .addOnSuccessListener(aVoid -> {
+                                                            Toast.makeText(ThemNhaHangMainActivity.this, "Thêm nhà hàng thành công!", Toast.LENGTH_SHORT).show();
+                                                        })
+                                                        .addOnFailureListener(e -> {
+                                                            Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                        });
+                                            }
+                                        }).addOnFailureListener(e -> {
+                                            Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi tải ảnh QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                         });
-                            }
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi tải ảnh QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
                         }).addOnFailureListener(e -> {
-                            Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi tải ảnh: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi tải ảnh nhà hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
                     }).addOnFailureListener(e -> {
-                        Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi tải ảnh: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi tải ảnh nhà hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         });
 
         // Xử lý thoát
         exit.setOnClickListener(v -> finish());
     }
+
 }

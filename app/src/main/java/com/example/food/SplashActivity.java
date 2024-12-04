@@ -43,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
         if (isLoggedIn) {
 
             if (String.valueOf(Role.USER).equals(role)) {
-                Intent intent = new Intent(this, AdminActivity.class);
+                Intent intent = new Intent(this, ThemNhaHangMainActivity.class);
                 this.startActivity(intent);
                 this.finish();
             } else {
