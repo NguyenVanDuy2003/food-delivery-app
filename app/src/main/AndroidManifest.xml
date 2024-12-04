@@ -12,9 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Food"
         tools:targetApi="31">
-
         <activity
-            android:name=".ThemNhaHangMainActivity"
+            android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -43,16 +42,15 @@
             android:exported="false" />
         <activity
             android:name=".CategoryActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".FoodCartActivity"
-            android:exported="true" />
-        <activity
-            android:name=".FoodDetailActivity"
-            android:exported="true" />
-        <activity
-            android:name=".SplashActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ThemNhaHangMainActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

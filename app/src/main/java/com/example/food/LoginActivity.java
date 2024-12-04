@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                             } else if (user.getRole() == Role.ADMIN) {
                                 Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                                 startActivity(intent);
                                 finish();
                             }

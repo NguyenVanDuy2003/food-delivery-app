@@ -27,6 +27,12 @@ public class SplashActivity extends AppCompatActivity {
 
         new Handler().postDelayed(this::checkLoginStatus, 2000);
     }
+    private void logout() {
+        SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
 
     public void checkLoginStatus() {
         SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
@@ -37,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
         if (isLoggedIn) {
 
             if (String.valueOf(Role.USER).equals(role)) {
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent = new Intent(this, AdminActivity.class);
                 this.startActivity(intent);
                 this.finish();
             } else {

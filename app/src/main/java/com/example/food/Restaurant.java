@@ -12,6 +12,15 @@ public class Restaurant implements Serializable {
     private String address;
     private  String stk;
     private String qrcode;
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public  Restaurant(){
 

@@ -1,7 +1,6 @@
 package com.example.food;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.food.Common.CommonKey;
 import com.example.food.Enum.Role;
 import com.example.food.model.User;
 import com.google.firebase.database.*;

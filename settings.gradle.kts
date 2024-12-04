@@ -17,10 +17,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
-
-
-
-    
 }
 
 rootProject.name = "Food"

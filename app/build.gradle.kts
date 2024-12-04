@@ -45,5 +45,5 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
-    implementation 'com.google.firebase:firebase-storage:21.2.1'
+    implementation(libs.firebase.storage)
 }
