@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/my_orders"
+        android:title="@string/my_orders"
+        android:icon="@drawable/ic_orders" />
+    <item
+        android:id="@+id/my_profile"
+        android:title="@string/my_profile"
+        android:icon="@drawable/ic_profile" />
+    <item
+        android:id="@+id/delivery_address"
+        android:title="@string/delivery_address"
+        android:icon="@drawable/ic_address" />
+    <item
+        android:id="@+id/payment_methods"
+        android:title="@string/payment_methods"
+        android:icon="@drawable/ic_payment" />
+
+    <item
+        android:id="@+id/nav_logout"
+        android:title="@string/logout"
+        android:icon="@drawable/ic_logout" />
+</menu>

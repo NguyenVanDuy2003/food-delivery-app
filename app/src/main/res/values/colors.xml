@@ -1,0 +1,8 @@
+<resources>
+    <color name="gray_900">#FF212121</color>
+    <color name="gray_100">#FFF5F5F5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="primary">#FE724C</color>
+    <color name="hint_color">#9E9E9E</color>
+</resources> 
