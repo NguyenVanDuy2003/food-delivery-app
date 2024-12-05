@@ -55,6 +55,7 @@ public class FoodDetailActivity extends AppCompatActivity {
         returnBtn.setOnClickListener(v -> finish()); // Return to the previous screen
         increaseQuantityBtn.setOnClickListener(v -> updateQuantity(1));
         decreaseQuantityBtn.setOnClickListener(v -> updateQuantity(-1));
+        addToCartBtn.setOnClickListener(v -> setAddToCart(foodId));
     }
 
     private void fetchFoodData(int foodId) {
@@ -98,6 +99,8 @@ public class FoodDetailActivity extends AppCompatActivity {
     private void setAddToCart(int foodId) {
         // get user id
         // add name, price, quantity to firebase
+        Log.d("FoodDetailActivity", "Clicked Add to Cart for foodId: " + foodId);
+        Log.d("FoodDetailActivity", "Navigating to FoodCartActivity");
         Intent intent = new Intent(FoodDetailActivity.this, FoodCartActivity.class);
         startActivity(intent);
     }
