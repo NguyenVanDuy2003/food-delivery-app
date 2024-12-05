@@ -17,14 +17,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-public class ThemNhaHangMainActivity extends AppCompatActivity {
+public class AddRestauntsActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     ImageButton exit, imageResource, qrcode;
-    EditText name, phone_number, stk, address;
+    EditText name, phone_number, stk, address,Mota;
     Button add_TaiKhoan;
     ImageView imgRestaurantView, qrcodeView;
 
@@ -36,7 +35,7 @@ public class ThemNhaHangMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_them_nha_hang_main);
+        setContentView(R.layout.activity_add_restaunts_main);
 
         // Khởi tạo Firebase Database và Storage
         databaseReference = FirebaseDatabase.getInstance().getReference("restaurants");
@@ -53,13 +52,14 @@ public class ThemNhaHangMainActivity extends AppCompatActivity {
         add_TaiKhoan = findViewById(R.id.add_TaiKhoan);
         imgRestaurantView = findViewById(R.id.imgRestaurantView);
         qrcodeView = findViewById(R.id.qrcodeView);
+        Mota  = findViewById(R.id.Mota);
 
 
         // Phương thức cho phép chọn ảnh từ thư viện
         ActivityResultLauncher<Intent> selectImage = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == RESULT_OK) {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Uri imageUri = result.getData().getData();
                         if (imageUri != null) {
                             if (imageSelected == 1) {
@@ -97,13 +97,13 @@ public class ThemNhaHangMainActivity extends AppCompatActivity {
 
             // Kiểm tra xem thông tin đã được nhập đầy đủ chưa
             if (tenCuaHang.isEmpty() || soDienThoai.isEmpty() || soTaiKhoan.isEmpty() || diaChi.isEmpty()) {
-                Toast.makeText(ThemNhaHangMainActivity.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRestauntsActivity.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // Kiểm tra nếu có ảnh đã chọn
             if (selectedImageUri == null || selectedQrcodeUri == null) {
-                Toast.makeText(ThemNhaHangMainActivity.this, "Vui lòng chọn cả 2 ảnh!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRestauntsActivity.this, "Vui lòng chọn cả 2 ảnh!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -131,24 +131,24 @@ public class ThemNhaHangMainActivity extends AppCompatActivity {
                                             if (restaurantId != null) {
                                                 databaseReference.child(restaurantId).setValue(newRestaurant)
                                                         .addOnSuccessListener(aVoid -> {
-                                                            Toast.makeText(ThemNhaHangMainActivity.this, "Thêm nhà hàng thành công!", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(AddRestauntsActivity.this, "Thêm nhà hàng thành công!", Toast.LENGTH_SHORT).show();
                                                         })
                                                         .addOnFailureListener(e -> {
-                                                            Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(AddRestauntsActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                                         });
                                             }
                                         }).addOnFailureListener(e -> {
-                                            Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi tải ảnh QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(AddRestauntsActivity.this, "Lỗi tải ảnh QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                         });
                                     })
                                     .addOnFailureListener(e -> {
-                                        Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi tải ảnh QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(AddRestauntsActivity.this, "Lỗi tải ảnh QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     });
                         }).addOnFailureListener(e -> {
-                            Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi tải ảnh nhà hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddRestauntsActivity.this, "Lỗi tải ảnh nhà hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
                     }).addOnFailureListener(e -> {
-                        Toast.makeText(ThemNhaHangMainActivity.this, "Lỗi tải ảnh nhà hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddRestauntsActivity.this, "Lỗi tải ảnh nhà hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         });
 

@@ -94,7 +94,7 @@ public class HomeActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         restaurants = createSampleRestaurants();
-        restaurantAdapter = new RestaurantAdapter(restaurants);
+        restaurantAdapter = new RestaurantAdapter(this,restaurants);
         restaurantRecyclerView.setAdapter(restaurantAdapter);
     }
 
@@ -147,7 +147,7 @@ public class HomeActivity extends AppCompatActivity {
      */
     private void searchRestaurants(String query) {
         if (query.isEmpty()) {
-            restaurantAdapter = new RestaurantAdapter(restaurants);
+            restaurantAdapter = new RestaurantAdapter(this,restaurants);
             restaurantRecyclerView.setAdapter(restaurantAdapter);
             return;
         }
@@ -157,7 +157,7 @@ public class HomeActivity extends AppCompatActivity {
                 restaurant.getName().toLowerCase().contains(query.toLowerCase()))
             .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
-        restaurantAdapter = new RestaurantAdapter(filteredList);
+        restaurantAdapter = new RestaurantAdapter(this,filteredList);
         restaurantRecyclerView.setAdapter(restaurantAdapter);
     }
 }

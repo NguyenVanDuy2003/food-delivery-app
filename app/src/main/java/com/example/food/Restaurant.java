@@ -13,6 +13,7 @@ public class Restaurant implements Serializable {
     private  String stk;
     private String qrcode;
     private String imageUrl;
+    private String Mota;
 
     private String qrcodeUrl;
 
@@ -47,6 +48,14 @@ public class Restaurant implements Serializable {
         this.phone_number = phone_number;
         this.stk = stk;
         this.address = address;
+    }
+
+    public Restaurant(String name, String phone_number, String address, String stk, String mota) {
+        this.name = name;
+        this.phone_number = phone_number;
+        this.address = address;
+        this.stk = stk;
+        Mota = mota;
     }
 
     public String getId() {
@@ -119,5 +128,13 @@ public class Restaurant implements Serializable {
 
     public void setQrcode(String qrcode) {
         this.qrcode = qrcode;
+    }
+
+    public String getMota() {
+        return Mota;
+    }
+
+    public void setMota(String mota) {
+        Mota = mota;
     }
 }

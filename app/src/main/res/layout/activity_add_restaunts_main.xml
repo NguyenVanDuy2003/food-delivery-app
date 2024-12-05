@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ThemNhaHangMainActivity">
+
+    tools:context=".AddRestauntsActivity">
 
 
     <LinearLayout
@@ -78,6 +79,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nhập tên cửa hàng"
+                    android:textColor="#282626"
+                    android:paddingBottom="20dp"
+                    android:paddingHorizontal="5dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Mô tả cửa hàng"
+                    android:textColor="#282626"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <EditText
+                    android:id="@+id/Mota"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mô tả cửa hàng"
                     android:textColor="#282626"
                     android:paddingBottom="20dp"
                     android:paddingHorizontal="5dp" />
@@ -173,6 +191,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
                         android:text="Thêm"
+                        android:textColor="@color/white"
+                        android:background="@color/primary"
                         android:textSize="20dp"
                         android:layout_marginEnd="20dp"/>
 

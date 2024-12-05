@@ -61,7 +61,7 @@ public class AllRestaurantsActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         restaurants = getRestaurantsFromIntent();
-        restaurantAdapter = new RestaurantAdapter(restaurants);
+        restaurantAdapter = new RestaurantAdapter(this,restaurants);
         restaurantRecyclerView.setAdapter(restaurantAdapter);
     }
 
@@ -96,7 +96,7 @@ public class AllRestaurantsActivity extends AppCompatActivity {
      */
     private void searchRestaurants(String query) {
         if (query.isEmpty()) {
-            restaurantAdapter = new RestaurantAdapter(restaurants);
+            restaurantAdapter = new RestaurantAdapter(this,restaurants);
             restaurantRecyclerView.setAdapter(restaurantAdapter);
             return;
         }
@@ -105,8 +105,8 @@ public class AllRestaurantsActivity extends AppCompatActivity {
             .filter(restaurant -> 
                 restaurant.getName().toLowerCase().contains(query.toLowerCase()))
             .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-            
-        restaurantAdapter = new RestaurantAdapter(filteredList);
+
+        restaurantAdapter = new RestaurantAdapter(this,restaurants);
         restaurantRecyclerView.setAdapter(restaurantAdapter);
     }
 

@@ -1,0 +1,89 @@
+package com.example.food;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+public class AdminManagementActivity extends AppCompatActivity {
+    private Button btnThem, btnQuayLai;
+    RecyclerView rvNhaHang;
+    ArrayList<Restaurant> listRestaurant;
+    RestaurantAdapter adapterRestaurant;
+    private DatabaseReference databaseReference;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_managent_admin);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        btnThem = findViewById(R.id.btn_them);
+        btnQuayLai = findViewById(R.id.btn_quaylai);
+        rvNhaHang = findViewById(R.id.rvNhaHang);
+
+        listRestaurant = new ArrayList<>();
+        adapterRestaurant = new RestaurantAdapter(this, listRestaurant);
+
+        // Set up RecyclerView
+        rvNhaHang.setLayoutManager(new LinearLayoutManager(this));
+        rvNhaHang.setAdapter(adapterRestaurant);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("restaurants");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listRestaurant.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Restaurant restaurant = snapshot.getValue(Restaurant.class);
+                    listRestaurant.add(restaurant);
+                }
+                adapterRestaurant.notifyDataSetChanged(); // Cập nhật RecyclerView
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Xử lý lỗi
+            }
+        });
+
+        btnThem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminManagementActivity.this, AddRestauntsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnQuayLai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+    }
+}

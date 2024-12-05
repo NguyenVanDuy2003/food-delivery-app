@@ -13,6 +13,12 @@
         android:theme="@style/Theme.Food"
         tools:targetApi="31">
         <activity
+            android:name=".RestaurantdetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity2"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -46,11 +52,12 @@
         <activity
             android:name=".FoodCartActivity"
             android:exported="false" />
-
         <activity
-            android:name=".ThemNhaHangMainActivity"
+            android:name=".AddRestauntsActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".AdminManagementActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

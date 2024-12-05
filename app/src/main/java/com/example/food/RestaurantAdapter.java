@@ -1,6 +1,10 @@
 package com.example.food;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,13 +12,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.food.Common.CommonKey;
+import com.example.food.Enum.Role;
+
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
     private List<Restaurant> restaurants;
-
-    public RestaurantAdapter(List<Restaurant> restaurants) {
+    private Context context;
+    public RestaurantAdapter(Context context ,List<Restaurant> restaurants) {
         this.restaurants = restaurants;
+        this.context = context;
     }
 
     @NonNull
@@ -34,13 +43,25 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         holder.deliveryTimeTextView.setText(restaurant.getDeliveryTime());
 
         // Add click listener to the item
+
         holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), CategoryActivity.class);
-            intent.putExtra("restaurant_name", restaurant.getName());
-            intent.putExtra("restaurant_image", restaurant.getImageResource());
-            intent.putExtra("restaurant_rating", restaurant.getRating());
-            intent.putExtra("restaurant_delivery_time", restaurant.getDeliveryTime());
-            view.getContext().startActivity(intent);
+            SharedPreferences sharedPreferences = context.getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
+            boolean isLoggedIn = sharedPreferences.getBoolean(CommonKey.IS_LOGGED_IN, false);
+            String role = sharedPreferences.getString(CommonKey.ROLE, String.valueOf(Role.USER));
+
+            if (String.valueOf(Role.USER).equals(role)) {
+                Intent intent = new Intent(view.getContext(), CategoryActivity.class);
+                intent.putExtra("restaurant_name", restaurant.getName());
+                intent.putExtra("restaurant_image", restaurant.getImageResource());
+                intent.putExtra("restaurant_rating", restaurant.getRating());
+                intent.putExtra("restaurant_delivery_time", restaurant.getDeliveryTime());
+                view.getContext().startActivity(intent);
+            } else {
+                Intent intent = new Intent(view.getContext(), RestaurantdetailsActivity.class);
+                view.getContext().startActivity(intent);
+            }
+
+
         });
     }
 
@@ -63,4 +84,4 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             deliveryTimeTextView = view.findViewById(R.id.tv_delivery_time);
         }
     }
-} 
+}
