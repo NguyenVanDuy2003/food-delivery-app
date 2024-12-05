@@ -13,6 +13,10 @@
         android:theme="@style/Theme.Food"
         tools:targetApi="31">
         <activity
+            android:name=".RestaurantdetailsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -24,7 +28,7 @@
         </activity>
         <activity
             android:name=".AllRestaurantsActivity"
-            android:label="All Restaurants"/>
+            android:label="All Restaurants" />
         <activity
             android:name=".AdminActivity"
             android:exported="false" />
@@ -42,7 +46,19 @@
             android:exported="false" />
         <activity
             android:name=".CategoryActivity"
-            android:exported="true" />
+            android:exported="false" />
+        <activity
+            android:name=".FoodCartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddRestauntsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminManagementActivity"
+            android:exported="false" />
+        <activity android:name=".UserManagementActivity" android:exported="false" />
+        <activity android:name=".UserDetailActivity" android:exported="false" />
+        <activity android:name=".AddUserActivity" android:exported="false" />
 
     </application>
 
