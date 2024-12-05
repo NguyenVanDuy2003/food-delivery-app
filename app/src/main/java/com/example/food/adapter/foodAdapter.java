@@ -53,18 +53,19 @@ public class foodAdapter extends ArrayAdapter {
 
         Food food = this.listFood.get(position);
 
-        image.setImageResource(food.getImage());
-        tvNameFood.setText(food.getNameFood());
+        image.setImageResource(food.getImageResource());
+        tvNameFood.setText(food.getName());
         tvPriceFood.setText(food.getPrice() + "");
-        tvDescription.setText(food.getDescription());
+        tvDescription.setText(food.getIngredients());
 
         customView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("foodAdapter", "Item clicked: " + food.getNameFood());
-                Toast.makeText(context, "Item clicked: " + food.getNameFood(), Toast.LENGTH_SHORT).show();
+                Log.d("foodAdapter", "Item clicked: " + food.getName());
+                Toast.makeText(context, "Item clicked: " + food.getName(), Toast.LENGTH_SHORT).show();
+                Log.d("foodAdapter", "Item clicked: " + food.getImageResource());
                 Intent intent = new Intent(context, FoodDetailActivity.class);
-                intent.putExtra("foodID", food.getFoodID());
+                intent.putExtra("foodID", food.getId());
                 context.startActivity(intent);
             }
         });
