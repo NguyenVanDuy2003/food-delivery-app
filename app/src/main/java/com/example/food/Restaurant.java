@@ -11,7 +11,6 @@ public class Restaurant implements Serializable {
     private  String phone_number;
     private String address;
     private  String stk;
-    private String qrcode;
     private String imageUrl;
     private String Mota;
 
@@ -33,6 +32,14 @@ public class Restaurant implements Serializable {
         this.imageUrl = imageUrl;
     }
 
+    public int getImageResource() {
+        return imageResource;
+    }
+
+    public void setImageResource(int imageResource) {
+        this.imageResource = imageResource;
+    }
+
     public  Restaurant(){
 
     }
@@ -42,6 +49,17 @@ public class Restaurant implements Serializable {
         this.rating = rating;
         this.deliveryTime = deliveryTime;
     }
+
+    public Restaurant(String id, String name, float rating, String phone_number, String address, String stk, String mota) {
+        this.id = id;
+        this.name = name;
+        this.rating = rating;
+        this.phone_number = phone_number;
+        this.address = address;
+        this.stk = stk;
+        Mota = mota;
+    }
+
 
     public Restaurant(String name, String phone_number, String stk, String address) {
         this.name = name;
@@ -72,14 +90,6 @@ public class Restaurant implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getImageResource() {
-        return imageResource;
-    }
-
-    public void setImageResource(int imageResource) {
-        this.imageResource = imageResource;
     }
 
     public float getRating() {
@@ -122,13 +132,6 @@ public class Restaurant implements Serializable {
         this.stk = stk;
     }
 
-    public String getQrcode() {
-        return qrcode;
-    }
-
-    public void setQrcode(String qrcode) {
-        this.qrcode = qrcode;
-    }
 
     public String getMota() {
         return Mota;
@@ -136,5 +139,21 @@ public class Restaurant implements Serializable {
 
     public void setMota(String mota) {
         Mota = mota;
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", rating=" + rating +
+                ", deliveryTime='" + deliveryTime + '\'' +
+                ", phone_number='" + phone_number + '\'' +
+                ", address='" + address + '\'' +
+                ", stk='" + stk + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", Mota='" + Mota + '\'' +
+                ", qrcodeUrl='" + qrcodeUrl + '\'' +
+                '}';
     }
 }

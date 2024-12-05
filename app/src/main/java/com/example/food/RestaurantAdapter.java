@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.food.Common.CommonKey;
 import com.example.food.Enum.Role;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
@@ -49,19 +50,18 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             boolean isLoggedIn = sharedPreferences.getBoolean(CommonKey.IS_LOGGED_IN, false);
             String role = sharedPreferences.getString(CommonKey.ROLE, String.valueOf(Role.USER));
 
+            Intent intent;
             if (String.valueOf(Role.USER).equals(role)) {
-                Intent intent = new Intent(view.getContext(), CategoryActivity.class);
+                intent = new Intent(view.getContext(), CategoryActivity.class);
                 intent.putExtra("restaurant_name", restaurant.getName());
                 intent.putExtra("restaurant_image", restaurant.getImageResource());
                 intent.putExtra("restaurant_rating", restaurant.getRating());
                 intent.putExtra("restaurant_delivery_time", restaurant.getDeliveryTime());
-                view.getContext().startActivity(intent);
             } else {
-                Intent intent = new Intent(view.getContext(), RestaurantdetailsActivity.class);
-                view.getContext().startActivity(intent);
+                intent = new Intent(view.getContext(), RestaurantdetailsActivity.class);
+                intent.putExtra("restaurantId", restaurant.getId());
             }
-
-
+            view.getContext().startActivity(intent);
         });
     }
 
@@ -83,5 +83,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             ratingTextView = view.findViewById(R.id.tv_rating);
             deliveryTimeTextView = view.findViewById(R.id.tv_delivery_time);
         }
+    }
+
+    public void updateList(ArrayList<Restaurant> newList) {
+        restaurants = newList;
+        notifyDataSetChanged();
     }
 }

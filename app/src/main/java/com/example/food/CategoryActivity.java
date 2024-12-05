@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.food.model.Food;
+import com.example.food.Model.Food;
 import com.example.food.adapter.foodAdapter;
 
 import java.util.ArrayList;

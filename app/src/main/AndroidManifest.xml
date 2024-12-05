@@ -15,9 +15,7 @@
         <activity
             android:name=".RestaurantdetailsActivity"
             android:exported="false" />
-        <activity
-            android:name=".MainActivity2"
-            android:exported="false" />
+
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -58,6 +56,10 @@
         <activity
             android:name=".AdminManagementActivity"
             android:exported="false" />
+        <activity android:name=".UserManagementActivity" android:exported="false" />
+        <activity android:name=".UserDetailActivity" android:exported="false" />
+        <activity android:name=".AddUserActivity" android:exported="false" />
+
     </application>
 
 </manifest>

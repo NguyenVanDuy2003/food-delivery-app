@@ -2,8 +2,11 @@ package com.example.food;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +30,7 @@ public class AdminManagementActivity extends AppCompatActivity {
     ArrayList<Restaurant> listRestaurant;
     RestaurantAdapter adapterRestaurant;
     private DatabaseReference databaseReference;
+    private EditText editTextSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class AdminManagementActivity extends AppCompatActivity {
         btnThem = findViewById(R.id.btn_them);
         btnQuayLai = findViewById(R.id.btn_quaylai);
         rvNhaHang = findViewById(R.id.rvNhaHang);
+        editTextSearch = findViewById(R.id.editTextSearch);
 
         listRestaurant = new ArrayList<>();
         adapterRestaurant = new RestaurantAdapter(this, listRestaurant);
@@ -60,7 +65,7 @@ public class AdminManagementActivity extends AppCompatActivity {
                     Restaurant restaurant = snapshot.getValue(Restaurant.class);
                     listRestaurant.add(restaurant);
                 }
-                adapterRestaurant.notifyDataSetChanged(); // Cập nhật RecyclerView
+                adapterRestaurant.notifyDataSetChanged();
             }
 
             @Override
@@ -84,6 +89,27 @@ public class AdminManagementActivity extends AppCompatActivity {
             }
         });
 
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void filter(String text) {
+        ArrayList<Restaurant> filteredList = new ArrayList<>();
+        for (Restaurant restaurant : listRestaurant) {
+            if (restaurant.getName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(restaurant);
+            }
+        }
+        adapterRestaurant.updateList(filteredList);
     }
 }

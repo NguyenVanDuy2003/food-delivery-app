@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -18,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -115,23 +117,13 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
             selectImage.launch(intent);
         });
 
-        // Xử lý thêm tài khoản
-        // Lấy ID cửa hàng hiện có từ Intent
-
-
-        // Xử lý cập nhật tài khoản
         btn_update.setOnClickListener(v -> {
-            // Lấy dữ liệu từ các trường nhập liệu
             String tenCuaHang = name.getText().toString();
             String soDienThoai = phone_number.getText().toString();
             String soTaiKhoan = stk.getText().toString();
             String diaChi = address.getText().toString();
             String mota = Mota.getText().toString();
-            // Thêm khai báo này trong onCreate()
             restaurantID = getIntent().getStringExtra("restaurantId");
-
-
-
 
             if (tenCuaHang.isEmpty() || soDienThoai.isEmpty() || soTaiKhoan.isEmpty() || diaChi.isEmpty()) {
                 Toast.makeText(RestaurantdetailsActivity.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
@@ -139,9 +131,84 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
             }
 
             // Tạo đối tượng nhà hàng mới
-            Restaurant updatedRestaurant = new Restaurant(tenCuaHang, soDienThoai, soTaiKhoan, diaChi, mota);
+            Restaurant updatedRestaurant = new Restaurant(restaurantID, tenCuaHang, 0, soDienThoai, soTaiKhoan, diaChi, mota);
 
-            // Cập nhật thông tin vào Firebase Database
+            // Check if a new restaurant image is selected
+            if (selectedImageUri != null) {
+                StorageReference imageRef = storageReference.child(restaurantID + "_image.jpg");
+                imageRef.putFile(selectedImageUri)
+                        .addOnSuccessListener(taskSnapshot -> {
+                            // Lấy URL của ảnh nhà hàng
+                            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                                updatedRestaurant.setImageUrl(uri.toString());
+                                // Proceed to upload QR code if selected
+                                uploadQRCode(updatedRestaurant);
+                            }).addOnFailureListener(e -> {
+                                Toast.makeText(RestaurantdetailsActivity.this, "Lỗi tải ảnh nhà hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(RestaurantdetailsActivity.this, "Lỗi tải ảnh nhà hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+                uploadQRCode(updatedRestaurant);
+            }
+        });
+
+
+        // Xử lý thoát
+        exit.setOnClickListener(v -> finish());
+
+        Button btnManageFood = findViewById(R.id.btn_manage_food);
+        Button btnBack = findViewById(R.id.btn_back);
+
+        btnManageFood.setOnClickListener(v -> {
+            Intent intent = new Intent(RestaurantdetailsActivity.this, AdminManagementActivity.class);
+            intent.putExtra("restaurantId", restaurantID); // Pass the restaurant ID if needed
+            startActivity(intent);
+        });
+
+        btnBack.setOnClickListener(v -> {
+            finish();
+        });
+
+        btn_xoa.setOnClickListener(v -> {
+            // Hiển thị hộp thoại xác nhận trước khi xóa
+            new AlertDialog.Builder(RestaurantdetailsActivity.this)
+                .setTitle("Xác nhận xóa")
+                .setMessage("Bạn có chắc chắn muốn xóa nhà hàng này không?")
+                .setPositiveButton("Có", (dialog, which) -> {
+                    // Gọi phương thức xóa nhà hàng
+                    deleteRestaurant(restaurantID);
+                })
+                .setNegativeButton("Không", null)
+                .show();
+        });
+    }
+
+    private void uploadQRCode(Restaurant updatedRestaurant) {
+        if (selectedQrcodeUri != null) {
+            StorageReference qrcodeRef = storageReference.child(restaurantID + "_qrcode.jpg");
+            qrcodeRef.putFile(selectedQrcodeUri)
+                    .addOnSuccessListener(taskSnapshot1 -> {
+                        // Lấy URL của ảnh QR code
+                        qrcodeRef.getDownloadUrl().addOnSuccessListener(uriQrcode -> {
+                            updatedRestaurant.setQrcodeUrl(uriQrcode.toString());
+                            // Save restaurant data to Firebase
+                            saveRestaurantData(updatedRestaurant);
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(RestaurantdetailsActivity.this, "Lỗi tải ảnh QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(RestaurantdetailsActivity.this, "Lỗi tải ảnh QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            // If no new QR code is selected, retain the existing QR code URL
+            saveRestaurantData(updatedRestaurant);
+        }
+    }
+
+    private void saveRestaurantData(Restaurant updatedRestaurant) {
+        if (restaurantID != null) {
             databaseReference.child(restaurantID).setValue(updatedRestaurant)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(RestaurantdetailsActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
@@ -149,16 +216,10 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> {
                         Toast.makeText(RestaurantdetailsActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
-        });
-
-        // Xử lý thoát
-        exit.setOnClickListener(v -> finish());
-
-
+        }
     }
 
-    // Hàm tải dữ liẹu nhà hàng từ Firebase
-    // Di chuyển loadRestaurantData() ra khỏi onCreate()
+
     private void loadRestaurantData(String restaurantID) {
         databaseReference.child(restaurantID).get().addOnSuccessListener(snapshot ->  {
             if (snapshot.exists()) {
@@ -187,5 +248,20 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
         }).addOnFailureListener(e -> {
             Toast.makeText(RestaurantdetailsActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private void deleteRestaurant(String restaurantID) {
+        if (restaurantID != null) {
+            databaseReference.child(restaurantID).removeValue()
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(RestaurantdetailsActivity.this, "Xóa nhà hàng thành công!", Toast.LENGTH_SHORT).show();
+                        finish(); // Quay lại màn hình trước đó
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(RestaurantdetailsActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            Toast.makeText(RestaurantdetailsActivity.this, "ID nhà hàng không hợp lệ!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

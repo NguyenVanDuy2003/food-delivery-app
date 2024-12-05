@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.food.model.Food;
+import com.example.food.Model.Food;
 import com.example.food.R;
 
 import java.util.ArrayList;

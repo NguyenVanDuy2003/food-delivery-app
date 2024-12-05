@@ -1,4 +1,4 @@
-package com.example.food.model;
+package com.example.food.Model;
 
 import com.example.food.Enum.Role;
 
@@ -7,7 +7,8 @@ public class User {
     public String fullName;
     public String email;
     public String password;
-
+    public String phoneNumber;
+    public String address;
     public Role role;
 
     public String getFullName() {
@@ -50,6 +51,22 @@ public class User {
         this.role = role;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public User(){
 
     }
@@ -59,6 +76,16 @@ public class User {
         this.fullName = fullName;
         this.email = email;
         this.password = password;
+        this.role = role;
+    }
+
+    public User(String id, String fullName, String email, String password, String phoneNumber, String address, Role role) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
         this.role = role;
     }
 }

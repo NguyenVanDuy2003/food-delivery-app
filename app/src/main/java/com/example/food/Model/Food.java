@@ -1,4 +1,4 @@
-package com.example.food.model;
+package com.example.food.Model;
 
 import java.io.Serializable;
 import java.util.Date;

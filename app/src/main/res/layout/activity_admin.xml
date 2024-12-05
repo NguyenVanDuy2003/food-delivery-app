@@ -14,16 +14,15 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="50dp"
             android:id="@+id/tv_admin_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="16dp"
             android:text="Trang quản lý admin "
-            android:textSize="24sp"
             android:textColor="@color/primary"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginBottom="16dp" />
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/ll_button_layout"
@@ -47,21 +46,21 @@
                 android:id="@+id/btn_quanliuser"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:textSize="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/primary"
                 android:text="Quản lý người dùng"
-                android:textColor="@color/primary"
-                android:layout_marginTop="10dp"/>
+                android:textColor="@color/white"
+                android:textSize="20dp" />
 
             <Button
-                android:id="@+id/btn_quay_lai"
+                android:id="@+id/btn_logout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginTop="10dp"
                 android:background="#E91E63"
-                android:text="Quay lại"
-                android:textSize="20dp"
+                android:text="Đăng Xuất"
                 android:textColor="@color/white"
-                android:layout_marginTop="10dp"/>
+                android:textSize="20dp" />
         </LinearLayout>
     </LinearLayout>
 

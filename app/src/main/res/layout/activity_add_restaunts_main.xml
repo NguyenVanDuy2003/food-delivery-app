@@ -92,10 +92,10 @@
                     android:fontFamily="sans-serif-medium" />
 
                 <EditText
-                    android:id="@+id/Mota"
+                    android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Mô tả cửa hàng"
+                    android:hint="Nhập mô tả cửa hàng"
                     android:textColor="#282626"
                     android:paddingBottom="20dp"
                     android:paddingHorizontal="5dp" />
@@ -153,7 +153,6 @@
                         android:contentDescription="Ảnh QR code" />
 
                 </LinearLayout>
-
 
                 <TextView
                     android:layout_width="wrap_content"

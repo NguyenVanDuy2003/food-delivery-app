@@ -66,6 +66,11 @@
 
 
         </LinearLayout>
+        <EditText
+            android:id="@+id/editTextSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tìm kiếm theo tên nhà hàng" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -76,5 +81,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

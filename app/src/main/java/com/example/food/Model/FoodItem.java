@@ -1,4 +1,4 @@
-package com.example.food.model;
+package com.example.food.Model;
 
 public class FoodItem {
     private String title;

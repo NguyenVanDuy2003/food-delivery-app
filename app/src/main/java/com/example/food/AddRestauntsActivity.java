@@ -23,7 +23,7 @@ public class AddRestauntsActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     ImageButton exit, imageResource, qrcode;
-    EditText name, phone_number, stk, address,Mota;
+    EditText name, phone_number, stk, address,Mota, description;
     Button add_TaiKhoan;
     ImageView imgRestaurantView, qrcodeView;
 
@@ -52,7 +52,7 @@ public class AddRestauntsActivity extends AppCompatActivity {
         add_TaiKhoan = findViewById(R.id.add_TaiKhoan);
         imgRestaurantView = findViewById(R.id.imgRestaurantView);
         qrcodeView = findViewById(R.id.qrcodeView);
-        Mota  = findViewById(R.id.Mota);
+        description = findViewById(R.id.description);
 
 
         // Phương thức cho phép chọn ảnh từ thư viện
@@ -80,7 +80,7 @@ public class AddRestauntsActivity extends AppCompatActivity {
             selectImage.launch(intent);
         });
 
-        // Chọn ảnh QR code
+        // Ch���n ảnh QR code
         qrcode.setOnClickListener(v -> {
             imageSelected = 2;
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -94,9 +94,10 @@ public class AddRestauntsActivity extends AppCompatActivity {
             String soDienThoai = phone_number.getText().toString();
             String soTaiKhoan = stk.getText().toString();
             String diaChi = address.getText().toString();
+            String mota = description.getText().toString();
 
             // Kiểm tra xem thông tin đã được nhập đầy đủ chưa
-            if (tenCuaHang.isEmpty() || soDienThoai.isEmpty() || soTaiKhoan.isEmpty() || diaChi.isEmpty()) {
+            if (tenCuaHang.isEmpty() || soDienThoai.isEmpty() || soTaiKhoan.isEmpty() || diaChi.isEmpty() || mota.isEmpty()) {
                 Toast.makeText(AddRestauntsActivity.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -109,7 +110,7 @@ public class AddRestauntsActivity extends AppCompatActivity {
 
             // Tạo ID cho nhà hàng
             String restaurantId = databaseReference.push().getKey();
-            Restaurant newRestaurant = new Restaurant(tenCuaHang, soDienThoai, soTaiKhoan, diaChi);
+            Restaurant newRestaurant = new Restaurant(restaurantId, tenCuaHang, 0,  soDienThoai,diaChi, soTaiKhoan,  mota);
 
             // Lưu ảnh nhà hàng lên Firebase Storage
             StorageReference imageRef = storageReference.child(restaurantId + "_image.jpg");

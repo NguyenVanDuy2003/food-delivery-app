@@ -1,59 +1,36 @@
 package com.example.food;
 
-
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.food.model.User;
+import com.example.food.Model.User;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
-    private final ArrayList<User> users;
-    private final UserActionListener actionListener;
-
-    public interface UserActionListener {
-        void onUserAction(User user);
-    }
-
-    public UserAdapter(ArrayList<User> users, UserActionListener actionListener) {
-        this.users = users;
-        this.actionListener = actionListener;
-    }
-
-    @NonNull
-    @Override
-    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_user, parent, false);
-        return new UserViewHolder(view);
+public class UserAdapter extends ArrayAdapter<User> {
+    public UserAdapter(Context context, List<User> users) {
+        super(context, 0, users);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
-        User user = users.get(position);
-        holder.tvEmail.setText(user.getEmail());
-        holder.tvPassword.setText(user.getPassword());
+    public View getView(int position, View convertView, ViewGroup parent) {
+        User user = getItem(position); // Lấy đối tượng User tại vị trí này
 
-        holder.itemView.setOnClickListener(v -> actionListener.onUserAction(user));
-    }
-
-    @Override
-    public int getItemCount() {
-        return users.size();
-    }
-
-    public static class UserViewHolder extends RecyclerView.ViewHolder {
-        TextView tvEmail, tvPassword;
-
-        public UserViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvEmail = itemView.findViewById(R.id.tv_email);
-            tvPassword = itemView.findViewById(R.id.tv_password);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
         }
+
+        TextView text1 = convertView.findViewById(android.R.id.text1);
+        TextView text2 = convertView.findViewById(android.R.id.text2);
+
+        // Hiển thị tên đầy đủ và email
+        text1.setText(user.getFullName());
+        text2.setText(user.getEmail());
+
+        return convertView;
     }
 }
