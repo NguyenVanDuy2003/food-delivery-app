@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.example.food.R;
-import com.example.food.model.Food;
+import com.example.food.Model.Food;
 
 public class FoodDetailActivity extends AppCompatActivity {
 

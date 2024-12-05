@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.food.model.Food;
+import com.example.food.Model.Food;
 import com.example.food.R;
 import com.example.food.FoodDetailActivity;
 

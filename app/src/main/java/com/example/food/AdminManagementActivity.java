@@ -77,7 +77,7 @@ public class AdminManagementActivity extends AppCompatActivity {
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminManagementActivity.this, AddRestauntsActivity.class);
+                Intent intent = new Intent(AdminManagementActivity.this, AddRestaurantsActivity.class);
                 startActivity(intent);
             }
         });
