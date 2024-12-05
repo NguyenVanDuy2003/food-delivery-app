@@ -1,6 +1,8 @@
 package com.example.food;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -47,7 +49,6 @@ public class CategoryActivity extends AppCompatActivity {
         // Xử lý chức năng thoát khi nhấn nút back
         ImageButton backbutton = findViewById(R.id.back);
         backbutton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -73,6 +74,7 @@ public class CategoryActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // Hiển thị lựa chọn của người dùng (tuỳ chọn)
                 String selectedSort = parentView.getItemAtPosition(position).toString();
+                Log.d("CategoryActivity", "Toast Triggered: " + selectedSort);  // Debugging log
                 Toast.makeText(CategoryActivity.this, "Selected: " + selectedSort, Toast.LENGTH_SHORT).show();
 
                 // Sắp xếp theo tùy chọn của người dùng
@@ -119,15 +121,22 @@ public class CategoryActivity extends AppCompatActivity {
         listFood = new ArrayList<>();
 
         // Thêm dữ liệu vào danh sách
-        listFood.add(new Food("Chicken Hawaiian", new Date(), true, 10.35, "Chicken, Cheese and Pineapple", 1, 101, R.drawable.a2));
-        listFood.add(new Food("Pepperoni Pizza", new Date(), true, 9.99, "Pepperoni, Cheese", 1, 102, R.drawable.a3));
-        listFood.add(new Food("Chicken Hawaiian", new Date(), true, 10.35, "Chicken, Cheese and Pineapple", 1, 103, R.drawable.a2));
-        listFood.add(new Food("Pepperoni Pizza", new Date(), true, 9.99, "Pepperoni, Cheese", 1, 104, R.drawable.a3));
-        listFood.add(new Food("Chicken Hawaiian", new Date(), true, 10.35, "Chicken, Cheese and Pineapple", 1, 107, R.drawable.a2));
-        listFood.add(new Food("Pepperoni Pizza", new Date(), true, 9.99, "Pepperoni, Cheese", 1, 106, R.drawable.a3));
+        listFood.add(new Food("Chicken Hawaiian", 10.35, 101, R.drawable.a2, "Chicken, Cheese and Pineapple", true, 1));
+        listFood.add(new Food("Pepperoni Pizza", 9.99, 102, R.drawable.a3, "Pepperoni, Cheese", true, 1));
 
         // Khởi tạo adapter và gán cho ListView
         adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);
         lvFood.setAdapter(adapterfood);
+
+        lvFood.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Food selectedFood = listFood.get(position);
+                Intent intent = new Intent(CategoryActivity.this, FoodDetailActivity.class);
+                intent.putExtra("foodID", selectedFood.getId());
+                startActivity(intent);
+            }
+        });
+
     }
 }

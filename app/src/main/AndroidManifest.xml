@@ -51,6 +51,15 @@
             android:name=".FoodCartActivity"
             android:exported="false" />
         <activity
+            android:name=".FoodDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ThanhToanOnlActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CheckoutActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddRestauntsActivity"
             android:exported="false" />
         <activity
