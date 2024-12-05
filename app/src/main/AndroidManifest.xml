@@ -13,11 +13,13 @@
         android:theme="@style/Theme.Food"
         tools:targetApi="31">
         <activity
+            android:name=".SplashActivity"
+            android:exported="false" />
+        <activity
             android:name=".RestaurantdetailsActivity"
             android:exported="false" />
-
         <activity
-            android:name=".SplashActivity"
+            android:name=".ProfileActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -56,10 +58,15 @@
         <activity
             android:name=".AdminManagementActivity"
             android:exported="false" />
-        <activity android:name=".UserManagementActivity" android:exported="false" />
-        <activity android:name=".UserDetailActivity" android:exported="false" />
-        <activity android:name=".AddUserActivity" android:exported="false" />
-
+        <activity
+            android:name=".UserManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddUserActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
