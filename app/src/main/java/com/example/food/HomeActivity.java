@@ -163,7 +163,7 @@ public class HomeActivity extends AppCompatActivity {
                         restaurants.add(restaurant); // Add restaurant to the list
                     }
                 }
-                restaurantAdapter.notifyDataSetChanged(); // Notify adapter of data change
+                restaurantAdapter.notifyDataSetChanged(); 
             }
 
             @Override

@@ -1,54 +1,74 @@
 package com.example.food;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.food.Common.CommonKey;
+import com.example.food.Enum.Role;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
-    private Context context;
     private List<Restaurant> restaurants;
-
-    public RestaurantAdapter(Context context, List<Restaurant> restaurants) {
-        this.context = context;
+    private Context context;
+    public RestaurantAdapter(Context context ,List<Restaurant> restaurants) {
         this.restaurants = restaurants;
+        this.context = context;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_restaurant, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_restaurant, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Restaurant restaurant = restaurants.get(position);
-        holder.nameTextView.setText(restaurant.getName());
-        holder.ratingTextView.setText(String.valueOf(restaurant.getRating()));
-        
-        // Load imageUrl using Glide
         Glide.with(context)
-            .load(restaurant.getImageUrl())
-            .into(holder.imageView);
+                .load(restaurant.getImageUrl())
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_foreground)
+                .into(holder.imageView);
 
-        // Set click listener for the item
+        holder.nameTextView.setText(restaurant.getName());
+        holder.ratingTextView.setText(String.format("%.1f ★", restaurant.getRating()));
+        holder.deliveryTimeTextView.setText(restaurant.getDeliveryTime());
+
+        // Add click listener to the item
+
         holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(context, CategoryActivity.class);
-            intent.putExtra("restaurant_name", restaurant.getName());
-            intent.putExtra("restaurant_image", restaurant.getImageUrl());
-            intent.putExtra("restaurant_rating", restaurant.getRating());
-            context.startActivity(intent);
+            SharedPreferences sharedPreferences = context.getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
+            boolean isLoggedIn = sharedPreferences.getBoolean(CommonKey.IS_LOGGED_IN, false);
+            String role = sharedPreferences.getString(CommonKey.ROLE, String.valueOf(Role.USER));
+
+            Intent intent;
+            if (String.valueOf(Role.USER).equals(role)) {
+                intent = new Intent(view.getContext(), CategoryActivity.class);
+                intent.putExtra("restaurant_name", restaurant.getName());
+                intent.putExtra("restaurant_image", restaurant.getImageResource());
+                intent.putExtra("restaurant_rating", restaurant.getRating());
+                intent.putExtra("restaurant_delivery_time", restaurant.getDeliveryTime());
+            } else {
+                intent = new Intent(view.getContext(), RestaurantdetailsActivity.class);
+                intent.putExtra("restaurantId", restaurant.getId());
+            }
+            view.getContext().startActivity(intent);
         });
     }
 
@@ -57,21 +77,23 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         return restaurants.size();
     }
 
-    public void updateList(List<Restaurant> newList) {
-        restaurants = newList;
-        notifyDataSetChanged();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageView;
         TextView nameTextView;
         TextView ratingTextView;
-        ImageView imageView;
+        TextView deliveryTimeTextView;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            nameTextView = itemView.findViewById(R.id.tv_restaurant_name);
-            ratingTextView = itemView.findViewById(R.id.tv_restaurant_rating);
-            imageView = itemView.findViewById(R.id.iv_restaurant_image);
+        ViewHolder(View view) {
+            super(view);
+            imageView = view.findViewById(R.id.iv_restaurant);
+            nameTextView = view.findViewById(R.id.tv_restaurant_name);
+            ratingTextView = view.findViewById(R.id.tv_rating);
+            deliveryTimeTextView = view.findViewById(R.id.tv_delivery_time);
         }
+    }
+
+    public void updateList(ArrayList<Restaurant> newList) {
+        restaurants = newList;
+        notifyDataSetChanged();
     }
 }

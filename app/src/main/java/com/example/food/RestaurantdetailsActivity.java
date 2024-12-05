@@ -158,30 +158,25 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
         // Xử lý thoát
         exit.setOnClickListener(v -> finish());
 
-        Button btnManageFood = findViewById(R.id.btn_manage_food);
-        Button btnBack = findViewById(R.id.btn_back);
+//        Button btnManageFood = findViewById(R.id.btn_manage_food);
 
-        btnManageFood.setOnClickListener(v -> {
-            Intent intent = new Intent(RestaurantdetailsActivity.this, AdminManagementActivity.class);
-            intent.putExtra("restaurantId", restaurantID); // Pass the restaurant ID if needed
-            startActivity(intent);
-        });
-
-        btnBack.setOnClickListener(v -> {
-            finish();
-        });
+//        btnManageFood.setOnClickListener(v -> {
+//            Intent intent = new Intent(RestaurantdetailsActivity.this, AdminManagementActivity.class);
+//            intent.putExtra("restaurantId", restaurantID); // Pass the restaurant ID if needed
+//            startActivity(intent);
+//        });
 
         btn_xoa.setOnClickListener(v -> {
             // Hiển thị hộp thoại xác nhận trước khi xóa
             new AlertDialog.Builder(RestaurantdetailsActivity.this)
-                .setTitle("Xác nhận xóa")
-                .setMessage("Bạn có chắc chắn muốn xóa nhà hàng này không?")
-                .setPositiveButton("Có", (dialog, which) -> {
-                    // Gọi phương thức xóa nhà hàng
-                    deleteRestaurant(restaurantID);
-                })
-                .setNegativeButton("Không", null)
-                .show();
+                    .setTitle("Xác nhận xóa")
+                    .setMessage("Bạn có chắc chắn muốn xóa nhà hàng này không?")
+                    .setPositiveButton("Có", (dialog, which) -> {
+                        // Gọi phương thức xóa nhà hàng
+                        deleteRestaurant(restaurantID);
+                    })
+                    .setNegativeButton("Không", null)
+                    .show();
         });
     }
 

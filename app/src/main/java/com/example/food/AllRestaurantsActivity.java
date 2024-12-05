@@ -19,13 +19,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class AllRestaurantsActivity extends AppCompatActivity {
-    
+
     // UI Components
     private RecyclerView restaurantRecyclerView;
     private EditText etSearch;
     private CardView btnSort;
     private ImageView ivSortIcon;
-    
+
     // Data
     private RestaurantAdapter restaurantAdapter;
     private List<Restaurant> restaurants;
@@ -35,7 +35,7 @@ public class AllRestaurantsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_restaurants);
-        
+
         initializeViews();
         setupToolbar();
         setupRecyclerView();
@@ -102,19 +102,19 @@ public class AllRestaurantsActivity extends AppCompatActivity {
         }
 
         List<Restaurant> filteredList = restaurants.stream()
-            .filter(restaurant -> 
-                restaurant.getName().toLowerCase().contains(query.toLowerCase()))
-            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+                .filter(restaurant ->
+                        restaurant.getName().toLowerCase().contains(query.toLowerCase()))
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
         restaurantAdapter = new RestaurantAdapter(this,restaurants);
         restaurantRecyclerView.setAdapter(restaurantAdapter);
     }
 
     private void sortByRating() {
-        Collections.sort(restaurants, (r1, r2) -> 
-            isAscending ? 
-            Float.compare(r1.getRating(), r2.getRating()) : 
-            Float.compare(r2.getRating(), r1.getRating())
+        Collections.sort(restaurants, (r1, r2) ->
+                isAscending ?
+                        Float.compare(r1.getRating(), r2.getRating()) :
+                        Float.compare(r2.getRating(), r1.getRating())
         );
         restaurantAdapter.notifyDataSetChanged();
     }
