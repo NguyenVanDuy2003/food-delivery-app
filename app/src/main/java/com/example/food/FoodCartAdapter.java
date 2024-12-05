@@ -44,13 +44,13 @@ public class FoodCartAdapter extends RecyclerView.Adapter<FoodCartAdapter.FoodCa
                 notifyItemRemoved(position);
                 return;
             }
-            holder.itemQuantity.setText(String.valueOf(food.getQuantity()));
+            holder.itemQuantity.setText(String.format("%02d", food.getQuantity()));
             notifyItemChanged(position);
         });
 
         holder.increaseButton.setOnClickListener(v -> {
             food.setQuantity(food.getQuantity() + 1);
-            holder.itemQuantity.setText(String.valueOf(food.getQuantity()));
+            holder.itemQuantity.setText(String.format("%02d", food.getQuantity()));
             notifyItemChanged(position);
         });
 

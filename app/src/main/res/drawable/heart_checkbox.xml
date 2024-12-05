@@ -1,0 +1,7 @@
+<!-- res/drawable/heart_checkbox.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Checked state: filled heart -->
+    <item android:drawable="@drawable/ic_heart_filled" android:state_checked="true"/>
+    <!-- Unchecked state: outlined heart -->
+    <item android:drawable="@drawable/ic_heart_outline" android:state_checked="false"/>
+</selector>

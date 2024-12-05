@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,6 +20,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.food.Model.Restaurant;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -36,8 +36,6 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
     Button btn_update, btn_xoa;
     ImageView imgRestaurantView, qrcodeView;
 
-
-
     // Biến lưu URI của các ảnh
     private Uri selectedQrcodeUri = null;
     private Uri selectedImageUri =null;  // Để lưu trữ URI của ảnh đã chọn
@@ -50,7 +48,7 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_restaunt_details);
+        setContentView(R.layout.activity_restaurant_details);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -226,10 +224,10 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
                 Restaurant restaurant = snapshot.getValue(Restaurant.class);
                 // Hiển thị dữ liệu lên các trường nhập liệu
                 name.setText(restaurant.getName());
-                phone_number.setText(restaurant.getPhone_number());
+                phone_number.setText(restaurant.getPhoneNumber());
                 stk.setText(restaurant.getStk());
                 address.setText(restaurant.getAddress());
-                Mota.setText(restaurant.getMota());
+                Mota.setText(restaurant.getDescription());
 
                 // Load hình ảnh từ URL vào ImageView (dùng thư viện Glide)
                 if (restaurant.getImageUrl() != null) {

@@ -40,20 +40,23 @@
                     android:drawableStart="@drawable/return_button"
                     android:padding="23dp"/>
 
-                <Button
-                    android:id="@+id/fav_btn"
-                    android:layout_width="52dp"
+                <CheckBox
+                    android:id="@+id/fav_checkbox"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="18dp"
                     android:layout_marginEnd="21dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@color/white"
-                    android:text="💗" />
+                    android:background="@drawable/fav_button_bg"
+                    android:button="@drawable/heart_checkbox"
+                    android:checked="true"
+                    android:scaleX="1.2"
+                    android:scaleY="1.2"
+                    android:gravity="center" />
 
                 <TextView
                     android:id="@+id/food_name"

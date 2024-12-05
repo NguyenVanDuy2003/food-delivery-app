@@ -2,6 +2,7 @@ package com.example.food;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,5 +28,9 @@ public class FoodCartActivity extends AppCompatActivity {
         FoodCartAdapter foodCartAdapter = new FoodCartAdapter(foodCartList);
         foodCartItems.setAdapter(foodCartAdapter);
         foodCartItems.setLayoutManager(new GridLayoutManager(this, 1));
+
+
+        Button returnButton = findViewById(R.id.return_btn);
+        returnButton.setOnClickListener(v -> finish());
     }
 }

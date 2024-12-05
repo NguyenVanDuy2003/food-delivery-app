@@ -121,8 +121,8 @@ public class CategoryActivity extends AppCompatActivity {
         listFood = new ArrayList<>();
 
         // Thêm dữ liệu vào danh sách
-        listFood.add(new Food("Chicken Hawaiian", 10.35, 101, R.drawable.a2, "Chicken, Cheese and Pineapple", true, 1));
-        listFood.add(new Food("Pepperoni Pizza", 9.99, 102, R.drawable.a3, "Pepperoni, Cheese", true, 1));
+        listFood.add(new Food("Chicken Hawaiian", 10.35, 101, R.drawable.a2, "Chicken, Cheese and Pineapple", true, new ArrayList<>()));
+        listFood.add(new Food("Pepperoni Pizza", 9.99, 102, R.drawable.a3, "Pepperoni, Cheese", true, new ArrayList<>()));
 
         // Khởi tạo adapter và gán cho ListView
         adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);

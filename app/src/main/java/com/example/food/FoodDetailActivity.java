@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.example.food.R;
 import com.example.food.model.Food;
 
+
 public class FoodDetailActivity extends AppCompatActivity {
 
     private TextView foodName, foodPrice, foodDescription, quantity;
@@ -48,7 +49,7 @@ public class FoodDetailActivity extends AppCompatActivity {
 
         int foodId = getIntent().getIntExtra("foodID", -1);
         if (foodId != -1) {
-//            fetchFoodData(foodId);
+            fetchFoodData(foodId);
         }
 
         // Set up button listeners

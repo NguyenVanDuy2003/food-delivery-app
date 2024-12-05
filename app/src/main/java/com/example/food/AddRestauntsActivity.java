@@ -13,17 +13,24 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.food.Model.Restaurant;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import com.example.food.model.Food;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddRestauntsActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     ImageButton exit, imageResource, qrcode;
-    EditText name, phone_number, stk, address,Mota, description;
+    EditText name, phone_number, stk, address, description;
     Button add_TaiKhoan;
     ImageView imgRestaurantView, qrcodeView;
 
@@ -54,7 +61,6 @@ public class AddRestauntsActivity extends AppCompatActivity {
         qrcodeView = findViewById(R.id.qrcodeView);
         description = findViewById(R.id.description);
 
-
         // Phương thức cho phép chọn ảnh từ thư viện
         ActivityResultLauncher<Intent> selectImage = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -80,7 +86,7 @@ public class AddRestauntsActivity extends AppCompatActivity {
             selectImage.launch(intent);
         });
 
-        // Ch���n ảnh QR code
+        // Chọn ảnh QR code
         qrcode.setOnClickListener(v -> {
             imageSelected = 2;
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -110,7 +116,12 @@ public class AddRestauntsActivity extends AppCompatActivity {
 
             // Tạo ID cho nhà hàng
             String restaurantId = databaseReference.push().getKey();
-            Restaurant newRestaurant = new Restaurant(restaurantId, tenCuaHang, 0,  soDienThoai,diaChi, soTaiKhoan,  mota);
+
+            // Tạo menu rỗng nếu không có menu
+            List<Food> menu = new ArrayList<>();
+
+            // Tạo đối tượng nhà hàng
+            Restaurant newRestaurant = new Restaurant(restaurantId, tenCuaHang, 0, soDienThoai, diaChi, soTaiKhoan, mota, menu);
 
             // Lưu ảnh nhà hàng lên Firebase Storage
             StorageReference imageRef = storageReference.child(restaurantId + "_image.jpg");
@@ -156,5 +167,4 @@ public class AddRestauntsActivity extends AppCompatActivity {
         // Xử lý thoát
         exit.setOnClickListener(v -> finish());
     }
-
 }
