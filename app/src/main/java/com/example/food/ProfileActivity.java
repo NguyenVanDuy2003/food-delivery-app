@@ -64,10 +64,13 @@ public class ProfileActivity extends AppCompatActivity {
                                 Uri imageUri = data.getClipData().getItemAt(i).getUri();
                                 selectedImgUris.add(imageUri);
                             }
+                            // Hiển thị ảnh đầu tiên trong danh sách
+                            imgVProfile.setImageURI(selectedImgUris.get(0));
                             Toast.makeText(ProfileActivity.this, "Đã chọn " + count + " ảnh.", Toast.LENGTH_SHORT).show();
                         } else if (data.getData() != null) {
                             selectedImgUris.clear();
                             selectedImgUris.add(data.getData());
+                            imgVProfile.setImageURI(selectedImgUris.get(0));
                             Toast.makeText(ProfileActivity.this, "Đã chọn 1 ảnh.", Toast.LENGTH_SHORT).show();
                         }
                     }
