@@ -11,7 +11,7 @@ public class Food implements Serializable {
     private int imageResource;
     private String ingredients;
     private boolean isAvailable;
-    //    private Date dateAdded;
+//    private Date dateAdded;
     private int quantity;
 
     // Default constructor (required for Firebase)

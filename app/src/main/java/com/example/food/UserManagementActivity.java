@@ -85,10 +85,7 @@ public class UserManagementActivity extends AppCompatActivity {
                 intent.putExtra("USER_FULL_NAME", selectedUser.getFullName());
                 intent.putExtra("USER_EMAIL", selectedUser.getEmail());
                 intent.putExtra("USER_PASSWORD", selectedUser.getPassword());
-                intent.putExtra("USER_PHONE_NUMBER", selectedUser.getPhoneNumber());
-                intent.putExtra("USER_ADDRESS", selectedUser.getAddress());
-                intent.putExtra("USER_ROLE", selectedUser.getRole().toString());
-                startActivityForResult(intent, 1); // Start for result
+                startActivityForResult(intent, 1);
             }
         });
     }

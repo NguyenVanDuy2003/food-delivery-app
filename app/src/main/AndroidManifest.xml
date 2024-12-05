@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -28,7 +31,7 @@
         </activity>
         <activity
             android:name=".AllRestaurantsActivity"
-            android:label="All Restaurants" />
+            android:label="All Restaurants"/>
         <activity
             android:name=".AdminActivity"
             android:exported="false" />
@@ -60,7 +63,7 @@
             android:name=".CheckoutActivity"
             android:exported="false" />
         <activity
-            android:name=".AddRestauntsActivity"
+            android:name=".AddRestaurantsActivity"
             android:exported="false" />
         <activity
             android:name=".AdminManagementActivity"
@@ -68,7 +71,6 @@
         <activity android:name=".UserManagementActivity" android:exported="false" />
         <activity android:name=".UserDetailActivity" android:exported="false" />
         <activity android:name=".AddUserActivity" android:exported="false" />
-
     </application>
 
 </manifest>

@@ -18,7 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class AddRestauntsActivity extends AppCompatActivity {
+public class AddRestaurantsActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
@@ -98,13 +98,13 @@ public class AddRestauntsActivity extends AppCompatActivity {
 
             // Kiểm tra xem thông tin đã được nhập đầy đủ chưa
             if (tenCuaHang.isEmpty() || soDienThoai.isEmpty() || soTaiKhoan.isEmpty() || diaChi.isEmpty() || mota.isEmpty()) {
-                Toast.makeText(AddRestauntsActivity.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRestaurantsActivity.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // Kiểm tra nếu có ảnh đã chọn
             if (selectedImageUri == null || selectedQrcodeUri == null) {
-                Toast.makeText(AddRestauntsActivity.this, "Vui lòng chọn cả 2 ảnh!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRestaurantsActivity.this, "Vui lòng chọn cả 2 ảnh!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -132,24 +132,24 @@ public class AddRestauntsActivity extends AppCompatActivity {
                                             if (restaurantId != null) {
                                                 databaseReference.child(restaurantId).setValue(newRestaurant)
                                                         .addOnSuccessListener(aVoid -> {
-                                                            Toast.makeText(AddRestauntsActivity.this, "Thêm nhà hàng thành công!", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(AddRestaurantsActivity.this, "Thêm nhà hàng thành công!", Toast.LENGTH_SHORT).show();
                                                         })
                                                         .addOnFailureListener(e -> {
-                                                            Toast.makeText(AddRestauntsActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(AddRestaurantsActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                                         });
                                             }
                                         }).addOnFailureListener(e -> {
-                                            Toast.makeText(AddRestauntsActivity.this, "Lỗi tải ảnh QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(AddRestaurantsActivity.this, "Lỗi tải ảnh QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                         });
                                     })
                                     .addOnFailureListener(e -> {
-                                        Toast.makeText(AddRestauntsActivity.this, "Lỗi tải ảnh QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(AddRestaurantsActivity.this, "Lỗi tải ảnh QR code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     });
                         }).addOnFailureListener(e -> {
-                            Toast.makeText(AddRestauntsActivity.this, "Lỗi tải ảnh nhà hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddRestaurantsActivity.this, "Lỗi tải ảnh nhà hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
                     }).addOnFailureListener(e -> {
-                        Toast.makeText(AddRestauntsActivity.this, "Lỗi tải ảnh nhà hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddRestaurantsActivity.this, "Lỗi tải ảnh nhà hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         });
 
