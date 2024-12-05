@@ -47,4 +47,10 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.picasso)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
+
+
+
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
 }

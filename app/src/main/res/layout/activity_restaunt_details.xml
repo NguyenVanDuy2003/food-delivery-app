@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RestaurantdetailsActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        android:background="@color/white">
+
+        <!-- CardView chứa ImageView -->
+
+        <ImageButton
+            android:id="@+id/exit"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/thoat" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CHI TIẾT CỬA HÀNG"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize="24dp"
+            android:textColor="@color/primary"
+            android:layout_marginBottom="5dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:gravity="center">
+
+
+            <ImageButton
+                android:id="@+id/imageResource"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/anh3"/>
+            <ImageView
+                android:id="@+id/imgRestaurantView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_below="@id/imageResource"
+                android:contentDescription="Ảnh nhà hàng" />
+
+        </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="TÊN CỬA HÀNG"
+                    android:textColor="#282626"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập tên cửa hàng"
+                    android:textColor="#282626"
+                    android:paddingBottom="20dp"
+                    android:paddingHorizontal="5dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Mô tả cửa hàng"
+                    android:textColor="#282626"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <EditText
+                    android:id="@+id/Mota"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mô tả cửa hàng"
+                    android:textColor="#282626"
+                    android:paddingBottom="20dp"
+                    android:paddingHorizontal="5dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="SỐ ĐIỆN THOẠI: "
+                    android:textColor="#282626"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <EditText
+                    android:id="@+id/phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập số điện thoại"
+                    android:paddingBottom="20dp"
+                    android:textColor="#282626"
+                    android:paddingHorizontal="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="SỐ TÀI KHOẢN VÀ ẢNH MÃ QRCODE: "
+                    android:textColor="#615B5B"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <EditText
+                    android:id="@+id/stk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập số tài khoản"
+                    android:paddingBottom="20dp"
+                    android:paddingHorizontal="5dp"
+                    android:textColor="#282626"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:id="@+id/qrcode"
+                        android:src="@drawable/anh2"
+                        android:scaleType="centerCrop"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"/>
+                    <ImageView
+                        android:id="@+id/qrcodeView"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_below="@id/qrcode"
+                        android:layout_marginTop="10dp"
+                        android:contentDescription="Ảnh QR code" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="ĐỊA CHỈ CỬA HÀNG: "
+                    android:textColor="#615B5B"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <EditText
+                        android:id="@+id/address"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Địa chỉ cửa hàng"
+                        android:textColor="#282626"
+                        android:paddingBottom="20dp"
+                        android:paddingHorizontal="5dp" />
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+
+                    <Button
+                        android:id="@+id/btn_update"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="140dp"
+                        android:layout_height="54dp"
+                        android:layout_marginEnd="5dp"
+                        android:backgroundTint="#FFC107"
+                        android:drawablePadding="8dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="Cập nhật"
+                        android:textSize="20dp"
+                        android:textColor="#FFFFFF"
+                        android:textFontWeight="400"
+                        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
+
+                    <Button
+                        android:id="@+id/btn_xoa"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="140dp"
+                        android:layout_height="54dp"
+                        android:layout_marginEnd="4dp"
+                        android:backgroundTint="#FF0707"
+                        android:drawablePadding="8dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="Xóa"
+                        android:textSize="20dp"
+                        android:textColor="#FFFFFF"
+                        android:textFontWeight="400"
+                        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/btn_manage_food"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="140dp"
+                        android:layout_height="54dp"
+                        android:layout_marginEnd="5dp"
+                        android:backgroundTint="#FFC107"
+                        android:drawablePadding="8dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="Quản lý Food"
+                        android:textSize="20dp"
+                        android:textColor="#FFFFFF"
+                        android:textFontWeight="400"
+                        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
+
+                    <Button
+                        android:id="@+id/btn_back"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="140dp"
+                        android:layout_height="54dp"
+                        android:layout_marginEnd="4dp"
+                        android:backgroundTint="#FF0707"
+                        android:drawablePadding="8dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="Quay lại"
+                        android:textSize="20dp"
+                        android:textColor="#FFFFFF"
+                        android:textFontWeight="400"
+                        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+        <!-- TextView hiển thị tên cửa hàng -->
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

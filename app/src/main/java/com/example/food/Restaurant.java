@@ -11,7 +11,34 @@ public class Restaurant implements Serializable {
     private  String phone_number;
     private String address;
     private  String stk;
-    private String qrcode;
+    private String imageUrl;
+    private String Mota;
+
+    private String qrcodeUrl;
+
+    public String getQrcodeUrl() {
+        return qrcodeUrl;
+    }
+
+    public void setQrcodeUrl(String qrcodeUrl) {
+        this.qrcodeUrl = qrcodeUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public int getImageResource() {
+        return imageResource;
+    }
+
+    public void setImageResource(int imageResource) {
+        this.imageResource = imageResource;
+    }
 
     public  Restaurant(){
 
@@ -23,11 +50,30 @@ public class Restaurant implements Serializable {
         this.deliveryTime = deliveryTime;
     }
 
+    public Restaurant(String id, String name, float rating, String phone_number, String address, String stk, String mota) {
+        this.id = id;
+        this.name = name;
+        this.rating = rating;
+        this.phone_number = phone_number;
+        this.address = address;
+        this.stk = stk;
+        Mota = mota;
+    }
+
+
     public Restaurant(String name, String phone_number, String stk, String address) {
         this.name = name;
         this.phone_number = phone_number;
         this.stk = stk;
         this.address = address;
+    }
+
+    public Restaurant(String name, String phone_number, String address, String stk, String mota) {
+        this.name = name;
+        this.phone_number = phone_number;
+        this.address = address;
+        this.stk = stk;
+        Mota = mota;
     }
 
     public String getId() {
@@ -44,14 +90,6 @@ public class Restaurant implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getImageResource() {
-        return imageResource;
-    }
-
-    public void setImageResource(int imageResource) {
-        this.imageResource = imageResource;
     }
 
     public float getRating() {
@@ -94,11 +132,28 @@ public class Restaurant implements Serializable {
         this.stk = stk;
     }
 
-    public String getQrcode() {
-        return qrcode;
+
+    public String getMota() {
+        return Mota;
     }
 
-    public void setQrcode(String qrcode) {
-        this.qrcode = qrcode;
+    public void setMota(String mota) {
+        Mota = mota;
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", rating=" + rating +
+                ", deliveryTime='" + deliveryTime + '\'' +
+                ", phone_number='" + phone_number + '\'' +
+                ", address='" + address + '\'' +
+                ", stk='" + stk + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", Mota='" + Mota + '\'' +
+                ", qrcodeUrl='" + qrcodeUrl + '\'' +
+                '}';
     }
 }

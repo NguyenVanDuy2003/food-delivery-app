@@ -128,5 +128,15 @@ public class CategoryActivity extends AppCompatActivity {
         adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);
         lvFood.setAdapter(adapterfood);
 
+        lvFood.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Food selectedFood = listFood.get(position);
+                Intent intent = new Intent(CategoryActivity.this, FoodDetailActivity.class);
+                intent.putExtra("foodID", selectedFood.getId());
+                startActivity(intent);
+            }
+        });
+
     }
 }

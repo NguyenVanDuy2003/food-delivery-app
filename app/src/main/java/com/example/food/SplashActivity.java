@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,6 +25,12 @@ public class SplashActivity extends AppCompatActivity {
         splashScreen.setKeepOnScreenCondition(() -> false);
 
         new Handler().postDelayed(this::checkLoginStatus, 2000);
+    }
+    private void logout() {
+        SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
     }
 
     public void checkLoginStatus() {

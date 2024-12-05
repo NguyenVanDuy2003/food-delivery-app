@@ -4,19 +4,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.food.Enum.Role;
-import com.example.food.model.User;
+import com.example.food.Model.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class AddUserActivity extends AppCompatActivity {
-
-    private EditText edtFullName, edtEmail, edtPassword;
-    private Button btnSave;
+    private EditText userFullNameEditText;
+    private EditText userEmailEditText;
+    private EditText userPasswordEditText;
+    private EditText userPhoneNumberEditText;
+    private EditText userAddressEditText;
+    private Spinner userRoleSpinner;
+    private Button saveButton;
 
     private DatabaseReference databaseReference;
 
@@ -25,42 +30,37 @@ public class AddUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
 
-        // Khởi tạo các View
-        edtFullName = findViewById(R.id.edtFullName);
-        edtEmail = findViewById(R.id.edtEmail);
-        edtPassword = findViewById(R.id.edtPassword);
-        btnSave = findViewById(R.id.btnSave);
+        userFullNameEditText = findViewById(R.id.user_full_name_edit_text);
+        userEmailEditText = findViewById(R.id.user_email_edit_text);
+        userPasswordEditText = findViewById(R.id.user_password_edit_text);
+        userPhoneNumberEditText = findViewById(R.id.user_phone_number_edit_text);
+        userAddressEditText = findViewById(R.id.user_address_edit_text);
+        userRoleSpinner = findViewById(R.id.user_role_spinner);
+        saveButton = findViewById(R.id.save_button);
 
-        // Khởi tạo Firebase references
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
-        // Lưu thông tin người dùng
-        btnSave.setOnClickListener(v -> saveUserToDatabase());
+        saveButton.setOnClickListener(v -> addUser());
     }
 
-    private void saveUserToDatabase() {
-        String fullName = edtFullName.getText().toString().trim();
-        String email = edtEmail.getText().toString().trim();
-        String password = edtPassword.getText().toString().trim();
-        String userId = databaseReference.push().getKey();
-        Role role = Role.USER;
+    private void addUser() {
+        String fullName = userFullNameEditText.getText().toString().trim();
+        String email = userEmailEditText.getText().toString().trim();
+        String password = userPasswordEditText.getText().toString().trim();
+        String phoneNumber = userPhoneNumberEditText.getText().toString().trim();
+        String address = userAddressEditText.getText().toString().trim();
+        String roleString = userRoleSpinner.getSelectedItem().toString();
+        Role role = Role.valueOf(roleString.toUpperCase());
 
-        if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(AddUserActivity.this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        User newUser = new User(userId, fullName, email, password, role);
-
-        if (userId != null) {
-            databaseReference.child(userId).setValue(newUser)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(AddUserActivity.this, "Tài khoản đã được thêm thành công", Toast.LENGTH_SHORT).show();
-                        finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(AddUserActivity.this, "Lỗi khi lưu dữ liệu", Toast.LENGTH_SHORT).show();
-                    });
-        }
+        String userId = databaseReference.push().getKey(); // Generate a unique ID for the user
+        User user = new User(userId, fullName, email, password, phoneNumber, address, role);
+        databaseReference.child(userId).setValue(user).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(AddUserActivity.this, "User added successfully", Toast.LENGTH_SHORT).show();
+                finish(); // Go back to the previous activity
+            } else {
+                Toast.makeText(AddUserActivity.this, "Failed to add user", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

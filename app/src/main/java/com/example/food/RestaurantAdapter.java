@@ -1,46 +1,54 @@
 package com.example.food;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
+    private Context context;
     private List<Restaurant> restaurants;
 
-    public RestaurantAdapter(List<Restaurant> restaurants) {
+    public RestaurantAdapter(Context context, List<Restaurant> restaurants) {
+        this.context = context;
         this.restaurants = restaurants;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_restaurant, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_restaurant, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Restaurant restaurant = restaurants.get(position);
-        holder.imageView.setImageResource(restaurant.getImageResource());
         holder.nameTextView.setText(restaurant.getName());
-        holder.ratingTextView.setText(String.format("%.1f ★", restaurant.getRating()));
-        holder.deliveryTimeTextView.setText(restaurant.getDeliveryTime());
+        holder.ratingTextView.setText(String.valueOf(restaurant.getRating()));
+        
+        // Load imageUrl using Glide
+        Glide.with(context)
+            .load(restaurant.getImageUrl())
+            .into(holder.imageView);
 
-        // Add click listener to the item
+        // Set click listener for the item
         holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), CategoryActivity.class);
+            Intent intent = new Intent(context, CategoryActivity.class);
             intent.putExtra("restaurant_name", restaurant.getName());
-            intent.putExtra("restaurant_image", restaurant.getImageResource());
+            intent.putExtra("restaurant_image", restaurant.getImageUrl());
             intent.putExtra("restaurant_rating", restaurant.getRating());
-            intent.putExtra("restaurant_delivery_time", restaurant.getDeliveryTime());
-            view.getContext().startActivity(intent);
+            context.startActivity(intent);
         });
     }
 
@@ -49,18 +57,21 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         return restaurants.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
+    public void updateList(List<Restaurant> newList) {
+        restaurants = newList;
+        notifyDataSetChanged();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView;
         TextView ratingTextView;
-        TextView deliveryTimeTextView;
+        ImageView imageView;
 
-        ViewHolder(View view) {
-            super(view);
-            imageView = view.findViewById(R.id.iv_restaurant);
-            nameTextView = view.findViewById(R.id.tv_restaurant_name);
-            ratingTextView = view.findViewById(R.id.tv_rating);
-            deliveryTimeTextView = view.findViewById(R.id.tv_delivery_time);
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            nameTextView = itemView.findViewById(R.id.tv_restaurant_name);
+            ratingTextView = itemView.findViewById(R.id.tv_restaurant_rating);
+            imageView = itemView.findViewById(R.id.iv_restaurant_image);
         }
     }
-} 
+}

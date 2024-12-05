@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.food.Common.CommonKey;
 import com.example.food.Enum.Role;
-import com.example.food.model.User;
+import com.example.food.Model.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                             } else if (user.getRole() == Role.ADMIN) {
                                 Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                                 startActivity(intent);
                                 finish();
                             }

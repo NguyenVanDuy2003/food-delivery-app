@@ -48,7 +48,7 @@ public class FoodDetailActivity extends AppCompatActivity {
 
         int foodId = getIntent().getIntExtra("foodID", -1);
         if (foodId != -1) {
-            fetchFoodData(foodId);
+//            fetchFoodData(foodId);
         }
 
         // Set up button listeners
@@ -97,10 +97,6 @@ public class FoodDetailActivity extends AppCompatActivity {
     }
 
     private void setAddToCart(int foodId) {
-        // get user id
-        // add name, price, quantity to firebase
-        Log.d("FoodDetailActivity", "Clicked Add to Cart for foodId: " + foodId);
-        Log.d("FoodDetailActivity", "Navigating to FoodCartActivity");
         Intent intent = new Intent(FoodDetailActivity.this, FoodCartActivity.class);
         startActivity(intent);
     }
