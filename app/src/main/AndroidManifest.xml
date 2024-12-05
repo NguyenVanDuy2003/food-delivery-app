@@ -30,6 +30,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ThanhToanOnlActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CheckoutActivity"
+            android:exported="false" />
+        <activity
             android:name=".AllRestaurantsActivity"
             android:label="All Restaurants"/>
         <activity
