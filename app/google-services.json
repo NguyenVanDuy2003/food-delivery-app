@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "1094795116102",
-    "project_id": "food-app-823d1",
-    "storage_bucket": "food-app-823d1.appspot.com"
+    "project_number": "224862757791",
+    "firebase_url": "https://school-management-35e3b-default-rtdb.firebaseio.com",
+    "project_id": "school-management-35e3b",
+    "storage_bucket": "school-management-35e3b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1094795116102:android:68f602c98096ce73041447",
+        "mobilesdk_app_id": "1:224862757791:android:d48d9ba29c7232459d93aa",
         "android_client_info": {
           "package_name": "com.example.food"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDeTIv5yRfT8yCTTzSHYFsLmPczPUKcKDk"
+          "current_key": "AIzaSyAfeIglNDTuJbTItnmTIBsQ3l4D_ufgucQ"
         }
       ],
       "services": {

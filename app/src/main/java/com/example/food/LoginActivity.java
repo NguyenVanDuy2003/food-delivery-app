@@ -1,12 +1,13 @@
 package com.example.food;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,6 +16,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.food.Common.CommonKey;
+import com.example.food.Enum.Role;
+import com.example.food.Model.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,9 +29,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
     private boolean isPasswordVisible = false;
-    private TextView tvLogin;
+    private TextView tvSignUp;
     private DatabaseReference databaseReference;
     private Button btnLogin;
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
-        tvLogin = findViewById(R.id.tv_login);
+        tvSignUp = findViewById(R.id.tv_sign_up_page);
         btnLogin = findViewById(R.id.btn_login);
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
@@ -50,8 +55,8 @@ public class LoginActivity extends AppCompatActivity {
             }
             return false;
         });
-        tvLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
+        tvSignUp.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intent);
         });
         btnLogin.setOnClickListener(v -> {
@@ -105,10 +110,25 @@ public class LoginActivity extends AppCompatActivity {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class);
                         if (user != null && user.password.equals(password)) {
-                            Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean(CommonKey.IS_LOGGED_IN, true);
+                            editor.putString(CommonKey.USER_MAIL, email);
+                            editor.putString(CommonKey.ROLE, String.valueOf(user.getRole()));
+                            editor.apply();
+
+                            if (user.getRole() == Role.USER) {
+                                Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else if (user.getRole() == Role.ADMIN) {
+                                Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
                         } else {
                             Toast.makeText(LoginActivity.this, "Incorrect password!",
                                     Toast.LENGTH_SHORT).show();
@@ -125,45 +145,5 @@ public class LoginActivity extends AppCompatActivity {
                         + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-
-    public static class User {
-        public String fullName;
-        public String email;
-        public String password;
-
-        public User() {
-        }
-
-        public String getFullName() {
-            return fullName;
-        }
-
-        public void setFullName(String fullName) {
-            this.fullName = fullName;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public User(String fullName, String email, String password) {
-            this.fullName = fullName;
-            this.email = email;
-            this.password = password;
-        }
     }
 }

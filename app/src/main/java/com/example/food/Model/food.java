@@ -1,41 +1,42 @@
-package com.example.food.Model;
+package com.example.food.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-public class food implements Serializable {
-    String nameFood;
-    double price;
-    int foodID;
-    int image;
-    int restaurantID;
-    String description;
-    boolean available;
-    Date createdAt;
+public class Food implements Serializable {
 
+    private String name;
+    private double price;
+    private int id;  // Firebase key id
+    private int imageResource;
+    private String ingredients;
+    private boolean isAvailable;
+//    private Date dateAdded;
+    private int quantity;
 
-    public food(){
-
+    // Default constructor (required for Firebase)
+    public Food() {
     }
-    public food(String nameFood, Date createdAt, boolean available, double price, String description, int restaurantID, int foodID, int image) {
-        this.nameFood = nameFood;
-        this.createdAt = createdAt;
-        this.available = available;
+
+    // Constructor for initializing the fields
+    public Food(String name, double price, int id, int imageResource, String ingredients, boolean isAvailable, int quantity) {
+        this.name = name;
         this.price = price;
-        this.description = description;
-        this.restaurantID = restaurantID;
-        this.foodID = foodID;
-        this.image = image;
+        this.id = id;
+        this.imageResource = imageResource;
+        this.ingredients = ingredients;
+        this.isAvailable = isAvailable;
+//        this.dateAdded = dateAdded;
+        this.quantity = quantity;
     }
 
-    public String getNameFood() {
-        return nameFood;
+    // Getters and setters
+    public String getName() {
+        return name;
     }
 
-    public void setNameFood(String nameFood) {
-        this.nameFood = nameFood;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getPrice() {
@@ -46,64 +47,51 @@ public class food implements Serializable {
         this.price = price;
     }
 
-    public int getFoodID() {
-        return foodID;
+    public int getId() {
+        return id;
     }
 
-    public void setFoodID(int foodID) {
-        this.foodID = foodID;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getRestaurantID() {
-        return restaurantID;
+    public int getImageResource() {
+        return imageResource;
     }
 
-    public void setRestaurantID(int restaurantID) {
-        this.restaurantID = restaurantID;
+    public void setImageResource(int imageResource) {
+        this.imageResource = imageResource;
     }
 
-    public String getDescription() {
-        return description;
+    public String getIngredients() {
+        return ingredients;
     }
 
-    public void setDescription(String desciption) {
-        this.description = desciption;
+    public void setIngredients(String ingredients) {
+        this.ingredients = ingredients;
     }
 
     public boolean isAvailable() {
-        return available;
+        return isAvailable;
     }
 
     public void setAvailable(boolean available) {
-        this.available = available;
+        isAvailable = available;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+//    public Date getDateAdded() {
+//        return dateAdded;
+//    }
+//
+//    public void setDateAdded(Date dateAdded) {
+//        this.dateAdded = dateAdded;
+//    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
-    }
-
-    public Map<String, Object> toMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("nameFood", nameFood);
-        map.put("price", price);
-        map.put("foodID", foodID);
-        map.put("image", image);
-        map.put("restaurantID", restaurantID);
-        map.put("description", description);
-        map.put("available", available);
-        map.put("createdAt", createdAt);
-        return map;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

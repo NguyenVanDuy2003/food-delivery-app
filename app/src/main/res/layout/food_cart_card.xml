@@ -1,0 +1,103 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/foodComponent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:id="@+id/itemImg"
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            android:background="@drawable/rounded_image"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/cart_img_placeholder_1"/>
+
+        <LinearLayout
+            android:id="@+id/foodCartInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/itemImg"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/itemName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên món ăn"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginBottom="5dp"/>
+
+            <TextView
+                android:id="@+id/itemIngredient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nguyên liệu trong món"
+                android:layout_marginBottom="5dp"/>
+
+            <TextView
+                android:id="@+id/pricePerItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FE724C"
+                android:text="$Giá sản phẩm"
+                android:textStyle="bold"
+                android:layout_centerVertical="true"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/removeItemBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:background="#FFF"
+            android:drawableStart="@drawable/delete_button"
+            android:gravity="center"
+            android:padding="3dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true">
+
+            <Button
+                android:id="@+id/decreaseCartItemQuantity"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:textColor="#FFF"
+                android:background="@drawable/subtract_button_bg"
+                android:drawableStart="@drawable/subtract_button"
+                android:gravity="center"
+                android:padding="12dp"/>
+
+
+            <TextView
+                android:id="@+id/itemQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quantity"
+                android:layout_marginHorizontal="10dp"/>
+
+            <Button
+                android:id="@+id/increaseCartItemQuantity"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/add_button_bg"
+                android:drawableStart="@drawable/add_button"
+                android:gravity="center"
+                android:padding="12dp"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

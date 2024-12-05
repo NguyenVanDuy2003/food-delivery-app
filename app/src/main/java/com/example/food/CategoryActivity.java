@@ -1,5 +1,6 @@
 package com.example.food;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,16 +11,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.food.Model.food;
+import com.example.food.model.Food;
 import com.example.food.adapter.foodAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,28 +24,31 @@ import java.util.Date;
 public class CategoryActivity extends AppCompatActivity {
 
     ListView lvFood;
-    ArrayList<food> listFood;
+    ArrayList<Food> listFood;
     foodAdapter adapterfood;
-    private DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fastfood);
 
-        // Khởi tạo danh sách và adapter
-        lvFood = findViewById(R.id.lvFood);
-        listFood = new ArrayList<>();
-        adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);
-        lvFood.setAdapter(adapterfood);
+        // Retrieve data from Intent
+        String restaurantName = getIntent().getStringExtra("restaurant_name");
+        int restaurantImage = getIntent().getIntExtra("restaurant_image", -1);
+        float restaurantRating = getIntent().getFloatExtra("restaurant_rating", 0);
+        String restaurantDeliveryTime = getIntent().getStringExtra("restaurant_delivery_time");
 
-        // Khởi tạo Firebase Realtime Database
-        databaseRef = FirebaseDatabase.getInstance().getReference("foods");
+        // Use the retrieved data as needed
+        // For example, you can set it to TextViews or ImageView in your layout
+        // TextView nameTextView = findViewById(R.id.tv_restaurant_name);
+        // nameTextView.setText(restaurantName);
+        // ImageView imageView = findViewById(R.id.iv_restaurant);
+        // imageView.setImageResource(restaurantImage);
+        // ... and so on
 
         // Xử lý chức năng thoát khi nhấn nút back
         ImageButton backbutton = findViewById(R.id.back);
         backbutton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -76,15 +74,16 @@ public class CategoryActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // Hiển thị lựa chọn của người dùng (tuỳ chọn)
                 String selectedSort = parentView.getItemAtPosition(position).toString();
+                Log.d("CategoryActivity", "Toast Triggered: " + selectedSort);  // Debugging log
                 Toast.makeText(CategoryActivity.this, "Selected: " + selectedSort, Toast.LENGTH_SHORT).show();
 
                 // Sắp xếp theo tùy chọn của người dùng
                 switch (selectedSort) {
                     case "Low to High":
                         // Sắp xếp danh sách theo giá từ thấp đến cao
-                        Collections.sort(listFood, new Comparator<food>() {
+                        Collections.sort(listFood, new Comparator<Food>() {
                             @Override
-                            public int compare(food f1, food f2) {
+                            public int compare(Food f1, Food f2) {
                                 return Double.compare(f1.getPrice(), f2.getPrice());
                             }
                         });
@@ -92,9 +91,9 @@ public class CategoryActivity extends AppCompatActivity {
 
                     case "High to Low":
                         // Sắp xếp danh sách theo giá từ cao xuống thấp
-                        Collections.sort(listFood, new Comparator<food>() {
+                        Collections.sort(listFood, new Comparator<Food>() {
                             @Override
-                            public int compare(food f1, food f2) {
+                            public int compare(Food f1, Food f2) {
                                 return Double.compare(f2.getPrice(), f1.getPrice());
                             }
                         });
@@ -116,84 +115,28 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
+        lvFood = findViewById(R.id.lvFood);
+
         // Khởi tạo danh sách các món ăn
         listFood = new ArrayList<>();
 
         // Thêm dữ liệu vào danh sách
-        listFood.add(new food("Chicken Hawaiian", new Date(), true, 10.35, "Chicken, Cheese and Pineapple", 1, 101, R.drawable.a2));
-        listFood.add(new food("Pepperoni Pizza", new Date(), true, 9.99, "Pepperoni, Cheese", 1, 102, R.drawable.a3));
-        listFood.add(new food("Chicken Hawaiian", new Date(), true, 10.35, "Chicken, Cheese and Pineapple", 1, 103, R.drawable.a2));
-        listFood.add(new food("Pepperoni Pizza", new Date(), true, 9.99, "Pepperoni, Cheese", 1, 104, R.drawable.a3));
-        listFood.add(new food("Chicken Hawaiian", new Date(), true, 10.35, "Chicken, Cheese and Pineapple", 1, 107, R.drawable.a2));
-        listFood.add(new food("Pepperoni Pizza", new Date(), true, 9.99, "Pepperoni, Cheese", 1, 106, R.drawable.a3));
+        listFood.add(new Food("Chicken Hawaiian", 10.35, 101, R.drawable.a2, "Chicken, Cheese and Pineapple", true, 1));
+        listFood.add(new Food("Pepperoni Pizza", 9.99, 102, R.drawable.a3, "Pepperoni, Cheese", true, 1));
 
         // Khởi tạo adapter và gán cho ListView
         adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);
         lvFood.setAdapter(adapterfood);
 
-        uploadFoodDataToFirebase();
-    }
-
-    private void loadFoodDataFromFirebase() {
-        // Lắng nghe sự kiện thay đổi dữ liệu từ Firebase
-        databaseRef.addValueEventListener(new ValueEventListener() {
+        lvFood.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Xóa danh sách cũ để tránh trùng lặp
-                listFood.clear();
-
-                // Lặp qua tất cả các con của nút "foods"
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    // Chuyển đổi từng phần tử về đối tượng food
-                    food foodItem = snapshot.getValue(food.class);
-                    if (foodItem != null) {
-                        listFood.add(foodItem);
-                    }
-                }
-
-                // Cập nhật adapter sau khi lấy dữ liệu
-                adapterfood.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(CategoryActivity.this, "Không thể tải dữ liệu: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Food selectedFood = listFood.get(position);
+                Intent intent = new Intent(CategoryActivity.this, FoodDetailActivity.class);
+                intent.putExtra("foodID", selectedFood.getId());
+                startActivity(intent);
             }
         });
+
     }
-    private void uploadFoodDataToFirebase() {
-        // Reference to Firebase Realtime Database under "foods" node
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("foods");
-
-        // Loop through listFood and upload each item
-        for (food foodItem : listFood) {
-            databaseRef.push().setValue(foodItem).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(CategoryActivity.this, "Món ăn đã được thêm thành công!", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Log detailed error if upload fails
-                    String error = task.getException() != null ? task.getException().getMessage() : "Unknown error";
-                    Toast.makeText(CategoryActivity.this, "Không thể thêm món ăn: " + error, Toast.LENGTH_SHORT).show();
-                    Log.e("FirebaseUpload", "Error uploading food item: " + error);
-                }
-            });
-        }
-    }
-    private void checkDatabaseConnection() {
-        DatabaseReference testRef = FirebaseDatabase.getInstance().getReference("test_connection");
-
-        testRef.setValue("connected").addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.d("FirebaseConnection", "Kết nối đến database thành công.");
-            } else {
-                Log.e("FirebaseConnection", "Kết nối đến database thất bại: " + task.getException().getMessage());
-            }
-        });
-    }
-
-
-
-
-
-
 }
