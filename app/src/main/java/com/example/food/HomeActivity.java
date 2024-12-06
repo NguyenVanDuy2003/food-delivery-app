@@ -18,6 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.food.Common.CommonKey;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     // Data
     private RestaurantAdapter restaurantAdapter;
     private List<Restaurant> restaurants;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,7 @@ public class HomeActivity extends AppCompatActivity {
         setupRecyclerView();
         setupSearchFunctionality();
         setupBottomNavigation();
+        fetchRestaurantsFromFirebase();
     }
 
     private void initializeViews() {
@@ -94,22 +101,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        restaurants = createSampleRestaurants();
+        restaurants = new ArrayList<>();
         restaurantAdapter = new RestaurantAdapter(this,restaurants);
         restaurantRecyclerView.setAdapter(restaurantAdapter);
-    }
-
-    private List<Restaurant> createSampleRestaurants() {
-        List<Restaurant> sampleRestaurants = new ArrayList<>();
-        sampleRestaurants.add(new Restaurant("McDonald's", R.drawable.ic_launcher_background, 4.5f, "15-25 min"));
-        sampleRestaurants.add(new Restaurant("KFC", R.drawable.ic_launcher_background, 4.3f, "20-30 min"));
-        sampleRestaurants.add(new Restaurant("Pizza Hut", R.drawable.ic_launcher_background, 4.7f, "25-35 min"));
-        sampleRestaurants.add(new Restaurant("Subway", R.drawable.ic_launcher_background, 4.4f, "15-25 min"));
-        sampleRestaurants.add(new Restaurant("Domino's Pizza", R.drawable.ic_launcher_background, 4.6f, "20-30 min"));
-        sampleRestaurants.add(new Restaurant("Burger King", R.drawable.ic_launcher_background, 4.2f, "15-25 min"));
-        sampleRestaurants.add(new Restaurant("Starbucks", R.drawable.ic_launcher_background, 4.8f, "10-20 min"));
-        sampleRestaurants.add(new Restaurant("Sushi Express", R.drawable.ic_launcher_background, 4.5f, "25-35 min"));
-        return sampleRestaurants;
     }
 
     private void setupSearchFunctionality() {
@@ -129,6 +123,22 @@ public class HomeActivity extends AppCompatActivity {
         searchRestaurants(searchQuery);
     }
 
+    private void searchRestaurants(String query) {
+        if (query.isEmpty()) {
+            restaurantAdapter = new RestaurantAdapter(this, restaurants);
+            restaurantRecyclerView.setAdapter(restaurantAdapter);
+            return;
+        }
+
+        List<Restaurant> filteredList = restaurants.stream()
+            .filter(restaurant ->
+                restaurant.getName().toLowerCase().contains(query.toLowerCase()))
+            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+
+        restaurantAdapter = new RestaurantAdapter(this, filteredList);
+        restaurantRecyclerView.setAdapter(restaurantAdapter);
+    }
+
     private void setupBottomNavigation() {
         findViewById(R.id.btn_view_all).setOnClickListener(v -> navigateToAllRestaurants());
         findViewById(R.id.btn_home).setOnClickListener(v -> {/* Already on home screen */});
@@ -145,23 +155,25 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /**
-     * Filters restaurants based on search query
-     * @param query The search term to filter restaurants
-     */
-    private void searchRestaurants(String query) {
-        if (query.isEmpty()) {
-            restaurantAdapter = new RestaurantAdapter(this,restaurants);
-            restaurantRecyclerView.setAdapter(restaurantAdapter);
-            return;
-        }
+    private void fetchRestaurantsFromFirebase() {
+        databaseReference = FirebaseDatabase.getInstance().getReference("restaurants");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                restaurants.clear(); // Clear existing data
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Restaurant restaurant = snapshot.getValue(Restaurant.class);
+                    if (restaurant != null) { // Ensure restaurant is not null
+                        restaurants.add(restaurant); // Add restaurant to the list
+                    }
+                }
+                restaurantAdapter.notifyDataSetChanged(); 
+            }
 
-        List<Restaurant> filteredList = restaurants.stream()
-            .filter(restaurant ->
-                restaurant.getName().toLowerCase().contains(query.toLowerCase()))
-            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-
-        restaurantAdapter = new RestaurantAdapter(this,filteredList);
-        restaurantRecyclerView.setAdapter(restaurantAdapter);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle error
+            }
+        });
     }
 }

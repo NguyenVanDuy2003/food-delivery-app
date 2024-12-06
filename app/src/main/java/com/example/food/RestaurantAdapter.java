@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.food.Common.CommonKey;
 import com.example.food.Enum.Role;
 
@@ -38,7 +40,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Restaurant restaurant = restaurants.get(position);
-        holder.imageView.setImageResource(restaurant.getImageResource());
+        Glide.with(context)
+                .load(restaurant.getImageUrl())
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_foreground)
+                .into(holder.imageView);
+
         holder.nameTextView.setText(restaurant.getName());
         holder.ratingTextView.setText(String.format("%.1f ★", restaurant.getRating()));
         holder.deliveryTimeTextView.setText(restaurant.getDeliveryTime());

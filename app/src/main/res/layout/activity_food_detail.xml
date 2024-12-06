@@ -17,10 +17,10 @@
             <RelativeLayout
                 android:id="@+id/food_info_layout"
                 android:layout_width="match_parent"
-                android:layout_height="335.6dp">
+                android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/food_detail_placeholder"
+                    android:id="@+id/food_image"
                     android:layout_width="match_parent"
                     android:layout_height="206dp"
                     android:background="@drawable/rounded_image"
@@ -59,7 +59,7 @@
                     android:id="@+id/food_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/food_detail_placeholder"
+                    android:layout_below="@+id/food_image"
                     android:layout_marginTop="10dp"
                     android:text="Ground Beef Taco"
                     android:textSize="30sp"
@@ -144,7 +144,7 @@
                         android:layout_centerVertical="true">
 
                         <Button
-                            android:id="@+id/decreaseItemDetailQuantity"
+                            android:id="@+id/decrease_quantity"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:textColor="#FFF"
@@ -161,7 +161,7 @@
                             android:text="02" />
 
                         <Button
-                            android:id="@+id/increaseItemDetailQuantity"
+                            android:id="@+id/increase_quantity"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:textColor="#FFF"
@@ -288,6 +288,7 @@
     </ScrollView>
 
     <Button
+        android:id="@+id/add_to_cart_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add to cart"
@@ -299,5 +300,4 @@
         app:layout_constraintVertical_bias="0.5"
         android:layout_marginBottom="20dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
-<!-- TODO: Implement topping component and update food model attribute, fix the heart checkbox-->
-
+    <!-- TODO: Implement topping component and update food model attribute, fix the heart checkbox-->

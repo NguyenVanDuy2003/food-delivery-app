@@ -2,7 +2,6 @@ package com.example.food;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -39,12 +38,6 @@ public class AddUserActivity extends AppCompatActivity {
         userRoleSpinner = findViewById(R.id.user_role_spinner);
         saveButton = findViewById(R.id.save_button);
 
-        // Populate the spinner with user roles
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.user_roles, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        userRoleSpinner.setAdapter(adapter);
-
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
         saveButton.setOnClickListener(v -> addUser());
@@ -56,14 +49,7 @@ public class AddUserActivity extends AppCompatActivity {
         String password = userPasswordEditText.getText().toString().trim();
         String phoneNumber = userPhoneNumberEditText.getText().toString().trim();
         String address = userAddressEditText.getText().toString().trim();
-
-        // Check if the selected item is null
-        String roleString = userRoleSpinner.getSelectedItem() != null ? userRoleSpinner.getSelectedItem().toString() : null;
-        if (roleString == null) {
-            Toast.makeText(this, "Please select a role", Toast.LENGTH_SHORT).show();
-            return; // Exit the method if no role is selected
-        }
-
+        String roleString = userRoleSpinner.getSelectedItem().toString();
         Role role = Role.valueOf(roleString.toUpperCase());
 
         String userId = databaseReference.push().getKey(); // Generate a unique ID for the user

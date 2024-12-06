@@ -5,7 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RestaurantdetailsActivity">
+    tools:context=".ThemNhaHangMainActivity">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,20 +26,11 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:src="@drawable/thoat" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="CHI TIẾT CỬA HÀNG"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:textSize="24dp"
-            android:textColor="@color/primary"
-            android:layout_marginBottom="5dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:gravity="center">
-
 
             <ImageButton
                 android:id="@+id/imageResource"
@@ -77,23 +70,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nhập tên cửa hàng"
-                    android:textColor="#282626"
-                    android:paddingBottom="20dp"
-                    android:paddingHorizontal="5dp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Mô tả cửa hàng"
-                    android:textColor="#282626"
-                    android:textSize="18sp"
-                    android:fontFamily="sans-serif-medium" />
-
-                <EditText
-                    android:id="@+id/Mota"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Mô tả cửa hàng"
                     android:textColor="#282626"
                     android:paddingBottom="20dp"
                     android:paddingHorizontal="5dp" />
@@ -142,7 +118,6 @@
                         android:scaleType="centerCrop"
                         android:layout_width="150dp"
                         android:layout_height="150dp"/>
-
                     <ImageView
                         android:id="@+id/qrcodeView"
                         android:layout_width="150dp"
@@ -164,58 +139,18 @@
                     android:fontFamily="sans-serif-medium" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
-
                     <EditText
                         android:id="@+id/address"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:hint="Địa chỉ cửa hàng"
-                        android:paddingHorizontal="5dp"
+                        android:textColor="#282626"
                         android:paddingBottom="20dp"
-                        android:textColor="#282626" />
+                        android:paddingHorizontal="5dp" />
 
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/btn_update"
-                        android:layout_width="match_parent"
-                        android:layout_height="54dp"
-                        android:layout_marginEnd="5dp"
-                        android:backgroundTint="#2F11B6"
-                        android:drawablePadding="8dp"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="Cập nhật"
-                        android:textColor="#FFFFFF"
-                        android:textFontWeight="400"
-                        android:textSize="20dp"
-                        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
-
-                    <Button
-                        android:id="@+id/btn_xoa"
-                        android:layout_width="match_parent"
-                        android:layout_height="54dp"
-                        android:layout_marginEnd="4dp"
-                        android:backgroundTint="#FF0707"
-                        android:drawablePadding="8dp"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="Xóa"
-                        android:textColor="#FFFFFF"
-                        android:textFontWeight="400"
-                        android:textSize="20dp"
-                        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
 
                 </LinearLayout>
                 <LinearLayout
@@ -226,22 +161,14 @@
                     android:gravity="center">
 
                     <Button
-                        android:id="@+id/btn_manage_food"
+                        android:id="@+id/add_TaiKhoan"
                         android:layout_width="match_parent"
-                        android:layout_height="54dp"
-                        android:layout_marginEnd="5dp"
-                        android:backgroundTint="#FFC107"
-                        android:drawablePadding="8dp"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="Quản lý Food"
+                        android:layout_height="80dp"
+                        android:text="Thêm"
                         android:textSize="20dp"
-                        android:textColor="#FFFFFF"
-                        android:textFontWeight="400"
-                        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
+                        android:layout_marginEnd="20dp"/>
 
                 </LinearLayout>
-
 
             </LinearLayout>
         </ScrollView>
