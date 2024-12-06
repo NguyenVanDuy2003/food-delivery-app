@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putBoolean(CommonKey.IS_LOGGED_IN, true);
                             editor.putString(CommonKey.USER_MAIL, email);
-                            editor.putString(CommonKey.USER_ID, user.getId());  // Thêm dòng này
+                            editor.putString(CommonKey.USER_ID, user.getId());
                             editor.putString(CommonKey.ROLE, String.valueOf(user.getRole()));
                             editor.apply();
 
