@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Restaurant implements Serializable {
     private  String id;
+    private String userId;
     private String name;
     private int imageResource;
     private float rating;
@@ -13,6 +14,9 @@ public class Restaurant implements Serializable {
     private  String stk;
     private String imageUrl;
     private String Mota;
+
+
+
 
     private String qrcodeUrl;
 
@@ -60,6 +64,16 @@ public class Restaurant implements Serializable {
         Mota = mota;
     }
 
+    public Restaurant(String id, String name, float rating, String phone_number, String address, String stk, String mota , String userId) {
+        this.id = id;
+        this.name = name;
+        this.rating = rating;
+        this.phone_number = phone_number;
+        this.address = address;
+        this.stk = stk;
+        Mota = mota;
+        this.userId = userId;
+    }
 
     public Restaurant(String name, String phone_number, String stk, String address) {
         this.name = name;
@@ -75,6 +89,7 @@ public class Restaurant implements Serializable {
         this.stk = stk;
         Mota = mota;
     }
+
 
     public String getId() {
         return id;
@@ -139,6 +154,14 @@ public class Restaurant implements Serializable {
 
     public void setMota(String mota) {
         Mota = mota;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override

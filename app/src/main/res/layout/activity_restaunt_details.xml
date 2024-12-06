@@ -112,6 +112,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Nhập số điện thoại"
                     android:paddingBottom="20dp"
+                    android:inputType="phone"
                     android:textColor="#282626"
                     android:paddingHorizontal="5dp" />
 
