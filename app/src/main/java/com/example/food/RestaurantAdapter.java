@@ -2,28 +2,39 @@ package com.example.food;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import com.example.food.FoodListActivity;
-
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
     private Context context;
     private List<Restaurant> restaurants;
+    private OnItemClickListener onItemClickListener;  // Custom listener interface
 
     public RestaurantAdapter(Context context, List<Restaurant> restaurants) {
         this.context = context;
         this.restaurants = restaurants;
+    }
+
+    // Interface for item click listener
+    public interface OnItemClickListener {
+        void onItemClick(Restaurant restaurant);
+    }
+
+    // Method to set the item click listener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @NonNull
@@ -38,17 +49,19 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         Restaurant restaurant = restaurants.get(position);
         holder.nameTextView.setText(restaurant.getName());
         holder.ratingTextView.setText(String.valueOf(restaurant.getRating()));
-        
+
         // Load imageUrl using Glide
         Glide.with(context)
-            .load(restaurant.getImageUrl())
-            .into(holder.imageView);
+                .load(restaurant.getImageUrl())
+                .into(holder.imageView);
 
         // Set click listener for the item
         holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(context, FoodListActivity.class);
-            intent.putExtra("restaurant_id", restaurant.getId());
-            context.startActivity(intent);
+            if (onItemClickListener != null) {
+                Log.d("RestaurantAdapter", "Item clicked: " + restaurant.getName());
+                Toast.makeText(RestaurantAdapter.this.context, "Item clicked: " + restaurant.getName(), Toast.LENGTH_SHORT).show();
+                onItemClickListener.onItemClick(restaurant);  // Trigger the listener
+            }
         });
     }
 

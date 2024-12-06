@@ -1,6 +1,5 @@
 package com.example.food;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.food.Model.Food;
 import com.example.food.adapter.foodAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +27,9 @@ public class CategoryActivity extends AppCompatActivity {
 
     ListView lvFood;
     ArrayList<Food> listFood;
-    foodAdapter adapterfood;
+    foodAdapter adapterFood;
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,30 +37,30 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fastfood);
 
         // Xử lý chức năng thoát khi nhấn nút back
-        ImageButton backbutton = findViewById(R.id.back);
-        backbutton.setOnClickListener(view -> onBackPressed());
+        ImageButton backButton = findViewById(R.id.back);
+        backButton.setOnClickListener(view -> onBackPressed());
 
-        // Bước 1: Tạo danh sách các tùy chọn
+        // Step 1: Create sorting options
         String[] sortOptions = {"Popular", "Low to High", "High to Low"};
 
-        // Bước 2: Tìm Spinner trong layout
+        // Step 2: Find Spinner in the layout
         Spinner spinnerSort = findViewById(R.id.spinnerSort);
 
-        // Bước 3: Tạo ArrayAdapter cho Spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,  R.layout.spinner_item, sortOptions);
+        // Step 3: Create ArrayAdapter for Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, sortOptions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // Bước 4: Gán Adapter cho Spinner
+        // Step 4: Set the Adapter for Spinner
         spinnerSort.setAdapter(adapter);
 
-        // Bước 5: Xử lý sự kiện khi người dùng chọn một mục
+        // Step 5: Handle item selection from the Spinner
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selectedSort = parentView.getItemAtPosition(position).toString();
                 Toast.makeText(CategoryActivity.this, "Selected: " + selectedSort, Toast.LENGTH_SHORT).show();
 
-                // Sắp xếp theo tùy chọn của người dùng
+                // Sorting based on user selection
                 switch (selectedSort) {
                     case "Low to High":
                         Collections.sort(listFood, new Comparator<Food>() {
@@ -79,8 +85,10 @@ public class CategoryActivity extends AppCompatActivity {
                         break;
                 }
 
-                // Cập nhật lại adapter sau khi sắp xếp
-                adapterfood.notifyDataSetChanged();
+                // Update the adapter after sorting
+                if (adapterFood != null) {
+                    adapterFood.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -89,19 +97,48 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
+        // Initialize Firebase Database
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("Food");
+
+        String restaurantID = getIntent().getStringExtra("restaurantID");
         lvFood = findViewById(R.id.lvFood);
 
-        // Khởi tạo danh sách các món ăn
+        // Initialize food list
         listFood = new ArrayList<>();
 
-        // Thêm dữ liệu vào danh sách
-        listFood.add(new Food("Chicken Hawaiian", 10.35, 101, 1, R.drawable.a2, "Chicken, Cheese and Pineapple", true, new ArrayList<>()));
-        listFood.add(new Food("Pepperoni Pizza", 9.99, 102, 1, R.drawable.a3, "Pepperoni, Cheese", true, new ArrayList<>()));
+        // Load food data from Firebase Realtime Database
+        loadFoodData(restaurantID);
+    }
 
-        // Khởi tạo adapter và gán cho ListView
-        adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);
-        lvFood.setAdapter(adapterfood);
+    private void loadFoodData(String restaurantID) {
+        // Fetching food data from Firebase Realtime Database
+        databaseReference.orderByChild("restaurantID").equalTo(restaurantID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                listFood.clear();
 
+                for (DataSnapshot foodSnapshot : snapshot.getChildren()) {
+                    Food food = foodSnapshot.getValue(Food.class);
+                    if (food != null) {
+                        listFood.add(food);
+                    }
+                }
 
+                // Set up the adapter after fetching data
+                adapterFood = new foodAdapter(CategoryActivity.this, R.layout.fast_food_item, listFood);
+                lvFood.setAdapter(adapterFood);
+
+                // Notify adapter that data has changed
+                if (adapterFood != null) {
+                    adapterFood.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(CategoryActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

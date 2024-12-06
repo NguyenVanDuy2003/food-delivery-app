@@ -1,8 +1,10 @@
 package com.example.food;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -59,7 +61,10 @@ public class FoodListActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        int restaurantID = getIntent().getIntExtra("restaurantID", -1);
+        String restaurantID = getIntent().getStringExtra("restaurantID");
+        Toast.makeText(this, "Restaurant id: " + restaurantID, Toast.LENGTH_SHORT).show();
+
+        Log.d("FoodListActivity", "Taken restaurant ID: " + restaurantID);
         loadFoodData(restaurantID);
 
         // Search functionality
@@ -78,12 +83,16 @@ public class FoodListActivity extends AppCompatActivity {
             }
         });
 
-        addFoodButton.setOnClickListener(v -> showCreateDialog());
+        addFoodButton.setOnClickListener(v -> {
+            Intent intent = new Intent(FoodListActivity.this, AddFoodActivity.class);
+            intent.putExtra("restaurantID", restaurantID);
+            startActivity(intent);
+        });
         btnBack.setOnClickListener(v -> finish());
     }
 
-    private void loadFoodData(int restaurantID) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+    private void loadFoodData(String restaurantID) {
+        databaseReference.orderByChild("restaurantID").equalTo(restaurantID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 foodList.clear();
@@ -91,7 +100,7 @@ public class FoodListActivity extends AppCompatActivity {
 
                 for (DataSnapshot foodSnapshot : snapshot.getChildren()) {
                     Food food = foodSnapshot.getValue(Food.class);
-                    if (food != null && food.getRestaurantID() == restaurantID) {
+                    if (food != null) {
                         foodList.add(food);
                     }
                 }
@@ -106,6 +115,7 @@ public class FoodListActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void filterFoodList(String query) {
         filteredFoodList.clear();

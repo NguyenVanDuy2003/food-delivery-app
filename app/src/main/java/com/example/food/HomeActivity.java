@@ -3,10 +3,12 @@ package com.example.food;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -102,6 +104,15 @@ public class HomeActivity extends AppCompatActivity {
         restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         restaurants = new ArrayList<>();
         restaurantAdapter = new RestaurantAdapter(this,restaurants);
+        restaurantAdapter.setOnItemClickListener(new RestaurantAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Restaurant restaurant) {
+                // Handle the click event here
+                Intent intent = new Intent(HomeActivity.this, CategoryActivity.class);
+                intent.putExtra("restaurantID", restaurant.getId());
+                startActivity(intent);
+            }
+        });
         restaurantRecyclerView.setAdapter(restaurantAdapter);
     }
 

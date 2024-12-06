@@ -66,6 +66,15 @@
         <activity
             android:name=".AdminManagementActivity"
             android:exported="false" />
+        <activity
+            android:name=".FoodListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddFoodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FoodUpdateActivity"
+            android:exported="false" />
         <activity android:name=".UserManagementActivity" android:exported="false" />
         <activity android:name=".UserDetailActivity" android:exported="false" />
         <activity android:name=".AddUserActivity" android:exported="false" />

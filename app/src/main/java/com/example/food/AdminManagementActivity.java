@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,6 +55,18 @@ public class AdminManagementActivity extends AppCompatActivity {
         // Set up RecyclerView
         rvNhaHang.setLayoutManager(new LinearLayoutManager(this));
         rvNhaHang.setAdapter(adapterRestaurant);
+
+        // Set RecyclerView Item Click Listener
+        adapterRestaurant.setOnItemClickListener(new RestaurantAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Restaurant restaurant) {
+                // Handle the click event here
+                Intent intent = new Intent(AdminManagementActivity.this, FoodListActivity.class);
+                intent.putExtra("restaurantID", restaurant.getId());
+                Log.d("AdminManagementActivity", "Starting FoodListActivity with restaurantID:" + restaurant.getId());
+                startActivity(intent);
+            }
+        });
 
         databaseReference = FirebaseDatabase.getInstance().getReference("restaurants");
 

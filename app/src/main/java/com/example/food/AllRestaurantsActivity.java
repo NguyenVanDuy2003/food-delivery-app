@@ -1,12 +1,15 @@
 package com.example.food;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -33,6 +36,7 @@ public class AllRestaurantsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("AllRestaurantsActivity", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_restaurants);
         
@@ -62,6 +66,17 @@ public class AllRestaurantsActivity extends AppCompatActivity {
         restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         restaurants = getRestaurantsFromIntent();
         restaurantAdapter = new RestaurantAdapter(this,restaurants);
+        restaurantAdapter.setOnItemClickListener(new RestaurantAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Restaurant restaurant) {
+                // Handle the click event here
+                Intent intent = new Intent(AllRestaurantsActivity.this, CategoryActivity.class);
+                intent.putExtra("restaurantID", restaurant.getId());
+                Toast.makeText(AllRestaurantsActivity.this, "Restaurant ID: " + restaurant.getId(), Toast.LENGTH_SHORT).show();
+                Log.d("AllRestaurantsActivity", "Restaurant ID: " + restaurant.getId());
+                startActivity(intent);
+            }
+        });
         restaurantRecyclerView.setAdapter(restaurantAdapter);
     }
 
@@ -106,7 +121,7 @@ public class AllRestaurantsActivity extends AppCompatActivity {
                 restaurant.getName().toLowerCase().contains(query.toLowerCase()))
             .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
-        restaurantAdapter = new RestaurantAdapter(this,restaurants);
+        restaurantAdapter = new RestaurantAdapter(this,filteredList);
         restaurantRecyclerView.setAdapter(restaurantAdapter);
     }
 

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
 import com.example.food.Model.Food;
 import com.example.food.R;
 import com.example.food.FoodDetailActivity;
@@ -53,7 +54,11 @@ public class foodAdapter extends ArrayAdapter<Food> {
 
         Food food = this.listFood.get(position);
 
-        image.setImageResource(food.getImageResource());
+        // Load the image from the URL using Glide
+        Glide.with(context)
+                .load(food.getImageUrl()) // URL of the image
+                .into(image); // Set it into the ImageView
+
         tvNameFood.setText(food.getName());
         tvPriceFood.setText(String.valueOf(food.getPrice()));
         tvDescription.setText(food.getIngredients());
