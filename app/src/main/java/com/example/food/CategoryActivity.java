@@ -121,22 +121,22 @@ public class CategoryActivity extends AppCompatActivity {
         listFood = new ArrayList<>();
 
         // Thêm dữ liệu vào danh sách
-        listFood.add(new Food("Chicken Hawaiian", 10.35, 101, R.drawable.a2, "Chicken, Cheese and Pineapple", true, new ArrayList<>()));
-        listFood.add(new Food("Pepperoni Pizza", 9.99, 102, R.drawable.a3, "Pepperoni, Cheese", true, new ArrayList<>()));
+        listFood.add(new Food("Chicken Hawaiian", 10.35, 101, 1, R.drawable.a2, "Chicken, Cheese and Pineapple", true, new ArrayList<>()));
+        listFood.add(new Food("Pepperoni Pizza", 9.99, 102, 1, R.drawable.a3, "Pepperoni, Cheese", true, new ArrayList<>()));
 
         // Khởi tạo adapter và gán cho ListView
         adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);
         lvFood.setAdapter(adapterfood);
 
-        lvFood.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Food selectedFood = listFood.get(position);
-                Intent intent = new Intent(CategoryActivity.this, FoodDetailActivity.class);
-                intent.putExtra("foodID", selectedFood.getId());
-                startActivity(intent);
-            }
-        });
+//        lvFood.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Food selectedFood = listFood.get(position);
+//                Intent intent = new Intent(CategoryActivity.this, FoodDetailActivity.class);
+//                intent.putExtra("foodID", selectedFood.getId());
+//                startActivity(intent);
+//            }
+//        });
 
     }
 }

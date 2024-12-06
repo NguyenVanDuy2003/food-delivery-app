@@ -14,8 +14,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.food.Model.Restaurant;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

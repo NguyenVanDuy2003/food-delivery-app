@@ -14,7 +14,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.food.Model.Restaurant;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddRestauntsActivity extends AppCompatActivity {
-
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     ImageButton exit, imageResource, qrcode;

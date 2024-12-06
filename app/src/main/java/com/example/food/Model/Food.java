@@ -9,6 +9,7 @@ public class Food implements Serializable {
     private String name;
     private double price;
     private int id;  // Firebase key id
+    private int restaurantID;
     private int imageResource;
     private String ingredients;
     private boolean isAvailable;
@@ -20,10 +21,11 @@ public class Food implements Serializable {
     }
 
     // Constructor for initializing the fields
-    public Food(String name, double price, int id, int imageResource, String ingredients, boolean isAvailable, List<String> toppings) {
+    public Food(String name, double price, int id, int restaurantID, int imageResource, String ingredients, boolean isAvailable, List<String> toppings) {
         this.name = name;
         this.price = price;
         this.id = id;
+        this.restaurantID = restaurantID;
         this.imageResource = imageResource;
         this.ingredients = ingredients;
         this.isAvailable = isAvailable;
@@ -53,6 +55,14 @@ public class Food implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getRestaurantID() {
+        return restaurantID;
+    }
+
+    public void setRestaurantID(int restaurantID) {
+        this.restaurantID = restaurantID;
     }
 
     public int getImageResource() {

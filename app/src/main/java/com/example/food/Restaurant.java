@@ -1,4 +1,4 @@
-package com.example.food.Model;
+package com.example.food;
 
 import java.io.Serializable;
 import java.util.List;

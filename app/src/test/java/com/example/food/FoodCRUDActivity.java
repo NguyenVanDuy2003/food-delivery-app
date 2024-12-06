@@ -67,7 +67,7 @@ public class FoodCRUDActivity extends AppCompatActivity {
         String id = foodDatabase.push().getKey();
 
         // Create a new Food object
-        Food food = new Food(name, price, Integer.parseInt(id), 0, ingredients, isAvailable, new ArrayList<>());
+        Food food = new Food(name, price, Integer.parseInt(id), 1, 0, ingredients, isAvailable, new ArrayList<>());
 
         // Add to Firebase
         foodDatabase.child(id).setValue(food)
@@ -99,7 +99,7 @@ public class FoodCRUDActivity extends AppCompatActivity {
         double price = Double.parseDouble(priceStr);
 
         // Create updated Food object
-        Food updatedFood = new Food(name, price, Integer.parseInt(id), 0, ingredients, isAvailable, new ArrayList<>());
+        Food updatedFood = new Food(name, price, Integer.parseInt(id), 1, 0, ingredients, isAvailable, new ArrayList<>());
 
         // Update in Firebase
         foodDatabase.child(id).setValue(updatedFood)

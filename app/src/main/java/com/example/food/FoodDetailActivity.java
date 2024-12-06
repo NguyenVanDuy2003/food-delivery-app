@@ -48,6 +48,7 @@ public class FoodDetailActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("Food");
 
         int foodId = getIntent().getIntExtra("foodID", -1);
+//        int foodId = 101;
         if (foodId != -1) {
             fetchFoodData(foodId);
         }
