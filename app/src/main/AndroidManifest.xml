@@ -33,6 +33,9 @@
             android:name=".AllRestaurantsActivity"
             android:label="All Restaurants"/>
         <activity
+            android:name=".ProfileActivity"
+            android:exported="false"  />
+        <activity
             android:name=".AdminActivity"
             android:exported="false" />
         <activity
@@ -68,9 +71,15 @@
         <activity
             android:name=".AdminManagementActivity"
             android:exported="false" />
-        <activity android:name=".UserManagementActivity" android:exported="false" />
-        <activity android:name=".UserDetailActivity" android:exported="false" />
-        <activity android:name=".AddUserActivity" android:exported="false" />
+        <activity
+            android:name=".UserManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddUserActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

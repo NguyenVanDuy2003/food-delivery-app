@@ -10,6 +10,33 @@ public class User {
     public String phoneNumber;
     public String address;
     public Role role;
+    public String imageUser;
+
+    public User(String address, String fullName, String phoneNumber, String id, String email) {
+        this.address = address;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.id = id;
+        this.email = email;
+    }
+
+    public User(String fullName, String email, String phoneNumber, String address) {
+        this.fullName = fullName;
+        this.id = id;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.imageUser = imageUser;
+    }
+
+
+    public String getImageUser() {
+        return imageUser;
+    }
+
+    public void setImageUser(String imageUser) {
+        this.imageUser = imageUser;
+    }
 
     public String getFullName() {
         return fullName;

@@ -18,8 +18,8 @@
     <string name="profile">Profile</string>
     <string name="what_to_order">What would you like to order</string>
     <string-array name="user_roles">
-    <item>USER</item>
-    <item>ADMIN</item>
-    <item>BUSINESS</item>
-</string-array>
+        <item>USER</item>
+        <item>ADMIN</item>
+        <item>BUSINESS</item>
+    </string-array>
 </resources>
