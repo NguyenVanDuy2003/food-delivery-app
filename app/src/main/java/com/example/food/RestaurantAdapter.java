@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import com.example.food.FoodListActivity;
+
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
@@ -44,10 +46,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
         // Set click listener for the item
         holder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(context, CategoryActivity.class);
-            intent.putExtra("restaurant_name", restaurant.getName());
-            intent.putExtra("restaurant_image", restaurant.getImageUrl());
-            intent.putExtra("restaurant_rating", restaurant.getRating());
+            Intent intent = new Intent(context, FoodListActivity.class);
+            intent.putExtra("restaurant_id", restaurant.getId());
             context.startActivity(intent);
         });
     }

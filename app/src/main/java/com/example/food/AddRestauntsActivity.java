@@ -19,7 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import com.example.food.model.Food;
+import com.example.food.Model.Food;
 
 import java.util.ArrayList;
 import java.util.List;

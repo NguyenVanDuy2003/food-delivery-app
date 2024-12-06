@@ -3,7 +3,7 @@ package com.example.food;
 import java.io.Serializable;
 import java.util.List;
 
-import com.example.food.model.Food;
+import com.example.food.Model.Food;
 
 public class Restaurant implements Serializable {
     private String id;

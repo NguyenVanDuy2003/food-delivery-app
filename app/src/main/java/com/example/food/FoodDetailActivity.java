@@ -16,9 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import com.example.food.R;
-import com.example.food.model.Food;
-
+import com.example.food.Model.Food;
 
 public class FoodDetailActivity extends AppCompatActivity {
 
@@ -48,57 +46,93 @@ public class FoodDetailActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("Food");
 
         int foodId = getIntent().getIntExtra("foodID", -1);
-//        int foodId = 101;
         if (foodId != -1) {
             fetchFoodData(foodId);
         }
 
-        // Set up button listeners
-        returnBtn.setOnClickListener(v -> finish()); // Return to the previous screen
+        returnBtn.setOnClickListener(v -> finish());
         increaseQuantityBtn.setOnClickListener(v -> updateQuantity(1));
         decreaseQuantityBtn.setOnClickListener(v -> updateQuantity(-1));
         addToCartBtn.setOnClickListener(v -> setAddToCart(foodId));
     }
 
-    private void fetchFoodData(int foodId) {
-        Toast.makeText(this, "Fetching food data...", Toast.LENGTH_SHORT).show();
+//    private void fetchFoodData(int foodId) {
+//        Toast.makeText(this, "Food detail: " + foodId, Toast.LENGTH_SHORT).show();
+//
+//        // Listen for the food item with the given ID
+//        databaseReference.child(String.valueOf(foodId))
+//                .addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot snapshot) {
+//                        if (snapshot.exists()) {
+//                            // Convert the snapshot into a Food object
+//                            Food food = snapshot.getValue(Food.class);
+//
+//                            if (food != null) {
+//                                // Update UI with the fetched data
+//                                foodName.setText(food.getName());
+//                                foodPrice.setText(String.format("$%.2f", food.getPrice()));
+//                                foodDescription.setText(food.getIngredients());
+//                                // Load the image into foodImage (use a library like Glide or Picasso)
+//                                // Glide.with(FoodDetailActivity.this).load(food.getImageUrl()).into(foodImage);
+//                            }
+//                        } else {
+//                            Toast.makeText(FoodDetailActivity.this, "Food not found", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError error) {
+//                        Log.e("FoodDetailActivity", "Error fetching data: " + error.getMessage());
+//                        Toast.makeText(FoodDetailActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
 
-        databaseReference.orderByChild("id").equalTo(foodId).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void fetchFoodData(int foodId) {
+        Toast.makeText(this, "Fetching food detail: " + foodId, Toast.LENGTH_SHORT).show();
+
+        // Iterate through all food items
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        // Retrieve the food data
-                        Food food = snapshot.getValue(Food.class);
-                        if (food != null) {
-                            quantity.setText(String.format("%02d", currentQuantity));
-                            foodName.setText(food.getName());
-                            foodPrice.setText(String.format("$%.2f", food.getPrice()));
-                            foodDescription.setText(food.getIngredients());
-                            foodImage.setImageResource(food.getImageResource());
-                        }
+            public void onDataChange(DataSnapshot snapshot) {
+                boolean found = false;
+                for (DataSnapshot foodSnapshot : snapshot.getChildren()) {
+                    Food food = foodSnapshot.getValue(Food.class);
+
+                    if (food != null && food.getId() == foodId) {
+                        // Update UI with the fetched data
+                        foodName.setText(food.getName());
+                        foodPrice.setText(String.format("$%.2f", food.getPrice()));
+                        foodDescription.setText(food.getIngredients());
+                        // Load the image into foodImage (use a library like Glide or Picasso)
+                        // Glide.with(FoodDetailActivity.this).load(food.getImageUrl()).into(foodImage);
+                        found = true;
+                        break;
                     }
-                } else {
+                }
+                if (!found) {
                     Toast.makeText(FoodDetailActivity.this, "Food not found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(FoodDetailActivity.this, "Error fetching data", Toast.LENGTH_SHORT).show();
-                Log.e("FoodDetailActivity", "Error fetching data: " + databaseError.getMessage());
+            public void onCancelled(DatabaseError error) {
+                Log.e("FoodDetailActivity", "Error fetching data: " + error.getMessage());
+                Toast.makeText(FoodDetailActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
+
 
     private void updateQuantity(int change) {
         currentQuantity += change;
-        currentQuantity = Math.max(currentQuantity, 1);
+        if (currentQuantity < 1) currentQuantity = 1;
         quantity.setText(String.format("%02d", currentQuantity));
     }
 
     private void setAddToCart(int foodId) {
+        // Code to add to cart
         Intent intent = new Intent(FoodDetailActivity.this, FoodCartActivity.class);
         startActivity(intent);
     }

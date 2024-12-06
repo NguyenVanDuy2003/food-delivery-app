@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_auth"
+    tools:context=".FoodListActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tv_food_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="24dp"
+            android:text="Quản lí món ăn"
+            android:textColor="#FF5722"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/addFoodButton"
+                android:layout_width="140dp"
+                android:layout_height="54dp"
+                android:layout_marginEnd="4dp"
+                android:backgroundTint="#FFC107"
+                android:text="Thêm"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/btn_back"
+                android:layout_width="140dp"
+                android:layout_height="54dp"
+                android:backgroundTint="#F44336"
+                android:text="Quay lại"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+        <!-- Search Bar -->
+        <EditText
+            android:id="@+id/editTextSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Tìm kiếm theo tên món ăn"
+            android:padding="10dp"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="10dp" />
+
+        <!-- RecyclerView -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:padding="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

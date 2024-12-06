@@ -2,7 +2,6 @@ package com.example.food;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,13 +12,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.food.model.Food;
+import com.example.food.Model.Food;
 import com.example.food.adapter.foodAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -32,28 +30,9 @@ public class CategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fastfood);
 
-        // Retrieve data from Intent
-        String restaurantName = getIntent().getStringExtra("restaurant_name");
-        int restaurantImage = getIntent().getIntExtra("restaurant_image", -1);
-        float restaurantRating = getIntent().getFloatExtra("restaurant_rating", 0);
-        String restaurantDeliveryTime = getIntent().getStringExtra("restaurant_delivery_time");
-
-        // Use the retrieved data as needed
-        // For example, you can set it to TextViews or ImageView in your layout
-        // TextView nameTextView = findViewById(R.id.tv_restaurant_name);
-        // nameTextView.setText(restaurantName);
-        // ImageView imageView = findViewById(R.id.iv_restaurant);
-        // imageView.setImageResource(restaurantImage);
-        // ... and so on
-
         // Xử lý chức năng thoát khi nhấn nút back
         ImageButton backbutton = findViewById(R.id.back);
-        backbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        backbutton.setOnClickListener(view -> onBackPressed());
 
         // Bước 1: Tạo danh sách các tùy chọn
         String[] sortOptions = {"Popular", "Low to High", "High to Low"};
@@ -72,15 +51,12 @@ public class CategoryActivity extends AppCompatActivity {
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Hiển thị lựa chọn của người dùng (tuỳ chọn)
                 String selectedSort = parentView.getItemAtPosition(position).toString();
-                Log.d("CategoryActivity", "Toast Triggered: " + selectedSort);  // Debugging log
                 Toast.makeText(CategoryActivity.this, "Selected: " + selectedSort, Toast.LENGTH_SHORT).show();
 
                 // Sắp xếp theo tùy chọn của người dùng
                 switch (selectedSort) {
                     case "Low to High":
-                        // Sắp xếp danh sách theo giá từ thấp đến cao
                         Collections.sort(listFood, new Comparator<Food>() {
                             @Override
                             public int compare(Food f1, Food f2) {
@@ -90,7 +66,6 @@ public class CategoryActivity extends AppCompatActivity {
                         break;
 
                     case "High to Low":
-                        // Sắp xếp danh sách theo giá từ cao xuống thấp
                         Collections.sort(listFood, new Comparator<Food>() {
                             @Override
                             public int compare(Food f1, Food f2) {
@@ -99,9 +74,8 @@ public class CategoryActivity extends AppCompatActivity {
                         });
                         break;
 
-                    // Các tùy chọn khác...
                     case "Popular":
-                        // Nếu có logic sắp xếp khác, thêm vào đây
+                        // Handle other sorting logic if needed
                         break;
                 }
 
@@ -111,7 +85,7 @@ public class CategoryActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // Không làm gì nếu không có lựa chọn
+                // No action needed
             }
         });
 
@@ -128,15 +102,6 @@ public class CategoryActivity extends AppCompatActivity {
         adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);
         lvFood.setAdapter(adapterfood);
 
-//        lvFood.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Food selectedFood = listFood.get(position);
-//                Intent intent = new Intent(CategoryActivity.this, FoodDetailActivity.class);
-//                intent.putExtra("foodID", selectedFood.getId());
-//                startActivity(intent);
-//            }
-//        });
 
     }
 }
