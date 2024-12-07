@@ -12,7 +12,6 @@ public class FoodCartModel implements Serializable {
     private double price;
     private String imageUrl;
 
-    // Default constructor for Firebase
     public FoodCartModel() {}
 
     public FoodCartModel(String id, String name, String ingredient, double price, int quantity, String imageUrl) {

@@ -1,5 +1,6 @@
 package com.example.food;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,13 +68,13 @@ public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapt
 
     private void setupButtonListeners() {
         btn_checkout.setOnClickListener(v -> {
-            Toast.makeText(this, "Checkout clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, CheckoutActivity.class);
+            startActivity(intent);
         });
         return_btn.setOnClickListener(v -> finish());
     }
 
     private void fetchCartItems() {
-        Log.d("Cart Path", "Fetching data from path: Cart/" + getUserId());
         cartReference.child(getUserId()).get().addOnSuccessListener(dataSnapshot -> {
             if (dataSnapshot.exists()) {
                 foodCartList.clear();
@@ -86,12 +87,11 @@ public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapt
                 displayCartItems(foodCartList);
                 updatePriceDetails(foodCartList);
             } else {
-                Toast.makeText(this, "Cart is empty", Toast.LENGTH_SHORT).show();
                 displayCartItems(foodCartList);
                 updatePriceDetails(foodCartList);
             }
         }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Failed to fetch cart data", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Không thể fetch cart data", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -101,7 +101,6 @@ public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapt
         foodCartItems.setLayoutManager(new GridLayoutManager(this, 1));
 
         updatePriceDetails(foodCartList);
-        Log.d("FoodCartActivity", "Cart Items: " + foodCartList.toString());
 
         if (foodCartList.isEmpty()) {
             btn_checkout.setEnabled(false);
@@ -125,15 +124,14 @@ public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapt
         }
 
         subtotalValue.setText(String.format("$%.2f", subtotal));
-        taxValue.setText(String.format("$%.2f", subtotal * 0.1)); // Assuming 10% tax
-        deliveryValue.setText("1.0"); // Flat delivery fee
+        taxValue.setText(String.format("$%.2f", subtotal * 0.1));
+        deliveryValue.setText("1.0");
         totalValue.setText(String.format("$%.2f", subtotal + subtotal * 0.1 + 5.0));
         totalItem.setText(String.format("%d items", totalQuantity));
     }
 
     @Override
     public void onQuantityChanged() {
-        Toast.makeText(this, "Quantity Changed, refreshing totals", Toast.LENGTH_SHORT).show();
         fetchCartItems();
     }
 

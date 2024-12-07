@@ -94,7 +94,6 @@ public class FoodCartAdapter extends RecyclerView.Adapter<FoodCartAdapter.FoodCa
     }
 
     private void removeItemFromCart(FoodCartModel food, int position) {
-        Log.d("Cart Path", "Removing data from path: Cart/" + getUserId());
         databaseReference.child(getUserId()).child(food.getId()).removeValue().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 foodList.remove(position);

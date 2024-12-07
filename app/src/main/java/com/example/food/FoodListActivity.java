@@ -62,9 +62,6 @@ public class FoodListActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         String restaurantID = getIntent().getStringExtra("restaurantID");
-        Toast.makeText(this, "Restaurant id: " + restaurantID, Toast.LENGTH_SHORT).show();
-
-        Log.d("FoodListActivity", "Taken restaurant ID: " + restaurantID);
         loadFoodData(restaurantID);
 
         // Search functionality
@@ -140,7 +137,7 @@ public class FoodListActivity extends AppCompatActivity {
     private void deleteFood(Food food) {
         databaseReference.child(String.valueOf(food.getId())).removeValue()
                 .addOnSuccessListener(aVoid ->
-                        Toast.makeText(FoodListActivity.this, "Food deleted", Toast.LENGTH_SHORT).show())
+                        Toast.makeText(FoodListActivity.this, "Đã xóa món ăn", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e ->
                         Toast.makeText(FoodListActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }

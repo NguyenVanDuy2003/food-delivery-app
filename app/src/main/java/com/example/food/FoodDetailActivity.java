@@ -62,14 +62,12 @@ public class FoodDetailActivity extends AppCompatActivity {
             if (food != null) {
                 setAddToCart(food);
             } else {
-                Toast.makeText(FoodDetailActivity.this, "Failed to fetch food details.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FoodDetailActivity.this, "Không thể fetch food details, food = null", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void fetchFoodData(String foodId) {
-        Toast.makeText(this, "Loading food details...", Toast.LENGTH_SHORT).show();
-
         databaseReference.child(foodId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -77,29 +75,23 @@ public class FoodDetailActivity extends AppCompatActivity {
                     food = snapshot.getValue(Food.class);
 
                     if (food != null) {
-                        // Populate UI with data
                         foodName.setText(food.getName());
                         foodPrice.setText(String.format("%.2f", food.getPrice()));
                         foodDescription.setText(food.getIngredients());
 
-//                        if (food.getImageUrl() != null) {
-//                            Glide.with(FoodDetailActivity.this).load(food.getImageUrl()).into(foodImage);
-//                        } else {
-//                            Glide.with(FoodDetailActivity.this).load(R.drawable.default_food_image).into(foodImage);
-//                        }
                         Glide.with(FoodDetailActivity.this).load(food.getImageUrl()).into(foodImage);
                     } else {
-                        Toast.makeText(FoodDetailActivity.this, "Food details are unavailable.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FoodDetailActivity.this, "Food = null", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(FoodDetailActivity.this, "Food not found.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FoodDetailActivity.this, "Không tìm thấy món ăn.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 Log.e("FoodDetailActivity", "Database error: " + error.getMessage());
-                Toast.makeText(FoodDetailActivity.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FoodDetailActivity.this, "Không thể load data", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -116,7 +108,7 @@ public class FoodDetailActivity extends AppCompatActivity {
         String userId = sharedPreferences.getString(CommonKey.USER_ID, null);
 
         if (userId == null) {
-            Toast.makeText(FoodDetailActivity.this, "You must be logged in to add items to your cart.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(FoodDetailActivity.this, "Bạn chưa đăng nhập.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -129,9 +121,9 @@ public class FoodDetailActivity extends AppCompatActivity {
                     Integer existingQuantity = snapshot.child("quantity").getValue(Integer.class);
                     if (existingQuantity != null) {
                         cartRef.child("quantity").setValue(existingQuantity + currentQuantity);
-                        Toast.makeText(FoodDetailActivity.this, "Quantity updated in the cart.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FoodDetailActivity.this, "Đã cập nhật số lượng trong giỏ hàng", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(FoodDetailActivity.this, "Unexpected data encountered while updating cart.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FoodDetailActivity.this, "Item tồn tại nhưng không có quantity", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     cartRef.child("id").setValue(food.getId());
@@ -139,14 +131,14 @@ public class FoodDetailActivity extends AppCompatActivity {
                     cartRef.child("price").setValue(food.getPrice());
                     cartRef.child("name").setValue(food.getName());
                     cartRef.child("imageUrl").setValue(food.getImageUrl());
-                    Toast.makeText(FoodDetailActivity.this, "Item added to cart.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FoodDetailActivity.this, "Đã thêm" + currentQuantity + " sản phẩm" + food.getName() + " vào giỏ hàng", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 Log.e("CartDebug", "Failed to add item to cart: " + error.getMessage());
-                Toast.makeText(FoodDetailActivity.this, "Failed to add item to cart.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FoodDetailActivity.this, "Không thể thêm sản phẩm vào giỏ hàng", Toast.LENGTH_SHORT).show();
             }
         });
     }
