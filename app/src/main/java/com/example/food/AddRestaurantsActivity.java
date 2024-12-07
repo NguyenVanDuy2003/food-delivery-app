@@ -1,6 +1,7 @@
 package com.example.food;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.food.Common.CommonKey;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,6 +43,8 @@ public class AddRestaurantsActivity extends AppCompatActivity {
         // Khởi tạo Firebase Database và Storage
         databaseReference = FirebaseDatabase.getInstance().getReference("restaurants");
         storageReference = FirebaseStorage.getInstance().getReference("restaurant_images");
+
+
 
         // Ánh xạ các view
         exit = findViewById(R.id.exit);
@@ -89,6 +94,16 @@ public class AddRestaurantsActivity extends AppCompatActivity {
 
         // Xử lý thêm tài khoản
         add_TaiKhoan.setOnClickListener(v -> {
+
+            // Retrieve user ID from SharedPreferences
+            SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
+            String userId = sharedPreferences.getString(CommonKey.USER_ID, null);
+
+            if(userId == null){
+                Toast.makeText(AddRestaurantsActivity.this, "Không tìm thấy thông tin đăng nhập", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             // Lấy dữ liệu từ các trường nhập liệu
             String tenCuaHang = name.getText().toString();
             String soDienThoai = phone_number.getText().toString();
@@ -110,7 +125,7 @@ public class AddRestaurantsActivity extends AppCompatActivity {
 
             // Tạo ID cho nhà hàng
             String restaurantId = databaseReference.push().getKey();
-            Restaurant newRestaurant = new Restaurant(restaurantId, tenCuaHang, 0,  soDienThoai,diaChi, soTaiKhoan,  mota);
+            Restaurant newRestaurant = new Restaurant(restaurantId, tenCuaHang, 0,  soDienThoai,diaChi, soTaiKhoan,  mota ,userId);
 
             // Lưu ảnh nhà hàng lên Firebase Storage
             StorageReference imageRef = storageReference.child(restaurantId + "_image.jpg");

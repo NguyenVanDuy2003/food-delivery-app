@@ -1,6 +1,7 @@
 package com.example.food;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +22,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.food.Common.CommonKey;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -45,6 +47,8 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
 
     //Id nhà hàng
     private String restaurantID;
+    private String imgUrl;
+    private String qrCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +63,8 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
         // Khởi tạo Firebase Database và Storage
         databaseReference = FirebaseDatabase.getInstance().getReference("restaurants");
         storageReference = FirebaseStorage.getInstance().getReference("restaurant_images");
-
+        SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
+        String userId = sharedPreferences.getString(CommonKey.USER_ID, null);
         // Ánh xạ các view
         exit = findViewById(R.id.exit);
         imageResource = findViewById(R.id.imageResource);
@@ -80,7 +85,7 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
         Log.d("RestaurantID", "ID nhà hàng: " + restaurantID);
 
         if (restaurantID != null) {
-            loadRestaurantData(restaurantID);
+            loadRestaurantData(restaurantID );
         } else {
             Toast.makeText(this, "Không tìm thấy thông tin nhà hàng!", Toast.LENGTH_SHORT).show();
         }
@@ -132,7 +137,9 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
 
             // Tạo đối tượng nhà hàng mới
             Restaurant updatedRestaurant = new Restaurant(restaurantID, tenCuaHang, 0, soDienThoai, soTaiKhoan, diaChi, mota);
-
+            updatedRestaurant.setUserId(userId);
+            updatedRestaurant.setImageUrl(imgUrl);
+            updatedRestaurant.setQrcodeUrl(qrCode);
             // Check if a new restaurant image is selected
             if (selectedImageUri != null) {
                 StorageReference imageRef = storageReference.child(restaurantID + "_image.jpg");
@@ -225,6 +232,8 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
                 stk.setText(restaurant.getStk());
                 address.setText(restaurant.getAddress());
                 Mota.setText(restaurant.getMota());
+                qrCode = restaurant.getQrcodeUrl();
+                imgUrl = restaurant.getImageUrl();
 
                 // Load hình ảnh từ URL vào ImageView (dùng thư viện Glide)
                 if (restaurant.getImageUrl() != null) {

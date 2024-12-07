@@ -1,5 +1,6 @@
 package com.example.food;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,7 @@ public class AddUserActivity extends AppCompatActivity {
     private EditText userPhoneNumberEditText;
     private EditText userAddressEditText;
     private Spinner userRoleSpinner;
-    private Button saveButton;
+    private Button saveButton, btn_back;
 
     private DatabaseReference databaseReference;
 
@@ -37,10 +38,13 @@ public class AddUserActivity extends AppCompatActivity {
         userAddressEditText = findViewById(R.id.user_address_edit_text);
         userRoleSpinner = findViewById(R.id.user_role_spinner);
         saveButton = findViewById(R.id.save_button);
-
+        btn_back = findViewById(R.id.btn_back_user);
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-
         saveButton.setOnClickListener(v -> addUser());
+        btn_back.setOnClickListener(v -> {
+            Intent intent = new Intent(this, UserManagementActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void addUser() {

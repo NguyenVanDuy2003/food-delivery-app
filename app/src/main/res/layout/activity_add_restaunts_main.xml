@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@drawable/background_auth"
     tools:context=".AddRestaurantsActivity">
 
 
@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-
-        android:background="@color/white">
+        android:padding="20dp">
 
         <!-- CardView chứa ImageView -->
 
@@ -22,7 +21,7 @@
             android:id="@+id/exit"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@color/white"
+            android:background="@drawable/subtract_button_bg"
             android:scaleType="centerCrop"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
@@ -31,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="THÊM NHÀ HÀNG"
+            android:textColor="@color/primary"
             android:textStyle="bold"
             android:gravity="center"
             android:textSize="24dp"
@@ -113,6 +113,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nhập số điện thoại"
+                    android:inputType="phone"
+
                     android:paddingBottom="20dp"
                     android:textColor="#282626"
                     android:paddingHorizontal="5dp" />
