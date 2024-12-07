@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import java.util.List;
 public class FoodCartActivity extends AppCompatActivity {
     private RecyclerView foodCartItems;
     private Button btn_checkout;
+    private TextView subtotalValue, taxValue, deliveryValue, totalValue;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,11 +32,35 @@ public class FoodCartActivity extends AppCompatActivity {
         FoodCartAdapter foodCartAdapter = new FoodCartAdapter(foodCartList);
         foodCartItems.setAdapter(foodCartAdapter);
         foodCartItems.setLayoutManager(new GridLayoutManager(this, 1));
+        subtotalValue = findViewById(R.id.subtotalValue);
+        taxValue = findViewById(R.id.taxValue);
+        deliveryValue = findViewById(R.id.deliveryValue);
+        totalValue = findViewById(R.id.totalValue);
+
+        double subtotal = calculateTotalPrice(foodCartList);
+        double tax = subtotal * 0.1;
+        double delivery = 1.0;
+        double total = subtotal + tax + delivery;
+
+        taxValue.setText(String.format("%.2f", tax));
+        deliveryValue.setText(String.format("%.2f", delivery));
+        subtotalValue.setText(String.format("%.2f", subtotal));
+        totalValue.setText(String.format("%.2f", total));
 
         btn_checkout.setOnClickListener(v -> {
             Intent intent = new Intent(this, CheckoutActivity.class);
             startActivity(intent);
         });
 
+        Button returnButton = findViewById(R.id.return_btn);
+        returnButton.setOnClickListener(v -> finish());
+
+    }
+    private double calculateTotalPrice(List<FoodCartModel> foodCartList) {
+        double total = 0.0;
+        for (FoodCartModel item : foodCartList) {
+            total += item.getPrice() * item.getQuantity();
+        }
+        return total;
     }
 }

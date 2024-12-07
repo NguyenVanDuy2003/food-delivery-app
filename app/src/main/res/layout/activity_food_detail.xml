@@ -40,20 +40,23 @@
                     android:drawableStart="@drawable/return_button"
                     android:padding="23dp"/>
 
-                <Button
-                    android:id="@+id/fav_btn"
-                    android:layout_width="52dp"
+                <CheckBox
+                    android:id="@+id/fav_checkbox"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="18dp"
                     android:layout_marginEnd="21dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@color/white"
-                    android:text="💗" />
+                    android:background="@drawable/fav_button_bg"
+                    android:button="@drawable/heart_checkbox"
+                    android:checked="true"
+                    android:scaleX="1.2"
+                    android:scaleY="1.2"
+                    android:gravity="center" />
 
                 <TextView
                     android:id="@+id/food_name"
@@ -61,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/food_image"
                     android:layout_marginTop="10dp"
-                    android:text="Ground Beef Taco"
+                    android:text="Food name"
                     android:textSize="30sp"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
@@ -179,109 +182,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:textSize="20sp"
-                android:text="Brown the beef better. Lean ground beef – I like to use 85% lean angus. Garlic – use fresh  chopped. Spices – chili powder, cumin, onion powder." />
+                android:text="Food ingredient" />
 
-            <LinearLayout
-                android:id="@+id/additional_topping_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="20dp"
-                    android:text="Choice of Add On"/>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:gravity="center">
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            app:srcCompat="@drawable/topping_placeholder_1"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Pepper Julienned"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:layoutDirection="rtl"
-                        android:text="$2.30+"
-                        android:checked="true"
-                        android:layout_gravity="end|center_vertical"/>
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:gravity="center">
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            app:srcCompat="@drawable/topping_placeholder_2"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Baby Spinach"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:layoutDirection="rtl"
-                        android:text="$4.70+"
-                        android:layout_gravity="end|center_vertical"/>
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:gravity="center">
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            app:srcCompat="@drawable/topping_placeholder_3"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Masroom"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:layoutDirection="rtl"
-                        android:text="$2.50+"
-                        android:layout_gravity="end|center_vertical"/>
-                </FrameLayout>
-            </LinearLayout>
 
         </LinearLayout>
 

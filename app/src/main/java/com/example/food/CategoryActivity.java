@@ -1,86 +1,69 @@
 package com.example.food;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.food.Model.Food;
 import com.example.food.adapter.foodAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 public class CategoryActivity extends AppCompatActivity {
 
     ListView lvFood;
     ArrayList<Food> listFood;
-    foodAdapter adapterfood;
+    foodAdapter adapterFood;
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fastfood);
 
-        // Retrieve data from Intent
-        String restaurantName = getIntent().getStringExtra("restaurant_name");
-        int restaurantImage = getIntent().getIntExtra("restaurant_image", -1);
-        float restaurantRating = getIntent().getFloatExtra("restaurant_rating", 0);
-        String restaurantDeliveryTime = getIntent().getStringExtra("restaurant_delivery_time");
-
-        // Use the retrieved data as needed
-        // For example, you can set it to TextViews or ImageView in your layout
-        // TextView nameTextView = findViewById(R.id.tv_restaurant_name);
-        // nameTextView.setText(restaurantName);
-        // ImageView imageView = findViewById(R.id.iv_restaurant);
-        // imageView.setImageResource(restaurantImage);
-        // ... and so on
-
         // Xử lý chức năng thoát khi nhấn nút back
-        ImageButton backbutton = findViewById(R.id.back);
-        backbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        ImageButton backButton = findViewById(R.id.back);
+        backButton.setOnClickListener(view -> onBackPressed());
 
-        // Bước 1: Tạo danh sách các tùy chọn
+        // Step 1: Create sorting options
         String[] sortOptions = {"Popular", "Low to High", "High to Low"};
 
-        // Bước 2: Tìm Spinner trong layout
+        // Step 2: Find Spinner in the layout
         Spinner spinnerSort = findViewById(R.id.spinnerSort);
 
-        // Bước 3: Tạo ArrayAdapter cho Spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,  R.layout.spinner_item, sortOptions);
+        // Step 3: Create ArrayAdapter for Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, sortOptions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // Bước 4: Gán Adapter cho Spinner
+        // Step 4: Set the Adapter for Spinner
         spinnerSort.setAdapter(adapter);
 
-        // Bước 5: Xử lý sự kiện khi người dùng chọn một mục
+        // Step 5: Handle item selection from the Spinner
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Hiển thị lựa chọn của người dùng (tuỳ chọn)
                 String selectedSort = parentView.getItemAtPosition(position).toString();
-                Log.d("CategoryActivity", "Toast Triggered: " + selectedSort);  // Debugging log
                 Toast.makeText(CategoryActivity.this, "Selected: " + selectedSort, Toast.LENGTH_SHORT).show();
 
-                // Sắp xếp theo tùy chọn của người dùng
+                // Sorting based on user selection
                 switch (selectedSort) {
                     case "Low to High":
-                        // Sắp xếp danh sách theo giá từ thấp đến cao
                         Collections.sort(listFood, new Comparator<Food>() {
                             @Override
                             public int compare(Food f1, Food f2) {
@@ -90,7 +73,6 @@ public class CategoryActivity extends AppCompatActivity {
                         break;
 
                     case "High to Low":
-                        // Sắp xếp danh sách theo giá từ cao xuống thấp
                         Collections.sort(listFood, new Comparator<Food>() {
                             @Override
                             public int compare(Food f1, Food f2) {
@@ -99,44 +81,74 @@ public class CategoryActivity extends AppCompatActivity {
                         });
                         break;
 
-                    // Các tùy chọn khác...
                     case "Popular":
-                        // Nếu có logic sắp xếp khác, thêm vào đây
+                        // Handle other sorting logic if needed
                         break;
                 }
 
-                // Cập nhật lại adapter sau khi sắp xếp
-                adapterfood.notifyDataSetChanged();
+                // Update the adapter after sorting
+                if (adapterFood != null) {
+                    adapterFood.notifyDataSetChanged();
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // Không làm gì nếu không có lựa chọn
+                // No action needed
             }
         });
 
+        // Initialize Firebase Database
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("Food");
+
+        String restaurantID = getIntent().getStringExtra("restaurantID");
         lvFood = findViewById(R.id.lvFood);
 
-        // Khởi tạo danh sách các món ăn
+        // Initialize food list
         listFood = new ArrayList<>();
 
-        // Thêm dữ liệu vào danh sách
-        listFood.add(new Food("Chicken Hawaiian", 10.35, 101, R.drawable.a2, "Chicken, Cheese and Pineapple", true, 1));
-        listFood.add(new Food("Pepperoni Pizza", 9.99, 102, R.drawable.a3, "Pepperoni, Cheese", true, 1));
+        // Load food data from Firebase Realtime Database
+        loadFoodData(restaurantID);
+    }
 
-        // Khởi tạo adapter và gán cho ListView
-        adapterfood = new foodAdapter(this, R.layout.fast_food_item, listFood);
-        lvFood.setAdapter(adapterfood);
-
-        lvFood.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    private void loadFoodData(String restaurantID) {
+        // Fetching food data from Firebase Realtime Database
+        databaseReference.orderByChild("restaurantID").equalTo(restaurantID).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Food selectedFood = listFood.get(position);
-                Intent intent = new Intent(CategoryActivity.this, FoodDetailActivity.class);
-                intent.putExtra("foodID", selectedFood.getId());
-                startActivity(intent);
+            public void onDataChange(DataSnapshot snapshot) {
+                listFood.clear();
+
+                for (DataSnapshot foodSnapshot : snapshot.getChildren()) {
+                    Food food = foodSnapshot.getValue(Food.class);
+                    if (food != null) {
+                        listFood.add(food);
+                    }
+                }
+
+                TextView tvEmptyMessage = findViewById(R.id.tvEmptyMessage);
+                if (listFood.isEmpty()) {
+                    lvFood.setVisibility(View.GONE);
+                    tvEmptyMessage.setVisibility(View.VISIBLE);
+                } else {
+                    lvFood.setVisibility(View.VISIBLE);
+                    tvEmptyMessage.setVisibility(View.GONE);
+                }
+
+                // Set up the adapter after fetching data
+                adapterFood = new foodAdapter(CategoryActivity.this, R.layout.fast_food_item, listFood);
+                lvFood.setAdapter(adapterFood);
+
+                // Notify adapter that data has changed
+                if (adapterFood != null) {
+                    adapterFood.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(CategoryActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }

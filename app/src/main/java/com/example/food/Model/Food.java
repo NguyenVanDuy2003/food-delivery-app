@@ -1,33 +1,46 @@
 package com.example.food.Model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Food implements Serializable {
 
     private String name;
     private double price;
-    private int id;  // Firebase key id
-    private int imageResource;
+    private String id;  // Firebase key id
+    private String restaurantID;
+    private String imageUrl;  // Changed from int imageResource to String imageUrl
     private String ingredients;
     private boolean isAvailable;
-//    private Date dateAdded;
-    private int quantity;
+    private List<String> toppings;  // List of toppings
 
     // Default constructor (required for Firebase)
     public Food() {
+        this.toppings = new ArrayList<>();  // Initialize toppings as an empty list
     }
 
     // Constructor for initializing the fields
-    public Food(String name, double price, int id, int imageResource, String ingredients, boolean isAvailable, int quantity) {
+    public Food(String name, double price, String id, String restaurantID, String imageUrl, String ingredients, boolean isAvailable, List<String> toppings) {
         this.name = name;
         this.price = price;
         this.id = id;
-        this.imageResource = imageResource;
+        this.restaurantID = restaurantID;
+        this.imageUrl = imageUrl;  // Set image URL instead of resource
         this.ingredients = ingredients;
         this.isAvailable = isAvailable;
-//        this.dateAdded = dateAdded;
-        this.quantity = quantity;
+        this.toppings = (toppings != null) ? toppings : new ArrayList<>();  // Ensure toppings is never null
+    }
+
+    // Constructor without id (for creating new Food without an id initially)
+    public Food(String name, double price, String imageUrl, String restaurantId, String ingredients, boolean isAvailable, List<String> toppings) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.restaurantID = restaurantId;
+        this.ingredients = ingredients;
+        this.isAvailable = isAvailable;
+        this.toppings = (toppings != null) ? toppings : new ArrayList<>();
     }
 
     // Getters and setters
@@ -47,20 +60,28 @@ public class Food implements Serializable {
         this.price = price;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getImageResource() {
-        return imageResource;
+    public String getRestaurantID() {
+        return restaurantID;
     }
 
-    public void setImageResource(int imageResource) {
-        this.imageResource = imageResource;
+    public void setRestaurantID(String restaurantID) {
+        this.restaurantID = restaurantID;
+    }
+
+    public String getImageUrl() {  // Changed getter for imageUrl
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {  // Changed setter for imageUrl
+        this.imageUrl = imageUrl;
     }
 
     public String getIngredients() {
@@ -79,19 +100,11 @@ public class Food implements Serializable {
         isAvailable = available;
     }
 
-//    public Date getDateAdded() {
-//        return dateAdded;
-//    }
-//
-//    public void setDateAdded(Date dateAdded) {
-//        this.dateAdded = dateAdded;
-//    }
-
-    public int getQuantity() {
-        return quantity;
+    public List<String> getToppings() {
+        return toppings;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setToppings(List<String> toppings) {
+        this.toppings = (toppings != null) ? toppings : new ArrayList<>();  // Prevent null list
     }
 }

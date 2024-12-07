@@ -2,7 +2,6 @@ package com.example.food.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +13,24 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
 import com.example.food.Model.Food;
 import com.example.food.R;
 import com.example.food.FoodDetailActivity;
 
 import java.util.ArrayList;
 
+public class foodAdapter extends ArrayAdapter<Food> {
 
-public class foodAdapter extends ArrayAdapter {
     Activity context;
     int resource;
     ArrayList<Food> listFood;
-    public foodAdapter(Activity context, int resource , ArrayList<Food> listF){
-        super(context, resource);
+
+    public foodAdapter(Activity context, int resource, ArrayList<Food> listFood) {
+        super(context, resource, listFood);
         this.context = context;
         this.resource = resource;
-        this.listFood = listF;
+        this.listFood = listFood;
     }
 
     @Override
@@ -53,24 +54,22 @@ public class foodAdapter extends ArrayAdapter {
 
         Food food = this.listFood.get(position);
 
-        image.setImageResource(food.getImageResource());
+        // Load the image from the URL using Glide
+        Glide.with(context)
+                .load(food.getImageUrl()) // URL of the image
+                .into(image); // Set it into the ImageView
+
         tvNameFood.setText(food.getName());
-        tvPriceFood.setText(food.getPrice() + "");
+        tvPriceFood.setText(String.valueOf(food.getPrice()));
         tvDescription.setText(food.getIngredients());
 
-        customView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("foodAdapter", "Item clicked: " + food.getName());
-                Toast.makeText(context, "Item clicked: " + food.getName(), Toast.LENGTH_SHORT).show();
-                Log.d("foodAdapter", "Item clicked: " + food.getImageResource());
-                Intent intent = new Intent(context, FoodDetailActivity.class);
-                intent.putExtra("foodID", food.getId());
-                context.startActivity(intent);
-            }
+        customView.setOnClickListener(v -> {
+            Toast.makeText(context, "Item clicked: " + food.getName(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, FoodDetailActivity.class);
+            intent.putExtra("foodID", food.getId());
+            context.startActivity(intent);
         });
 
         return customView;
-
     }
 }

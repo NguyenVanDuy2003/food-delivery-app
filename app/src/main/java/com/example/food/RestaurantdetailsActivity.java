@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -35,7 +34,7 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
     private StorageReference storageReference;
     ImageButton exit, imageResource, qrcode;
     EditText name, phone_number, stk, address,Mota;
-    Button btn_update, btn_xoa;
+    Button btn_update, btn_xoa, btn_manage_food;
     ImageView imgRestaurantView, qrcodeView;
 
 
@@ -54,7 +53,7 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_restaunt_details);
+        setContentView(R.layout.activity_restaurant_details);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -165,13 +164,13 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
         // Xử lý thoát
         exit.setOnClickListener(v -> finish());
 
-//        Button btnManageFood = findViewById(R.id.btn_manage_food);
+        btn_manage_food = findViewById(R.id.btn_manage_food);
 
-//        btnManageFood.setOnClickListener(v -> {
-//            Intent intent = new Intent(RestaurantdetailsActivity.this, AdminManagementActivity.class);
-//            intent.putExtra("restaurantId", restaurantID); // Pass the restaurant ID if needed
-//            startActivity(intent);
-//        });
+        btn_manage_food.setOnClickListener(v -> {
+            Intent intent = new Intent(RestaurantdetailsActivity.this, FoodListActivity.class);
+            intent.putExtra("restaurantID", restaurantID); // Pass the restaurant ID if needed
+            startActivity(intent);
+        });
 
         btn_xoa.setOnClickListener(v -> {
             // Hiển thị hộp thoại xác nhận trước khi xóa
