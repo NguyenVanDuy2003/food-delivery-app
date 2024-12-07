@@ -57,7 +57,8 @@ public class UserManagementActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Quay lại activity trước đó
+                Intent intent = new Intent(UserManagementActivity.this, AdminActivity.class);
+                startActivity(intent);
             }
         });
 
