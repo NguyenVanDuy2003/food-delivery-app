@@ -78,7 +78,7 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
         qrcodeView = findViewById(R.id.qrcodeView);
         Mota  = findViewById(R.id.Mota);
 
-        restaurantID = getIntent().getStringExtra("restaurantId");
+        restaurantID = getIntent().getStringExtra("restaurantID");
 
         // hiển thị restaurantID
         Log.d("RestaurantID", "ID nhà hàng: " + restaurantID);

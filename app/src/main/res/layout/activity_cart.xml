@@ -21,7 +21,19 @@
                 android:textStyle="bold"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="30dp"/>
+
+            <TextView
+                android:id="@+id/empty_cart_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Giỏ hàng rỗng"
+                android:textSize="16sp"
+                android:textColor="@color/gray_100"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_marginTop="20dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/foodCartItems"
@@ -41,32 +53,10 @@
                 android:gravity="center_vertical"
                 android:layout_marginTop="20dp">
 
-                <EditText
-                    android:id="@+id/promoCodeEditText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:hint="Promo Code"
-                    android:padding="8dp"
-                    android:inputType="text"
-                    android:textColorHint="#A0A0A0"
-                    android:gravity="center_vertical"
-                    android:imeOptions="actionDone" />
-
-                <Button
-                    android:id="@+id/applyButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Apply"
-                    android:backgroundTint="#FF7043"
-                    android:textColor="@android:color/white"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:layout_marginStart="8dp"/>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/fees"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -191,9 +181,10 @@
                         android:textStyle="bold"
                         android:layout_centerVertical="true"/>
                     <TextView
+                        android:id="@+id/totalItem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="(2 items)"
+                        android:text="(0 items)"
                         android:textSize="20sp"
                         android:layout_toRightOf="@+id/totalText"
                         android:layout_centerVertical="true"

@@ -1,11 +1,36 @@
 package com.example.food;
 
-public class FoodCartModel {
+import java.io.Serializable;
+
+public class FoodCartModel implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private String id;
     private String name;
     private String ingredient;
     private int quantity;
     private double price;
-    private int imgId;
+    private String imageUrl;
+
+    // Default constructor for Firebase
+    public FoodCartModel() {}
+
+    public FoodCartModel(String id, String name, String ingredient, double price, int quantity, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.ingredient = ingredient;
+        this.price = Math.max(0, price);
+        this.quantity = Math.max(0, quantity);
+        this.imageUrl = imageUrl;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -31,14 +56,6 @@ public class FoodCartModel {
         this.quantity = Math.max(0, quantity);
     }
 
-    public int getImgId() {
-        return imgId;
-    }
-
-    public void setImgId(int imgId) {
-        this.imgId = imgId;
-    }
-
     public double getPrice() {
         return price;
     }
@@ -47,11 +64,23 @@ public class FoodCartModel {
         this.price = Math.max(0, price);
     }
 
-    public FoodCartModel(String name, String ingredient, double price, int quantity, int imgId) {
-        this.setName(name);
-        this.setIngredient(ingredient);
-        this.setPrice(price);
-        this.setQuantity(quantity);
-        this.setImgId(imgId);
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "FoodCartModel{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", ingredient='" + ingredient + '\'' +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
     }
 }
