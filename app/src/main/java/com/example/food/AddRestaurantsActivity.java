@@ -38,7 +38,7 @@ public class AddRestaurantsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_restaunts_main);
+        setContentView(R.layout.activity_add_restaurant_main);
 
         // Khởi tạo Firebase Database và Storage
         databaseReference = FirebaseDatabase.getInstance().getReference("restaurants");

@@ -80,6 +80,15 @@
         <activity
             android:name=".AddUserActivity"
             android:exported="false" />
+        <activity
+            android:name=".FoodListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddFoodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FoodUpdateActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

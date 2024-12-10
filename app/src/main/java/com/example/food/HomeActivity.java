@@ -3,10 +3,12 @@ package com.example.food;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,8 +76,7 @@ public class HomeActivity extends AppCompatActivity {
         if (itemId == R.id.my_orders) {
             // Handle My Orders action
         } else if (itemId == R.id.my_profile) {
-            Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);
+            // Handle My Profile action
         } else if (itemId == R.id.delivery_address) {
             // Handle Delivery Address action
         } else if (itemId == R.id.payment_methods) {
@@ -102,9 +103,10 @@ public class HomeActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         restaurants = new ArrayList<>();
-        restaurantAdapter = new RestaurantAdapter(this,restaurants);
+        restaurantAdapter = new RestaurantAdapter(this, restaurants);
         restaurantRecyclerView.setAdapter(restaurantAdapter);
     }
+
 
     private void setupSearchFunctionality() {
         btnSearch.setOnClickListener(v -> performSearch());
@@ -131,9 +133,9 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         List<Restaurant> filteredList = restaurants.stream()
-            .filter(restaurant ->
-                restaurant.getName().toLowerCase().contains(query.toLowerCase()))
-            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+                .filter(restaurant ->
+                        restaurant.getName().toLowerCase().contains(query.toLowerCase()))
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
         restaurantAdapter = new RestaurantAdapter(this, filteredList);
         restaurantRecyclerView.setAdapter(restaurantAdapter);
@@ -142,11 +144,11 @@ public class HomeActivity extends AppCompatActivity {
     private void setupBottomNavigation() {
         findViewById(R.id.btn_view_all).setOnClickListener(v -> navigateToAllRestaurants());
         findViewById(R.id.btn_home).setOnClickListener(v -> {/* Already on home screen */});
-        findViewById(R.id.btn_cart).setOnClickListener(v -> {/* TODO: Navigate to cart */});
-        findViewById(R.id.btn_profile).setOnClickListener(v -> {
-            Intent intent = new Intent(this, ProfileActivity.class);
+        findViewById(R.id.btn_cart).setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, FoodCartActivity.class);
             startActivity(intent);
         });
+        findViewById(R.id.btn_profile).setOnClickListener(v -> {/* TODO: Navigate to profile */});
     }
 
     private void navigateToAllRestaurants() {
@@ -167,7 +169,7 @@ public class HomeActivity extends AppCompatActivity {
                         restaurants.add(restaurant); // Add restaurant to the list
                     }
                 }
-                restaurantAdapter.notifyDataSetChanged(); 
+                restaurantAdapter.notifyDataSetChanged(); // Notify adapter of data change
             }
 
             @Override
