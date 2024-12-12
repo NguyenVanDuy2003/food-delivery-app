@@ -160,7 +160,6 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
                                 public void onDataChange(DataSnapshot snapshot) {
                                     if (snapshot.exists()) {
                                         String restaurantName = snapshot.child("name").getValue(String.class);
-<<<<<<< HEAD
                                         name.setText(restaurantName);
                                         String restaurantSTK = snapshot.child("stk").getValue(String.class);
                                         stk.setText(restaurantSTK);
@@ -176,18 +175,11 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
                                         }
                                         if (restaurantSTK != null){
                                             Log.d("RestaurantName", "Restaurant stk: " + restaurantSTK);
+                                        }
 //                                        if (qrcodeUrl != null){
 //                                            Log.d("RestaurantName", "Restaurant qr: " + qrcodeUrl);
 //                                        }
 
-=======
-
-                                        if (restaurantName != null) {
-                                            Log.d("RestaurantName", "Restaurant name: " + restaurantName);
-                                        } else {
-                                            Log.w("RestaurantName", "No name found for restaurant_id: " + restaurantId);
-                                        }
->>>>>>> 1bf6174128aad0831fa609ce24c3e6b0b027532b
                                     } else {
                                         Log.w("RestaurantData", "No data found for restaurant_id: " + restaurantId);
                                     }
