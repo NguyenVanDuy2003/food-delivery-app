@@ -140,65 +140,6 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
 
     }
 
-    private void loadCartAndRestaurantData(String userId){
-        cartdatabaseReference.orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot cartSnapshot : dataSnapshot.getChildren()) {
-                        // Lấy restaurant_id từ giỏ hàng
-                        String restaurantId = cartSnapshot.child("restaurant_id").getValue(String.class);
-                        String itemName = cartSnapshot.child("name").getValue(String.class);
-                        double itemPrice = cartSnapshot.child("price").getValue(double.class);
-
-                        Log.d("CartItem", "Item: " + itemName + ", Price: " + itemPrice);
-
-                        // Lấy thông tin nhà hàng từ restaurantId
-                        if (restaurantId != null) {
-                            loadRestaurantData(restaurantId, itemName, itemPrice);
-                        }
-                    }
-                } else {
-                    Toast.makeText(ThanhToanOnlActivity.this, "Giỏ hàng trống!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("FirebaseError", databaseError.getMessage());
-            }
-        });
-
-    }
-
-    private void loadRestaurantData(String restaurantId, String restaurantID, double itemPrice) {
-        databaseReference.child(restaurantId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Restaurant restaurant = snapshot.getValue(Restaurant.class);
-
-                    if (restaurant != null) {
-                        // Hiển thị dữ liệu lên giao diện
-                        name.setText(restaurant.getName());
-                        stk.setText(restaurant.getStk());
-                        price.setText(String.valueOf(itemPrice)); // Giá của sản phẩm trong giỏ hàng
-
-                        Glide.with(ThanhToanOnlActivity.this)
-                                .load(restaurant.getQrcodeUrl())
-                                .into(qrcode);
-                    }
-                } else {
-                    Toast.makeText(ThanhToanOnlActivity.this, "Không tìm thấy nhà hàng!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("FirebaseError", databaseError.getMessage());
-            }
-        });
-    }
 
     private void fetchRestaurantIdsForUser(String userId) {
         Log.d("RestaurantID", "Fetching restaurant IDs for userId: " + userId);
@@ -213,6 +154,40 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
                         String restaurantId = foodItemSnapshot.child("restaurant_id").getValue(String.class);
                         if (restaurantId != null) {
                             Log.d("RestaurantID", "Found restaurant_id: " + restaurantId);
+                            // Query the restaurants node to get the restaurant name
+                            databaseReference.child(restaurantId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        String restaurantName = snapshot.child("name").getValue(String.class);
+                                        name.setText(restaurantName);
+                                        String restaurantSTK = snapshot.child("stk").getValue(String.class);
+                                        stk.setText(restaurantSTK);
+//                                        String qrcodeUrl = snapshot.child("qrcode").getValue(String.class);
+//                                        // Handle QR code URL
+//                                        if (qrcodeUrl != null && !qrcodeUrl.isEmpty()) {
+//                                            Glide.with(ThanhToanOnlActivity.this) // "this" if in Activity context
+//                                                    .load(qrcodeUrl) // Load the QR code image from URL
+//                                                    .into(qrcode); // Display the image in the ImageView
+//                                        }
+                                        if (restaurantName != null) {
+                                            Log.d("RestaurantName", "Restaurant name: " + restaurantName);
+                                        }
+                                        if (restaurantSTK != null){
+                                            Log.d("RestaurantName", "Restaurant stk: " + restaurantSTK);
+//                                        if (qrcodeUrl != null){
+//                                            Log.d("RestaurantName", "Restaurant qr: " + qrcodeUrl);
+//                                        }
+
+                                    } else {
+                                        Log.w("RestaurantData", "No data found for restaurant_id: " + restaurantId);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.e("FirebaseError", "Failed to fetch restaurant data: " + databaseError.getMessage());
+                                }
+                            });
                         } else {
                             Log.w("RestaurantID", "No restaurant_id found for this item.");
                         }
