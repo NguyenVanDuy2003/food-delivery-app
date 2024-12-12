@@ -66,6 +66,12 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
         String userId = sharedPreferences.getString(CommonKey.USER_ID, null);
 
+        if (userId != null) {
+            fetchRestaurantIdsForUser(userId);
+        } else {
+            Log.w("UserID", "No userId found in SharedPreferences.");
+        }
+
         btnquaylai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,5 +199,36 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void fetchRestaurantIdsForUser(String userId) {
+        Log.d("RestaurantID", "Fetching restaurant IDs for userId: " + userId);
+
+        // Access the specific UserID node using the provided userId
+        cartdatabaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot foodItemSnapshot : dataSnapshot.getChildren()) {
+                        // Access restaurant_id under FoodID
+                        String restaurantId = foodItemSnapshot.child("restaurant_id").getValue(String.class);
+                        if (restaurantId != null) {
+                            Log.d("RestaurantID", "Found restaurant_id: " + restaurantId);
+                        } else {
+                            Log.w("RestaurantID", "No restaurant_id found for this item.");
+                        }
+                    }
+                } else {
+                    Log.w("Cart", "No data found for userId: " + userId);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("FirebaseError", "Failed to fetch cart data: " + databaseError.getMessage());
+            }
+        });
+    }
+
+
 
 }
