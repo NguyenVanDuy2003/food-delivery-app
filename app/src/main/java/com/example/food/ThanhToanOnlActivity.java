@@ -213,6 +213,27 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
                         String restaurantId = foodItemSnapshot.child("restaurant_id").getValue(String.class);
                         if (restaurantId != null) {
                             Log.d("RestaurantID", "Found restaurant_id: " + restaurantId);
+                            // Query the restaurants node to get the restaurant name
+                            databaseReference.child(restaurantId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        String restaurantName = snapshot.child("name").getValue(String.class);
+
+                                        if (restaurantName != null) {
+                                            Log.d("RestaurantName", "Restaurant name: " + restaurantName);
+                                        } else {
+                                            Log.w("RestaurantName", "No name found for restaurant_id: " + restaurantId);
+                                        }
+                                    } else {
+                                        Log.w("RestaurantData", "No data found for restaurant_id: " + restaurantId);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.e("FirebaseError", "Failed to fetch restaurant data: " + databaseError.getMessage());
+                                }
+                            });
                         } else {
                             Log.w("RestaurantID", "No restaurant_id found for this item.");
                         }
