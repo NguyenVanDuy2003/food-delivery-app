@@ -222,7 +222,7 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
 
 
     private void loadRestaurantData(String restaurantID) {
-        databaseReference.child(restaurantID).get().addOnSuccessListener(snapshot ->  {
+            databaseReference.child(restaurantID).get().addOnSuccessListener(snapshot ->  {
             if (snapshot.exists()) {
                 Restaurant restaurant = snapshot.getValue(Restaurant.class);
                 // Hiển thị dữ liệu lên các trường nhập liệu

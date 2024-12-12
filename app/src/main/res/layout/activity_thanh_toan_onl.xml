@@ -23,7 +23,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/id_qrcode"
+                android:id="@+id/qrcode"
                 android:layout_marginTop="20dp"
                 android:layout_width="240dp"
                 android:layout_height="240dp"
@@ -31,16 +31,16 @@
                 android:layout_gravity="center"/>
 
             <TextView
-                android:id="@+id/nameRestaurants"
+                android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tên cửa hàng"
                 android:textColor="#1F1E1E"
-                android:textSize="25dp"
+                android:textSize="25sp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"/>
             <TextView
-                android:id="@+id/id_stk"
+                android:id="@+id/stk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#1F1E1E"
