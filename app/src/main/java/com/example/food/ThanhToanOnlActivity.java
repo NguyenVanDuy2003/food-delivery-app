@@ -151,7 +151,18 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot foodItemSnapshot : dataSnapshot.getChildren()) {
                         // Access restaurant_id under FoodID
+
                         String restaurantId = foodItemSnapshot.child("restaurant_id").getValue(String.class);
+                        Double restaurantPrice = foodItemSnapshot.child("price").getValue(Double.class);
+                        if (restaurantPrice != null && price != null) {
+                            // Chuyển Double thành String để hiển thị trên TextView
+                            price.setText(String.format("%.2f", restaurantPrice)); // Định dạng 2 chữ số thập phân
+                            Log.d("Price", "Price: " + restaurantPrice);
+                        } else {
+                            Log.w("Price", "Price is null or TextView not initialized.");
+                        }
+
+
                         if (restaurantId != null) {
                             Log.d("RestaurantID", "Found restaurant_id: " + restaurantId);
                             // Query the restaurants node to get the restaurant name
@@ -163,23 +174,22 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
                                         name.setText(restaurantName);
                                         String restaurantSTK = snapshot.child("stk").getValue(String.class);
                                         stk.setText(restaurantSTK);
-//                                        String qrcodeUrl = snapshot.child("qrcode").getValue(String.class);
-//                                        // Handle QR code URL
-//                                        if (qrcodeUrl != null && !qrcodeUrl.isEmpty()) {
-//                                            Glide.with(ThanhToanOnlActivity.this) // "this" if in Activity context
-//                                                    .load(qrcodeUrl) // Load the QR code image from URL
-//                                                    .into(qrcode); // Display the image in the ImageView
-//                                        }
+                                        String imgqrcode = snapshot.child("qrcodeUrl").getValue(String.class);
+                                        // Handle QR code URL
+                                        if (imgqrcode != null && !imgqrcode.isEmpty()) {
+                                            Glide.with(ThanhToanOnlActivity.this) // "this" if in Activity context
+                                                    .load(imgqrcode) // Load the QR code image from URL
+                                                    .into(qrcode); // Display the image in the ImageView
+                                        }
                                         if (restaurantName != null) {
                                             Log.d("RestaurantName", "Restaurant name: " + restaurantName);
                                         }
                                         if (restaurantSTK != null){
-                                            Log.d("RestaurantName", "Restaurant stk: " + restaurantSTK);
+                                            Log.d("Restaurantstk", "Restaurant stk: " + restaurantSTK);
                                         }
-//                                        if (qrcodeUrl != null){
-//                                            Log.d("RestaurantName", "Restaurant qr: " + qrcodeUrl);
-//                                        }
-
+                                        if (imgqrcode != null){
+                                            Log.d("Restaurantqrcode", "Restaurant qr: " + imgqrcode);
+                                        }
                                     } else {
                                         Log.w("RestaurantData", "No data found for restaurant_id: " + restaurantId);
                                     }
