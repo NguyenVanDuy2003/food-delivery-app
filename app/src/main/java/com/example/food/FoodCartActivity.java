@@ -124,10 +124,11 @@ public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapt
             totalQuantity += model.getQuantity();
         }
 
+        Double deliveryFee = 1.0;
         subtotalValue.setText(String.format("$%.2f", subtotal));
         taxValue.setText(String.format("$%.2f", subtotal * 0.1));
-        deliveryValue.setText("1.0");
-        totalValue.setText(String.format("$%.2f", subtotal + subtotal * 0.1 + 5.0));
+        deliveryValue.setText(deliveryFee.toString());
+        totalValue.setText(String.format("$%.2f", subtotal + subtotal * 0.1 + deliveryFee));
         totalItem.setText(String.format("%d items", totalQuantity));
     }
 
