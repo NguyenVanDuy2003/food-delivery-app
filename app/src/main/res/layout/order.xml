@@ -6,18 +6,20 @@
     android:background="@drawable/item_border"
     android:layout_marginVertical="10dp"
     android:padding="8dp">
+    <ImageView
+        android:id="@+id/ivDishImg"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:clipToOutline="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/food_detail_placeholder"
+        android:contentDescription="Food Image" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <!-- Image view for the food item image -->
-        <ImageView
-            android:id="@+id/OlderImageView"
-            android:layout_width="80dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/food_detail_placeholder"
-            android:contentDescription="Food Image" />
+
 
         <LinearLayout
             android:orientation="vertical"

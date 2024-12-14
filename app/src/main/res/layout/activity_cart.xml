@@ -38,7 +38,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/foodCartItems"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="350dp">
 
 
             </androidx.recyclerview.widget.RecyclerView>
@@ -213,18 +213,10 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_checkout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:backgroundTint="#FF7043"
-                android:textColor="@android:color/white"
-                android:text="Checkout"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="30dp"/>
+
         </LinearLayout>
     </RelativeLayout>
+
     <Button
         android:id="@+id/return_btn"
         android:layout_width="60dp"
@@ -235,4 +227,14 @@
         android:background="@drawable/return_button_bg"
         android:drawableStart="@drawable/return_button"
         android:padding="23dp" />
+    <Button
+        android:id="@+id/btn_checkout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:backgroundTint="#FF7043"
+        android:textColor="@android:color/white"
+        android:text="Checkout"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"/>
 </FrameLayout>

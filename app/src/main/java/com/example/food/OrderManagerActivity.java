@@ -1,6 +1,7 @@
 package com.example.food;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,8 +15,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.food.Model.Order;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class OrderManagerActivity extends AppCompatActivity {
@@ -24,6 +32,8 @@ public class OrderManagerActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private OrderAdapter adapter;
     private List<Order> orderList;
+    private String restaurantID;
+    private DatabaseReference orderRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +47,9 @@ public class OrderManagerActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Get restaurant ID from intent
+        restaurantID = getIntent().getStringExtra("restaurantID");
 
         // Initialize views
         btn_quaylai = findViewById(R.id.btn_quaylai);
@@ -62,8 +75,49 @@ public class OrderManagerActivity extends AppCompatActivity {
     }
 
     private void populateOrderList() {
-        orderList.add(new Order("001", "Pizza", 2, 200.0, "2024-12-14", "John Doe", "Credit Card"));
-        orderList.add(new Order("002", "Burger", 1, 100.0, "2024-12-13", "Jane Smith", "Cash"));
-        orderList.add(new Order("003", "Pasta", 3, 300.0, "2024-12-12", "Mike Ross", "Debit Card"));
+        if (restaurantID == null) {
+            Log.d("OrderManagerActivity", "restaurantID is null");
+            return;
+        }
+
+        orderRef = FirebaseDatabase.getInstance().getReference("Order").child(restaurantID);
+        orderRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                orderList.clear(); // Clear existing orders to avoid duplicates
+                for (DataSnapshot orderSnapshot : dataSnapshot.getChildren()) {
+                    Order order = orderSnapshot.getValue(Order.class);
+                    if (order != null) {
+                        try {
+                            // Get the order date as a timestamp (milliseconds)
+                            long timestamp = Long.parseLong(order.getOrderDate());
+
+                            // Convert the timestamp to a Date object
+                            Date date = new Date(timestamp);
+
+                            // Format the date as a string
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String formattedDate = sdf.format(date);
+
+                            // Set the formatted date to the order
+                            order.setOrderDate(formattedDate);
+                        } catch (Exception e) {
+                            Log.d("OrderManagerActivity", "Date format error: " + e.getMessage());
+                        }
+
+                        // Add the order to the list
+                        orderList.add(order);
+                    }
+                }
+                adapter.notifyDataSetChanged(); // Notify adapter to refresh the RecyclerView
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("OrderManagerActivity", "Failed to read orders: " + databaseError.getMessage());
+            }
+        });
     }
+
 }
+

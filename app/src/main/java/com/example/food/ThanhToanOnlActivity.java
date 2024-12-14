@@ -38,11 +38,12 @@ import java.io.OutputStream;
 
 public class ThanhToanOnlActivity extends AppCompatActivity {
     // ánh xa
-    private DatabaseReference databaseReference,cartdatabaseReference;
+    private DatabaseReference databaseReference,cartdatabaseReference, userRef;
     private ImageView qrcode ;
     private TextView name, stk, price;
     private Button btnquaylai , btnluuanh;
     private String restaurantID;
+    String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,8 +157,6 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
                         price.setText(getIntent().getStringExtra("totalValue"));
 
                         if (restaurantId != null) {
-                            Log.d("RestaurantID", "Found restaurant_id: " + restaurantId);
-                            createOrder(restaurantId);
                             // Query the restaurants node to get the restaurant name
                             databaseReference.child(restaurantId).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -205,79 +204,6 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("FirebaseError", "Failed to fetch cart data: " + databaseError.getMessage());
-            }
-        });
-    }
-
-    private void createOrder(String restaurantId) {
-        if(restaurantId == null){
-            Toast.makeText(ThanhToanOnlActivity.this, "Restaurant ID is null", Toast.LENGTH_SHORT).show();
-            Log.e("RestaurantID", "Restaurant ID is null");
-            return;
-        }
-        // Fetch userId from SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
-        String userId = sharedPreferences.getString(CommonKey.USER_ID, null);
-
-        if (userId == null) {
-            Toast.makeText(ThanhToanOnlActivity.this, "User not logged in.", Toast.LENGTH_SHORT).show();
-            Log.w("UserID", "No userId found in SharedPreferences.");
-            return;
-        }
-
-        // Create a unique order ID (can use timestamp or UUID)
-        String orderId = "ORD_" + System.currentTimeMillis();
-
-        // Get the current time to set as the order date
-        String orderDate = String.valueOf(System.currentTimeMillis()); // or use a date formatter
-
-        // Fetch cart items for the user
-        cartdatabaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // Iterate over the items in the cart
-                    for (DataSnapshot cartItemSnapshot : dataSnapshot.getChildren()) {
-                        String dishName = cartItemSnapshot.child("name").getValue(String.class);
-                        Integer quantity = cartItemSnapshot.child("quantity").getValue(Integer.class);
-                        Double pricePerDish = cartItemSnapshot.child("price").getValue(Double.class);
-
-                        if (dishName != null && quantity != null && pricePerDish != null) {
-                            // Create an order object for each cart item
-                            Order order = new Order(
-                                    orderId,           // Order ID
-                                    dishName,          // Dish name
-                                    quantity,          // Quantity
-                                    pricePerDish,      // Price per dish
-                                    orderDate,         // Order date
-                                    userId,            // Orderer name (user ID)
-                                    "Online Payment"   // Payment method (can be dynamic if needed)
-                            );
-
-                            // Save the order to the database under the restaurant ID
-                            DatabaseReference orderReference = FirebaseDatabase.getInstance().getReference("Order").child(restaurantId).child(orderId);
-                            orderReference.setValue(order);
-
-                            // Optionally log the order
-                            Log.d("OrderCreated", "Created order: " + order.toString());
-                        }
-                    }
-
-                    // After the order is created, clear the cart
-                    cartdatabaseReference.child(userId).removeValue();
-
-                    // Inform the user about the successful order creation
-                    Toast.makeText(ThanhToanOnlActivity.this, "Order created successfully!", Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
-                    Toast.makeText(ThanhToanOnlActivity.this, "No items in the cart.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("FirebaseError", "Failed to fetch cart data: " + databaseError.getMessage());
-                Toast.makeText(ThanhToanOnlActivity.this, "Failed to create order.", Toast.LENGTH_SHORT).show();
             }
         });
     }

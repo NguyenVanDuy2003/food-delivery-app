@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.food.Model.Order;
 
 import java.util.List;
@@ -39,6 +41,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.tvOrderDate.setText(order.getOrderDate());
         holder.tvOrdererName.setText(order.getOrdererName());
         holder.tvPaymentMethod.setText(order.getPaymentMethod());
+
+        // Load the dish image using Glide
+        Glide.with(context)
+                .load(order.getDishImg()) // Dish image URL
+                .into(holder.ivDishImg);  // ImageView where the image should be loaded
     }
 
     @Override
@@ -49,6 +56,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvDishName, tvQuantity, tvPricePerDish, tvOrderDate, tvOrdererName, tvPaymentMethod;
+        ImageView ivDishImg;  // ImageView for displaying the dish image
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -58,6 +66,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             tvOrderDate = itemView.findViewById(R.id.tvOrderDate);
             tvOrdererName = itemView.findViewById(R.id.tvOrdererName);
             tvPaymentMethod = itemView.findViewById(R.id.tvPaymentMethod);
+            ivDishImg = itemView.findViewById(R.id.ivDishImg);  // Initialize ImageView
         }
     }
 }

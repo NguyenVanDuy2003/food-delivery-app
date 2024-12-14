@@ -136,7 +136,7 @@ public class FoodDetailActivity extends AppCompatActivity {
 
 
 
-                    Toast.makeText(FoodDetailActivity.this, "Đã thêm" + currentQuantity + " sản phẩm" + food.getName() + " vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FoodDetailActivity.this, "Đã thêm " + currentQuantity + " sản phẩm " + food.getName() + " vào giỏ hàng", Toast.LENGTH_SHORT).show();
                 }
             }
 

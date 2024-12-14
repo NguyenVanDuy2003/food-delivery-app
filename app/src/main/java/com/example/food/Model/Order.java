@@ -8,11 +8,12 @@ public class Order {
     private String orderDate;
     private String ordererName;
     private String paymentMethod;
+    private String dishImg;
 
     public Order(){
     }
 
-    public Order(String orderId, String dishName, int quantity, double pricePerDish, String orderDate, String ordererName, String paymentMethod) {
+    public Order(String orderId, String dishName, int quantity, double pricePerDish, String orderDate, String ordererName, String paymentMethod, String dishImg) {
         this.orderId = orderId;
         this.dishName = dishName;
         this.quantity = quantity;
@@ -20,6 +21,7 @@ public class Order {
         this.orderDate = orderDate;
         this.ordererName = ordererName;
         this.paymentMethod = paymentMethod;
+        this.dishImg = dishImg;
     }
 
     public String getOrderId() {
@@ -78,6 +80,14 @@ public class Order {
         this.paymentMethod = paymentMethod;
     }
 
+    public String getDishImg() {
+        return dishImg;
+    }
+
+    public void setDishImg(String dishImg) {
+        this.dishImg = dishImg;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -88,6 +98,7 @@ public class Order {
                 ", orderDate='" + orderDate + '\'' +
                 ", ordererName='" + ordererName + '\'' +
                 ", paymentMethod='" + paymentMethod + '\'' +
+                ", dishImg='" + dishImg + '\'' +
                 '}';
     }
 }
