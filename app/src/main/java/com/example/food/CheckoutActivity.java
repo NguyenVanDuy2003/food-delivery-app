@@ -48,7 +48,6 @@ public class CheckoutActivity extends AppCompatActivity {
         btnthanhtoanOnline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveTotalToCart(totalValue);
                 Intent intent = new Intent(CheckoutActivity.this, ThanhToanOnlActivity.class );
                 intent.putExtra("totalValue", totalValue);
                 startActivity(intent);
@@ -69,7 +68,6 @@ public class CheckoutActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Code nếu người dùng chọn nút "Dong y"
-                        saveTotalToCart(totalValue);
                         Toast.makeText(v.getContext(), "Bạn đã chọn thanh toán khi nhận hàng",Toast.LENGTH_SHORT).show();
                         dialog.dismiss(); // đóng hộp hội thoại
                     }
@@ -94,20 +92,5 @@ public class CheckoutActivity extends AppCompatActivity {
                 finish(); // Close the checkout activity
             }
         });
-    }
-    private void saveTotalToCart(String totalValue) {
-        try {
-            cartRef.child("total").setValue(totalValue)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(CheckoutActivity.this, "Total saved successfully", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(CheckoutActivity.this, "Failed to save total", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
     }
 }
