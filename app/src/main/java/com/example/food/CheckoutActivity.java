@@ -3,6 +3,7 @@ package com.example.food;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +16,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.food.Common.CommonKey;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class CheckoutActivity extends AppCompatActivity {
     private Button btnthanhtoanOnline, btnthanhtoanKhiNhanHang , btnquaylai;
+    private DatabaseReference cartRef;
+    private String currentUserId;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -33,12 +40,17 @@ public class CheckoutActivity extends AppCompatActivity {
         btnthanhtoanKhiNhanHang = findViewById(R.id.btn_ThanhToanKhiNhanHang);
         btnquaylai = findViewById(R.id.btn_quaylai);
 
+        String totalValue = getIntent().getStringExtra("totalValue");
+        SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
+        String currentUserId = sharedPreferences.getString(CommonKey.USER_ID, null);
+        cartRef = FirebaseDatabase.getInstance().getReference("Cart").child(currentUserId);
 
-        //
         btnthanhtoanOnline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveTotalToCart(totalValue);
                 Intent intent = new Intent(CheckoutActivity.this, ThanhToanOnlActivity.class );
+                intent.putExtra("totalValue", totalValue);
                 startActivity(intent);
             }
         });
@@ -57,6 +69,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Code nếu người dùng chọn nút "Dong y"
+                        saveTotalToCart(totalValue);
                         Toast.makeText(v.getContext(), "Bạn đã chọn thanh toán khi nhận hàng",Toast.LENGTH_SHORT).show();
                         dialog.dismiss(); // đóng hộp hội thoại
                     }
@@ -82,5 +95,19 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
     }
-
+    private void saveTotalToCart(String totalValue) {
+        try {
+            cartRef.child("total").setValue(totalValue)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(CheckoutActivity.this, "Total saved successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(CheckoutActivity.this, "Failed to save total", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
 }
