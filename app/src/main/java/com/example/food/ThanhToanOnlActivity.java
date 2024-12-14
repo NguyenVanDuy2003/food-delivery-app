@@ -1,3 +1,4 @@
+
 package com.example.food;
 
 import android.content.ContentResolver;
@@ -153,15 +154,7 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
                         // Access restaurant_id under FoodID
 
                         String restaurantId = foodItemSnapshot.child("restaurant_id").getValue(String.class);
-                        Double restaurantPrice = foodItemSnapshot.child("price").getValue(Double.class);
-                        if (restaurantPrice != null && price != null) {
-                            // Chuyển Double thành String để hiển thị trên TextView
-                            price.setText(String.format("%.2f", restaurantPrice)); // Định dạng 2 chữ số thập phân
-                            Log.d("Price", "Price: " + restaurantPrice);
-                        } else {
-                            Log.w("Price", "Price is null or TextView not initialized.");
-                        }
-
+                        price.setText(getIntent().getStringExtra("totalValue"));
 
                         if (restaurantId != null) {
                             Log.d("RestaurantID", "Found restaurant_id: " + restaurantId);

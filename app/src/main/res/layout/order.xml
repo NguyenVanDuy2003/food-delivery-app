@@ -1,0 +1,86 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/item_border"
+    android:layout_marginVertical="10dp"
+    android:padding="8dp">
+
+    <!-- Image view for the food item image -->
+    <ImageView
+        android:id="@+id/OlderImageView"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/food_detail_placeholder"
+        android:contentDescription="Food Image" />
+
+    <!-- Vertical LinearLayout to stack name and price -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <!-- Text view for the food name -->
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên khách hàng"
+            android:textSize="16sp" />
+
+        <!-- Text view for the food price -->
+        <TextView
+            android:id="@+id/quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="số lượng"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thời gian"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10000"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/payment_method"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phương thức thanh toán"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <!-- Vertical LinearLayout for update and delete buttons aligned to the right -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingStart="8dp">
+
+        <!-- Button to update the food item -->
+        <Button
+            android:id="@+id/acceptButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chấp nhận" />
+
+        <!-- Button to delete the food item -->
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="    Từ chối   " />
+    </LinearLayout>
+
+</LinearLayout>

@@ -202,6 +202,20 @@
                         android:textFontWeight="400"
                         android:textSize="20dp"
                         tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
+                    <Button
+                        android:id="@+id/btn_older"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:layout_marginEnd="5dp"
+                        android:backgroundTint="#11B3B6"
+                        android:drawablePadding="8dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="Quản lí older"
+                        android:textColor="#FFFFFF"
+                        android:textFontWeight="400"
+                        android:textSize="20dp"
+                        tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
 
                     <Button
                         android:id="@+id/btn_xoa"

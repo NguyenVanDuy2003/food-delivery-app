@@ -69,6 +69,7 @@ public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapt
     private void setupButtonListeners() {
         btn_checkout.setOnClickListener(v -> {
             Intent intent = new Intent(this, CheckoutActivity.class);
+            intent.putExtra("totalValue", totalValue.getText().toString());
             startActivity(intent);
         });
         return_btn.setOnClickListener(v -> finish());
