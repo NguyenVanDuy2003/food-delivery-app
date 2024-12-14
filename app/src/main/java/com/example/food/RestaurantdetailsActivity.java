@@ -35,7 +35,7 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
     private StorageReference storageReference;
     ImageButton exit, imageResource, qrcode;
     EditText name, phone_number, stk, address,Mota;
-    Button btn_update, btn_xoa, btn_manage_food, btn_older;
+    Button btn_update, btn_xoa, btn_manage_food, btn_order;
     ImageView imgRestaurantView, qrcodeView;
 
 
@@ -75,7 +75,7 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
         address = findViewById(R.id.address);
         btn_update = findViewById(R.id.btn_update);
         btn_xoa = findViewById(R.id.btn_xoa);
-        btn_older = findViewById(R.id.btn_older);
+        btn_order = findViewById(R.id.btn_order);
         imgRestaurantView = findViewById(R.id.imgRestaurantView);
         qrcodeView = findViewById(R.id.qrcodeView);
         Mota  = findViewById(R.id.Mota);
@@ -187,12 +187,13 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
                     .show();
         });
 
-        ////older
-        btn_older.setOnClickListener(new View.OnClickListener() {
+        ////order
+        btn_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Gọi phương thức xóa nhà hàng
                 Intent intent = new Intent(RestaurantdetailsActivity.this, OrderManagerActivity.class);
+                intent.putExtra("restaurantID", restaurantID);
                 startActivity(intent);
             }
         });

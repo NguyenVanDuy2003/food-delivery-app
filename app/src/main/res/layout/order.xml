@@ -2,87 +2,164 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:background="@drawable/item_border"
     android:layout_marginVertical="10dp"
     android:padding="8dp">
 
-    <!-- Image view for the food item image -->
-    <ImageView
-        android:id="@+id/OlderImageView"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/food_detail_placeholder"
-        android:contentDescription="Food Image" />
-
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-        <TextView
-            android:id="@+id/tvDishName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tên món ăn"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/tvPricePerDish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Giá"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/tvQuantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Số lượng"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/tvOrdererName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tên khách hàng"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/tvOrderDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Thời gian đặt hàng"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/tvPaymentMethod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Phương thức thanh toán"
-            android:textSize="16sp" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- Image view for the food item image -->
+        <ImageView
+            android:id="@+id/OlderImageView"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/food_detail_placeholder"
+            android:contentDescription="Food Image" />
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên món ăn: "
+                    android:textSize="12sp"/>
+                <TextView
+                    android:id="@+id/tvDishName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên món ăn"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giá mỗi món: "
+                    android:textSize="12sp"/>
+                <TextView
+                    android:id="@+id/tvPricePerDish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giá"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Số lượng: "
+                    android:textSize="12sp"/>
+                <TextView
+                    android:id="@+id/tvQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Số lượng"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên khách hàng: "
+                    android:textSize="12sp"/>
+                <TextView
+                    android:id="@+id/tvOrdererName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tên khách hàng"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thời gian đặt hàng: "
+                    android:textSize="12sp"/>
+                <TextView
+                    android:id="@+id/tvOrderDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thời gian đặt hàng"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phương thức thanh toán: "
+                    android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/tvPaymentMethod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phương thức thanh toán"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <!-- Vertical LinearLayout for update and delete buttons aligned to the right -->
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="end"
-        android:paddingStart="8dp">
+        android:gravity="center"
+        android:padding="8dp">
 
-        <!-- Button to update the food item -->
+        <!-- Accept Button -->
         <Button
             android:id="@+id/acceptButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Chấp nhận" />
+            android:layout_weight="1"
+            android:text="Chấp nhận"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="16dp"
+            android:layout_marginEnd="8dp"/>
 
-        <!-- Button to delete the food item -->
+        <!-- Deny Button -->
         <Button
             android:id="@+id/deleteButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="    Từ chối   " />
+            android:layout_weight="1"
+            android:text="Từ chối"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="16dp" />
     </LinearLayout>
+
+
 
 </LinearLayout>

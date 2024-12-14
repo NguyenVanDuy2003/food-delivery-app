@@ -33,10 +33,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         Order order = orderList.get(position);
-        holder.tvOrderId.setText(order.getOrderId());
         holder.tvDishName.setText(order.getDishName());
         holder.tvQuantity.setText(String.valueOf(order.getQuantity()));
-        holder.tvTotalPrice.setText(String.format("%.2f", order.getPricePerDish()));
+        holder.tvPricePerDish.setText(String.format("%.2f", order.getPricePerDish()));
         holder.tvOrderDate.setText(order.getOrderDate());
         holder.tvOrdererName.setText(order.getOrdererName());
         holder.tvPaymentMethod.setText(order.getPaymentMethod());
@@ -49,13 +48,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvOrderId, tvDishName, tvQuantity, tvTotalPrice, tvOrderStatus, tvOrderDate, tvOrdererName, tvPaymentMethod;
+        TextView tvDishName, tvQuantity, tvPricePerDish, tvOrderDate, tvOrdererName, tvPaymentMethod;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
             tvDishName = itemView.findViewById(R.id.tvDishName);
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
-            tvTotalPrice = itemView.findViewById(R.id.tvPricePerDish);
+            tvPricePerDish = itemView.findViewById(R.id.tvPricePerDish);
             tvOrderDate = itemView.findViewById(R.id.tvOrderDate);
             tvOrdererName = itemView.findViewById(R.id.tvOrdererName);
             tvPaymentMethod = itemView.findViewById(R.id.tvPaymentMethod);
