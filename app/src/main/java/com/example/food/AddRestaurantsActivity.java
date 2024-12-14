@@ -25,9 +25,9 @@ public class AddRestaurantsActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
-    ImageButton exit, imageResource, qrcode;
+    ImageButton  imageResource, qrcode;
     EditText name, phone_number, stk, address,Mota, description;
-    Button add_TaiKhoan;
+    Button exit, add_TaiKhoan;
     ImageView imgRestaurantView, qrcodeView;
 
     // Biến lưu URI của các ảnh
