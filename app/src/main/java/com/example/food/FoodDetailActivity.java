@@ -29,14 +29,14 @@ public class FoodDetailActivity extends AppCompatActivity {
 
     private int currentQuantity = 1;
     private DatabaseReference databaseReference;
-    private Food food; // Hold the fetched food object
+    private Food food;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
 
-        // Initialize UI components
+        // Ánh xạ
         foodName = findViewById(R.id.food_name);
         foodPrice = findViewById(R.id.price_tag);
         foodDescription = findViewById(R.id.ingredient_txt);
@@ -50,11 +50,10 @@ public class FoodDetailActivity extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Food");
 
-        // Fetch food data using the ID passed from the intent
+        // Lấy dữ liệu thực phẩm bằng cách sử dụng ID được truyền từ ý định.
         String foodId = getIntent().getStringExtra("foodID");
         fetchFoodData(foodId);
 
-        // Set button listeners
         returnBtn.setOnClickListener(v -> finish());
         increaseQuantityBtn.setOnClickListener(v -> updateQuantity(1));
         decreaseQuantityBtn.setOnClickListener(v -> updateQuantity(-1));
@@ -99,7 +98,7 @@ public class FoodDetailActivity extends AppCompatActivity {
     private void updateQuantity(int change) {
         currentQuantity += change;
 
-        if (currentQuantity < 1) currentQuantity = 1; // Prevent quantity from going below 1
+        if (currentQuantity < 1) currentQuantity = 1;
         quantity.setText(String.format("%02d", currentQuantity));
     }
 

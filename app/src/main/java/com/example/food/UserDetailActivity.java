@@ -69,11 +69,11 @@ public class UserDetailActivity extends AppCompatActivity {
             int spinnerPosition = adapter.getPosition(userRole);
             userRoleSpinner.setSelection(spinnerPosition);
         } else {
-            // Set default role if userRole is null
+            // Đặt vai trò mặc định nếu userRole là null
             userRoleSpinner.setSelection(0); // Assuming the first item is a default role
         }
 
-        // Set up back button listener
+        // Thiết lập trình lắng nghe nút quay lại
         backButton.setOnClickListener(v -> finish()); // Go back to the previous activity
 
         // Khởi tạo DatabaseReference
@@ -106,7 +106,7 @@ public class UserDetailActivity extends AppCompatActivity {
         databaseReference.setValue(user).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(UserDetailActivity.this, "User updated successfully", Toast.LENGTH_SHORT).show();
-                setResult(RESULT_OK); // Set result to OK
+                setResult(RESULT_OK);
                 finish();
             } else {
                 Toast.makeText(UserDetailActivity.this, "Update failed", Toast.LENGTH_SHORT).show();
@@ -131,8 +131,8 @@ public class UserDetailActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
             .setTitle("Confirm Delete")
             .setMessage("Are you sure you want to delete this user?")
-            .setPositiveButton("Yes", (dialog, which) -> deleteUser()) // Proceed to delete if confirmed
-            .setNegativeButton("No", null) // Do nothing if cancelled
+            .setPositiveButton("Yes", (dialog, which) -> deleteUser()) // Tiến hành xóa nếu được xác nhận.
+            .setNegativeButton("No", null) // Không làm gì nếu bị hủy bỏ.
             .show();
     }
 }

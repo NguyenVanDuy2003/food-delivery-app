@@ -100,9 +100,9 @@ public class FoodCartAdapter extends RecyclerView.Adapter<FoodCartAdapter.FoodCa
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, foodList.size());
                 notifyTotalPrice();
-                Log.d("Firebase", "Item removed from Firebase");
+                Log.d("Firebase", "Mục đã được gỡ bỏ khỏi Firebase");
             } else {
-                Log.e("Firebase", "Failed to remove item from Firebase", task.getException());
+                Log.e("Firebase", "Không thể xóa mục khỏi trong Firebase", task.getException());
             }
         });
     }

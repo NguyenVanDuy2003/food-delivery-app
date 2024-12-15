@@ -54,7 +54,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
         private TextView nameTextView, priceTextView;
         private Button updateButton, deleteButton;
-        private ImageView foodImageView; // ImageView for the food image
+        private ImageView foodImageView;
 
         public FoodViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,22 +62,22 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             priceTextView = itemView.findViewById(R.id.priceTextView);
             updateButton = itemView.findViewById(R.id.updateButton);
             deleteButton = itemView.findViewById(R.id.deleteButton);
-            foodImageView = itemView.findViewById(R.id.foodImageView); // Initialize ImageView
+            foodImageView = itemView.findViewById(R.id.foodImageView);
         }
 
         public void bind(Food food) {
             nameTextView.setText(food.getName());
             priceTextView.setText(String.format("$%.2f", food.getPrice()));
 
-            // Use Glide to load the image from the URL
+            // Sử dụng Glide để tải hình ảnh từ URL
             Glide.with(itemView.getContext())
-                    .load(food.getImageUrl())  // Use the image URL from the food object
-                    .into(foodImageView);  // Set the image into the ImageView
+                    .load(food.getImageUrl())  // Sử dụng URL hình ảnh từ đối tượng thực phẩm
+                    .into(foodImageView);  // Đặt hình ảnh vào ImageView
 
             updateButton.setOnClickListener(v -> {
                 listener.onUpdate(food);
                 Intent intent = new Intent(v.getContext(), FoodUpdateActivity.class);
-                intent.putExtra("food", food); // Pass the food object to the update activity
+                intent.putExtra("food", food); // Chuyển đối tượng thực phẩm đến hoạt động cập nhật
                 v.getContext().startActivity(intent);
             });
 

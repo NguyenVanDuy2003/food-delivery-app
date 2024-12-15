@@ -102,7 +102,7 @@ public class UserManagementActivity extends AppCompatActivity {
                         userListData.add(user);
                     }
                 }
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();// Cập nhật lại giao diện
             }
 
             @Override
@@ -111,24 +111,25 @@ public class UserManagementActivity extends AppCompatActivity {
             }
         });
     }
-
+    // Lọc danh sách người dùng theo từ khóa tìm kiếm
     private void filterUsers(String query) {
         ArrayList<User> filteredList = new ArrayList<>();
         for (User user : userListData) {
             if (user.getEmail().toLowerCase().contains(query.toLowerCase())) {
-                filteredList.add(user);
+                filteredList.add(user); // Thêm người dùng nếu email chứa từ khóa tìm kiếm
             }
         }
 
-        adapter = new UserAdapter(this, filteredList);
+        adapter = new UserAdapter(this, filteredList);// Cập nhật adapter với danh sách lọc
         userList.setAdapter(adapter);
     }
 
+    // Xử lý kết quả từ Activity chi tiết người dùng
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            fetchUsers(); // Reload the user data when returning from UserDetailActivity
+            fetchUsers(); // Tải lại danh sách người dùng khi quay lại từ màn hình chi tiết
         }
     }
 } 

@@ -116,7 +116,8 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Create a map to store items grouped by restaurant
+
+                    // Tạo một bản đồ để lưu trữ các món ăn được nhóm theo nhà hàng
                     Map<String, List<Order>> restaurantOrders = new HashMap<>();
 
                     for (DataSnapshot foodItemSnapshot : dataSnapshot.getChildren()) {
@@ -127,7 +128,7 @@ public class CheckoutActivity extends AppCompatActivity {
                             return;
                         }
 
-                        // Create the order item for each cart item
+                        // Tạo mục đơn hàng cho mỗi mục trong giỏ hàng
                         String dishName = foodItemSnapshot.child("name").getValue(String.class);
                         Integer quantity = foodItemSnapshot.child("quantity").getValue(Integer.class);
                         Double pricePerDish = foodItemSnapshot.child("price").getValue(Double.class);
@@ -137,33 +138,33 @@ public class CheckoutActivity extends AppCompatActivity {
                             String orderId = "ORD_" + restaurantId + "_" + System.currentTimeMillis() + "_" + UUID.randomUUID().toString(); // More robust unique order ID
 
                             Order order = new Order(
-                                    orderId,  // Unique Order ID
-                                    dishName,                            // Dish name
-                                    quantity,                            // Quantity
-                                    pricePerDish,                        // Price per dish
-                                    String.valueOf(System.currentTimeMillis()),  // Order date
-                                    "",                                  // User name placeholder (fetch later)
-                                    paymentMethod,                       // Payment method
-                                    dishImg                              // Dish image URL
+                                    orderId,
+                                    dishName,
+                                    quantity,
+                                    pricePerDish,
+                                    String.valueOf(System.currentTimeMillis()),
+                                    "",
+                                    paymentMethod,
+                                    dishImg
                             );
 
-                            // Group the orders by restaurant ID
+                            // Nhóm các đơn hàng theo ID nhà hàng
                             if (!restaurantOrders.containsKey(restaurantId)) {
                                 restaurantOrders.put(restaurantId, new ArrayList<>());
                             }
                             restaurantOrders.get(restaurantId).add(order);
 
-                            // Log each item being added
+                            // Ghi lại từng mục được thêm vào
                             Log.d("OrderAdded", "Added order: " + order.toString());
                         }
                     }
 
-                    // Now process the orders for each restaurant
+                    // Bây giờ xử lý các đơn hàng cho từng nhà hàng
                     for (Map.Entry<String, List<Order>> entry : restaurantOrders.entrySet()) {
                         String restaurantId = entry.getKey();
                         List<Order> orders = entry.getValue();
 
-                        // Get the user's name
+                        // Lấy tên người dùng
                         userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId);
                         userRef.child("fullName").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -175,11 +176,11 @@ public class CheckoutActivity extends AppCompatActivity {
                                     Log.w("UserName", "User name not found.");
                                 }
 
-                                // Create orders for the restaurant
+                                // Tạo đơn hàng cho nhà hàng
                                 for (Order order : orders) {
                                     order.setOrdererName(userName);  // Set the user name for the order
 
-                                    // Save the order to the database under the specific restaurant
+                                    // Lưu đơn hàng vào cơ sở dữ liệu dưới nhà hàng cụ thể
                                     DatabaseReference orderReference = FirebaseDatabase.getInstance().getReference("Order")
                                             .child(restaurantId).child(order.getOrderId());
                                     orderReference.setValue(order);
@@ -187,25 +188,25 @@ public class CheckoutActivity extends AppCompatActivity {
                                     Log.d("OrderCreated", "Created order: " + order.toString());
                                 }
 
-                                // After all orders are processed, clear the cart
+                                // Sau khi tất cả các đơn hàng được xử lý, xóa giỏ hàng
                                 cartRef.child(userId).removeValue();
                                 Toast.makeText(CheckoutActivity.this, "Orders created successfully!", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-                                Log.e("FirebaseError", "Error fetching user name: " + databaseError.getMessage());
+                                Log.e("FirebaseError", "lỗi user name: " + databaseError.getMessage());
                             }
                         });
                     }
                 } else {
-                    Toast.makeText(CheckoutActivity.this, "No items in the cart.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CheckoutActivity.this, "Không có item cart.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("FirebaseError", "Failed to fetch cart data: " + databaseError.getMessage());
+                Log.e("FirebaseError", "Lỗi data  cart: " + databaseError.getMessage());
             }
         });
     }

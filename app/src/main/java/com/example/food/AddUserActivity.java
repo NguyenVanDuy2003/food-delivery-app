@@ -56,12 +56,12 @@ public class AddUserActivity extends AppCompatActivity {
         String roleString = userRoleSpinner.getSelectedItem().toString();
         Role role = Role.valueOf(roleString.toUpperCase());
 
-        String userId = databaseReference.push().getKey(); // Generate a unique ID for the user
+        String userId = databaseReference.push().getKey();
         User user = new User(userId, fullName, email, password, phoneNumber, address, role);
         databaseReference.child(userId).setValue(user).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(AddUserActivity.this, "User added successfully", Toast.LENGTH_SHORT).show();
-                finish(); // Go back to the previous activity
+                finish();
             } else {
                 Toast.makeText(AddUserActivity.this, "Failed to add user", Toast.LENGTH_SHORT).show();
             }

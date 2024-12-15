@@ -64,7 +64,7 @@ public class FoodListActivity extends AppCompatActivity {
         String restaurantID = getIntent().getStringExtra("restaurantID");
         loadFoodData(restaurantID);
 
-        // Search functionality
+        // Tìm kiếm
         editTextSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

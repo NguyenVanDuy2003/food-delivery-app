@@ -1,6 +1,7 @@
 package com.example.food;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,25 +16,25 @@ import com.example.food.Model.Order;
 
 import java.util.List;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
+public class PublicizeAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder>{
 
     private Context context;
     private List<Order> orderList;
 
-    public OrderAdapter(Context context, List<Order> orderList) {
+    public PublicizeAdapter(Context context, List<Order> orderList) {
         this.context = context;
         this.orderList = orderList;
     }
 
     @NonNull
     @Override
-    public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public OrderAdapter.OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.order, parent, false);
-        return new OrderViewHolder(view);
+        return new OrderAdapter.OrderViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrderAdapter.OrderViewHolder holder, int position) {
         Order order = orderList.get(position);
         holder.tvDishName.setText(order.getDishName());
         holder.tvQuantity.setText(String.valueOf(order.getQuantity()));
@@ -42,10 +43,23 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.tvOrdererName.setText(order.getOrdererName());
         holder.tvPaymentMethod.setText(order.getPaymentMethod());
 
-        // Load the dish image using Glide
+        // Tải hình ảnh món ăn từ URL sử dụng Glide
         Glide.with(context)
-                .load(order.getDishImg()) // Dish image URL
-                .into(holder.ivDishImg);  // ImageView where the image should be loaded
+                .load(order.getDishImg()) // URL của hình ảnh món ăn
+                .into(holder.ivDishImg);  // ImageView để hiển thị hình ảnh
+
+        // Thiết lập sự kiện click cho mỗi mục
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, publicizeMainActivity.class); // Activity bạn sẽ tạo
+            intent.putExtra("dishName", order.getDishName());
+            intent.putExtra("quantity", order.getQuantity());
+            intent.putExtra("pricePerDish", order.getPricePerDish());
+            intent.putExtra("orderDate", order.getOrderDate());
+            intent.putExtra("ordererName", order.getOrdererName());
+            intent.putExtra("paymentMethod", order.getPaymentMethod());
+            intent.putExtra("dishImg", order.getDishImg()); // URL hình ảnh
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -62,8 +76,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
 
+        // Khai báo các TextView và ImageView để hiển thị thông tin món ăn
         TextView tvDishName, tvQuantity, tvPricePerDish, tvOrderDate, tvOrdererName, tvPaymentMethod;
-        ImageView ivDishImg;  // ImageView để hiển thị hình ảnh món ăn
+        ImageView ivDishImg;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,7 +88,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             tvOrderDate = itemView.findViewById(R.id.tvOrderDate);
             tvOrdererName = itemView.findViewById(R.id.tvOrdererName);
             tvPaymentMethod = itemView.findViewById(R.id.tvPaymentMethod);
-            ivDishImg = itemView.findViewById(R.id.ivDishImg);  // Initialize ImageView
+            ivDishImg = itemView.findViewById(R.id.ivDishImg);
         }
     }
 }

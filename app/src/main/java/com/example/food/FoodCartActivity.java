@@ -26,7 +26,7 @@ import java.util.List;
 public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapter.QuantityChangeListener {
 
     private RecyclerView foodCartItems;
-    private Button btn_checkout, return_btn;
+    private Button btn_checkout, return_btn, btn_thongbao;
     private TextView subtotalValue, taxValue, deliveryValue, totalValue, totalItem, empty_cart_text;
     private LinearLayout fees;
 
@@ -41,7 +41,7 @@ public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapt
 
         initializeUIComponents();
         setupButtonListeners();
-
+        setupButtonThongbaoListeners();
         cartReference = FirebaseDatabase.getInstance().getReference("Cart");
         foodCartList = new ArrayList<>();
 
@@ -64,7 +64,10 @@ public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapt
         totalItem = findViewById(R.id.totalItem);
         fees = findViewById(R.id.fees);
         empty_cart_text = findViewById(R.id.empty_cart_text);
+
+        btn_thongbao = findViewById(R.id.btn_thongbao);
     }
+
 
     private void setupButtonListeners() {
         btn_checkout.setOnClickListener(v -> {
@@ -74,6 +77,14 @@ public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapt
         });
         return_btn.setOnClickListener(v -> finish());
     }
+    private void setupButtonThongbaoListeners() {
+        btn_thongbao.setOnClickListener(v -> {
+            Intent intent = new Intent(this, publicizeMainActivity.class);
+            startActivity(intent);
+        });
+        return_btn.setOnClickListener(v -> finish());
+    }
+
 
     private void fetchCartItems() {
         cartReference.child(getUserId()).get().addOnSuccessListener(dataSnapshot -> {

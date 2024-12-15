@@ -1,15 +1,9 @@
 package com.example.food;
 
-import static java.util.Locale.filter;
-
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,12 +25,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class OrderManagerActivity extends AppCompatActivity {
-    private Button btn_quaylai,btn_sapxeptang , btn_sapxepgiam;
-    private EditText editTextSearch;
+public class publicizeMainActivity extends AppCompatActivity {
+    private Button btn_quaylai;
     private RecyclerView recyclerView;
-    private OrderAdapter adapter;
-    private List<Order> orderList;
+    private PublicizeAdapter adapter;
+    private List<Order> PublicizeList;
     private String restaurantID;
     private DatabaseReference orderRef;
 
@@ -44,33 +37,21 @@ public class OrderManagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_order_manager);
-
-        // Thiết lập giao diện Edge-to-Edge
+        setContentView(R.layout.activity_publicize_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Lấy ID nhà hàng từ Intent
+        // Thiết lập sự kiện cho nút quay lại
         restaurantID = getIntent().getStringExtra("restaurantID");
-
-        // Ánh Xạ
         btn_quaylai = findViewById(R.id.btn_quaylai);
-        btn_sapxeptang = findViewById(R.id.btn_sapxeptang);
-        btn_sapxepgiam = findViewById(R.id.btn_sapxepgiam);
-        editTextSearch = findViewById(R.id.editTextSearch);
         recyclerView = findViewById(R.id.rvolder);
-
-        // Thiết lập RecyclerView
-        orderList = new ArrayList<>();
-        adapter = new OrderAdapter(this, orderList);
+        PublicizeList = new ArrayList<>();
+        adapter = new PublicizeAdapter(this, PublicizeList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        // Thêm dữ liệu mẫu vào danh sách đơn hàng
-        populateOrderList();
 
         btn_quaylai.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,51 +60,11 @@ public class OrderManagerActivity extends AppCompatActivity {
             }
 
         });
-        // Sắp xếp tăng
-        btn_sapxeptang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                orderList.sort((o1, o2) -> o1.getOrderDate().compareTo(o2.getOrderDate()));
-                adapter.notifyDataSetChanged();
-            }
-        });
-        // Sắp xếp giảm dần
-        btn_sapxepgiam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                orderList.sort((o1, o2) -> o2.getOrderDate().compareTo(o1.getOrderDate()));
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-        // Chức năng tìm kiếm đơn hàng theo tên món ăn
-        editTextSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filter(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
+        // Lấy danh sách đơn hàng từ Firebase
+        populateOrderList();
 
 
     }
-    private void filter(String text) {
-        ArrayList<Order> filteredList = new ArrayList<>();
-        for (Order order : orderList) {
-            if (order.getDishName().toLowerCase().contains(text.toLowerCase())) {
-                filteredList.add(order);
-            }
-        }
-        adapter.updateList(filteredList);
-    }
-
-
     private void populateOrderList() {
         if (restaurantID == null) {
             Log.d("OrderManagerActivity", "restaurantID is null");
@@ -134,32 +75,32 @@ public class OrderManagerActivity extends AppCompatActivity {
         orderRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                orderList.clear(); // Xóa danh sách đơn hàng cũ
+                PublicizeList.clear(); // Xóa danh sách đơn hàng cũ để tránh trùng lặp
                 for (DataSnapshot orderSnapshot : dataSnapshot.getChildren()) {
                     Order order = orderSnapshot.getValue(Order.class);
                     if (order != null) {
                         try {
-                            // Lấy ngày đặt hàng dưới dạng timestamp (milisecond)
+                            // Lấy ngày đặt hàng dưới dạng timestamp (miliseconds)
                             long timestamp = Long.parseLong(order.getOrderDate());
 
-                            // Chuyển timestamp thành đối tượng Date
+                            // Chuyển đổi timestamp thành đối tượng Date
                             Date date = new Date(timestamp);
 
-                            // Định dạng ngày theo chuỗi
+                            // Định dạng ngày tháng thành chuỗi
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             String formattedDate = sdf.format(date);
 
-                            // Gán ngày đã định dạng cho đơn hàng
+                            // Gán ngày đã định dạng vào đơn hàng
                             order.setOrderDate(formattedDate);
                         } catch (Exception e) {
                             Log.d("OrderManagerActivity", "Date format error: " + e.getMessage());
                         }
 
                         // Thêm đơn hàng vào danh sách
-                        orderList.add(order);
+                        PublicizeList.add(order);
                     }
                 }
-                adapter.notifyDataSetChanged();// Cập nhật lại RecyclerView
+                adapter.notifyDataSetChanged(); // Notify adapter to refresh the RecyclerView
             }
 
             @Override
@@ -168,6 +109,4 @@ public class OrderManagerActivity extends AppCompatActivity {
             }
         });
     }
-
 }
-
