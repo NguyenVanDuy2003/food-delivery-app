@@ -32,9 +32,9 @@ import com.bumptech.glide.Glide;
 public class RestaurantdetailsActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
-    ImageButton exit, imageResource, qrcode;
+    ImageButton  imageResource, qrcode;
     EditText name, phone_number, stk, address,Mota;
-    Button btn_update, btn_xoa, btn_manage_food;
+    Button btn_update, btn_xoa, btn_manage_food, exit;
     ImageView imgRestaurantView, qrcodeView;
 
 
