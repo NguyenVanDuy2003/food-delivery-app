@@ -21,7 +21,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class AddFoodActivity extends Activity {
+public class git puAddFoodActivity extends Activity {
 
     private ImageView foodImageView;
     private EditText foodNameEditText;
