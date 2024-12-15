@@ -53,6 +53,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         return orderList.size();
     }
 
+
+    //Update the data in the adapter and refresh the RecyclerView
+    public void updateList(List<Order> newList) {
+        orderList = newList; // Replace current list with the new one
+        notifyDataSetChanged(); // Notify adapter about data changes
+    }
+
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvDishName, tvQuantity, tvPricePerDish, tvOrderDate, tvOrdererName, tvPaymentMethod;

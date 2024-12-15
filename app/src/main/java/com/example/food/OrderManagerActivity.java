@@ -1,8 +1,13 @@
 package com.example.food;
 
+import static java.util.Locale.filter;
+
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -27,7 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 public class OrderManagerActivity extends AppCompatActivity {
-    private Button btn_quaylai;
+    private Button btn_quaylai,btn_sapxeptang , btn_sapxepgiam;
     private EditText editTextSearch;
     private RecyclerView recyclerView;
     private OrderAdapter adapter;
@@ -53,6 +58,8 @@ public class OrderManagerActivity extends AppCompatActivity {
 
         // Initialize views
         btn_quaylai = findViewById(R.id.btn_quaylai);
+        btn_sapxeptang = findViewById(R.id.btn_sapxeptang);
+        btn_sapxepgiam = findViewById(R.id.btn_sapxepgiam);
         editTextSearch = findViewById(R.id.editTextSearch);
         recyclerView = findViewById(R.id.rvolder);
 
@@ -65,14 +72,59 @@ public class OrderManagerActivity extends AppCompatActivity {
         // Populate order list with sample data
         populateOrderList();
 
+
         // Handle back button click
         btn_quaylai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
+
         });
+        // Sắp xếp tăng
+        btn_sapxeptang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                orderList.sort((o1, o2) -> o1.getOrderDate().compareTo(o2.getOrderDate()));
+                adapter.notifyDataSetChanged();
+            }
+        });
+        // Sắp xếp giảm dần
+        btn_sapxepgiam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                orderList.sort((o1, o2) -> o2.getOrderDate().compareTo(o1.getOrderDate()));
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        // Search functionality
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+
+
     }
+    private void filter(String text) {
+        ArrayList<Order> filteredList = new ArrayList<>();
+        for (Order order : orderList) {
+            if (order.getDishName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(order);
+            }
+        }
+        adapter.updateList(filteredList);
+    }
+
 
     private void populateOrderList() {
         if (restaurantID == null) {

@@ -34,13 +34,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tên món ăn: "
-                    android:textSize="12sp"/>
+                    android:textSize="12sp"
+                    android:textColor="@color/gray_900"
+                    />
                 <TextView
                     android:id="@+id/tvDishName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tên món ăn"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@color/gray_900"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -51,13 +55,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Giá mỗi món: "
-                    android:textSize="12sp"/>
+                    android:textSize="12sp"
+                    android:textColor="@color/gray_900"
+                    />
                 <TextView
                     android:id="@+id/tvPricePerDish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Giá"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@color/gray_900"
+                    />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -67,13 +75,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Số lượng: "
-                    android:textSize="12sp"/>
+                    android:textSize="12sp"
+                    android:textColor="@color/gray_900"
+                    />
                 <TextView
                     android:id="@+id/tvQuantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Số lượng"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@color/gray_900"
+                    />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -83,13 +95,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tên khách hàng: "
-                    android:textSize="12sp"/>
+                    android:textSize="12sp"
+                    android:textColor="@color/gray_900"
+                    />
                 <TextView
                     android:id="@+id/tvOrdererName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tên khách hàng"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@color/gray_900"
+                    />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -99,13 +115,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Thời gian đặt hàng: "
-                    android:textSize="12sp"/>
+                    android:textSize="12sp"
+                    android:textColor="@color/gray_900"
+                    />
                 <TextView
                     android:id="@+id/tvOrderDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Thời gian đặt hàng"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@color/gray_900"
+                    />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -114,6 +134,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/gray_900"
                     android:text="Phương thức thanh toán: "
                     android:textSize="12sp" />
                 <TextView
@@ -121,7 +142,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Phương thức thanh toán"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="@color/gray_900"
+                    />
             </LinearLayout>
 
         </LinearLayout>

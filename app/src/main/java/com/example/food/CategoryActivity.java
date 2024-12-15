@@ -42,7 +42,7 @@ public class CategoryActivity extends AppCompatActivity {
         backButton.setOnClickListener(view -> onBackPressed());
 
         // Step 1: Create sorting options
-        String[] sortOptions = {"Popular", "Low to High", "High to Low"};
+        String[] sortOptions = {"Mặc định", "Thấp đến Cao", "Cao đến Thấp"};
 
         // Step 2: Find Spinner in the layout
         Spinner spinnerSort = findViewById(R.id.spinnerSort);
@@ -63,7 +63,7 @@ public class CategoryActivity extends AppCompatActivity {
 
                 // Sorting based on user selection
                 switch (selectedSort) {
-                    case "Low to High":
+                    case "Thấp đến Cao":
                         Collections.sort(listFood, new Comparator<Food>() {
                             @Override
                             public int compare(Food f1, Food f2) {
@@ -72,7 +72,7 @@ public class CategoryActivity extends AppCompatActivity {
                         });
                         break;
 
-                    case "High to Low":
+                    case "Cao đến Thấp":
                         Collections.sort(listFood, new Comparator<Food>() {
                             @Override
                             public int compare(Food f1, Food f2) {
@@ -81,7 +81,7 @@ public class CategoryActivity extends AppCompatActivity {
                         });
                         break;
 
-                    case "Popular":
+                    case "Mặc định":
                         // Handle other sorting logic if needed
                         break;
                 }

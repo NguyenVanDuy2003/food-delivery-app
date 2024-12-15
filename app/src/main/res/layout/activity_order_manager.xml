@@ -48,12 +48,46 @@
                 tools:ignore="HardcodedText,RtlHardcoded,UnusedAttribute" />
 
 
+
         </LinearLayout>
         <EditText
             android:id="@+id/editTextSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Tìm kiếm thông tin đơn hàng" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_sapxeptang"
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="4dp"
+                android:backgroundTint="#4CAF50"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="Đơn ngày gần"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_sapxepgiam"
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="4dp"
+                android:backgroundTint="#AF4C6D"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="Đơn ngày xa"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
