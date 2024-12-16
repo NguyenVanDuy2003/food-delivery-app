@@ -76,7 +76,8 @@ public class HomeActivity extends AppCompatActivity {
         if (itemId == R.id.my_orders) {
             // Handle My Orders action
         } else if (itemId == R.id.my_profile) {
-            // Handle My Profile action
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
         } else if (itemId == R.id.delivery_address) {
             // Handle Delivery Address action
         } else if (itemId == R.id.payment_methods) {
@@ -148,7 +149,10 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(HomeActivity.this, FoodCartActivity.class);
             startActivity(intent);
         });
-        findViewById(R.id.btn_profile).setOnClickListener(v -> {/* TODO: Navigate to profile */});
+        findViewById(R.id.btn_profile).setOnClickListener(v -> {
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void navigateToAllRestaurants() {
