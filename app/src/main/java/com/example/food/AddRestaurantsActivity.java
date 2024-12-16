@@ -34,6 +34,7 @@ public class AddRestaurantsActivity extends AppCompatActivity {
     private Uri selectedQrcodeUri = null;
     private Uri selectedImageUri;  // Để lưu trữ URI của ảnh đã chọn
     private int imageSelected = 0;
+    private boolean isAddingRestaurant = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,11 @@ public class AddRestaurantsActivity extends AppCompatActivity {
 
         // Xử lý thêm tài khoản
         add_TaiKhoan.setOnClickListener(v -> {
-
+            if (isAddingRestaurant) {
+                return;
+            }
+            isAddingRestaurant = true;
+            
             // Retrieve user ID from SharedPreferences
             SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
             String userId = sharedPreferences.getString(CommonKey.USER_ID, null);
