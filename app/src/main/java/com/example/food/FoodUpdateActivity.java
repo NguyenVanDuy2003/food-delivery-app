@@ -32,10 +32,10 @@ public class FoodUpdateActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_update);
 
-        // Initialize the Firebase reference
+        // Khởi tạo tham chiếu Firebase
         foodDatabaseReference = FirebaseDatabase.getInstance().getReference("Food");
 
-        // Initialize the views
+        // Ánh xạ
         editTextName = findViewById(R.id.editTextName);
         editTextPrice = findViewById(R.id.editTextPrice);
         editTextIngredients = findViewById(R.id.editTextIngredients);
@@ -43,11 +43,11 @@ public class FoodUpdateActivity extends Activity {
         chooseImageButton = findViewById(R.id.chooseImageButton);
         saveButton = findViewById(R.id.saveButton);
 
-        // Get the food object passed from the previous activity
+        // Lấy đối tượng món ăn từ activity trước
         Intent intent = getIntent();
         food = (Food) intent.getSerializableExtra("food");
 
-        // Populate the views with the current data
+        // Điền dữ liệu hiện tại vào các view
         if (food != null) {
             editTextName.setText(food.getName());
             editTextPrice.setText(String.valueOf(food.getPrice()));
@@ -57,48 +57,48 @@ public class FoodUpdateActivity extends Activity {
                     .into(imageViewFood);
         }
 
-        // Set the action for the choose image button
+        // Đặt hành động cho nút chọn hình ảnh
         chooseImageButton.setOnClickListener(v -> {
-            // Open the image picker intent
+            // Mở intent chọn hình ảnh
             Intent pickImageIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST);
         });
 
-        // Set the action for the save button
+        // Đặt hành động cho nút lưu
         saveButton.setOnClickListener(v -> {
-            // Get the updated data from the EditText fields
+            // Lấy dữ liệu cập nhật từ các trường EditText
             String updatedName = editTextName.getText().toString();
             String updatedPrice = editTextPrice.getText().toString();
             String updatedIngredients = editTextIngredients.getText().toString();
 
-            // Validate inputs
+            // Kiểm tra tính hợp lệ của dữ liệu nhập vào
             if (updatedName.isEmpty() || updatedPrice.isEmpty() || updatedIngredients.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Update the food object
+            // Cập nhật đối tượng món ăn
             if (food != null) {
                 food.setName(updatedName);
                 food.setPrice(Double.parseDouble(updatedPrice));
                 food.setIngredients(updatedIngredients);
 
-                // If a new image was selected, update the image URL
+                // Nếu có hình ảnh mới được chọn, cập nhật URL hình ảnh
                 if (selectedImageUri != null) {
-                    // Convert URI to string (file path or URI)
+                    // Chuyển đổi URI thành chuỗi (đường dẫn tệp hoặc URI)
                     food.setImageUrl(selectedImageUri.toString());
                 }
 
-                // Update the food data in Firebase
+                // Cập nhật dữ liệu món ăn trong Firebase
                 foodDatabaseReference.child(food.getId()).setValue(food)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 Toast.makeText(FoodUpdateActivity.this, "Food updated successfully", Toast.LENGTH_SHORT).show();
-                                // Return the updated food object to the previous activity
+                                // Trả về đối tượng món ăn đã cập nhật cho activity trước
                                 Intent resultIntent = new Intent();
                                 resultIntent.putExtra("updatedFood", food);
                                 setResult(RESULT_OK, resultIntent);
-                                finish(); // Close the update activity
+                                finish();
                             } else {
                                 Toast.makeText(FoodUpdateActivity.this, "Failed to update food", Toast.LENGTH_SHORT).show();
                             }
@@ -107,15 +107,15 @@ public class FoodUpdateActivity extends Activity {
         });
     }
 
-    // Handle the result from image picker
+    // Xử lý kết quả từ trình chọn hình ảnh
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE_REQUEST) {
             if (data != null) {
-                selectedImageUri = data.getData();  // Get URI of the selected image
+                selectedImageUri = data.getData();   // Lấy URI của hình ảnh đã chọn
                 Glide.with(this)
-                        .load(selectedImageUri)  // Load the image from URI using Glide
+                        .load(selectedImageUri)  // Tải hình ảnh từ URI bằng Glide
                         .into(imageViewFood);
             }
         }

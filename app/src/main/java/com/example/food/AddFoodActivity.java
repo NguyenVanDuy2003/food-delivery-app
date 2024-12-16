@@ -37,19 +37,19 @@ public class AddFoodActivity extends Activity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference foodDatabaseRef;
 
-    private String restaurantID; // Removed static, use an instance variable instead
+    private String restaurantID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_food);
 
-        // Initialize Firebase
+        // Khởi tạo Firebase
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         foodDatabaseRef = firebaseDatabase.getReference("Food");
 
-        // Initialize views
+        // Ánh xạ
         foodImageView = findViewById(R.id.foodImageView);
         foodNameEditText = findViewById(R.id.foodNameEditText);
         foodPriceEditText = findViewById(R.id.foodPriceEditText);
@@ -57,22 +57,22 @@ public class AddFoodActivity extends Activity {
         uploadImageButton = findViewById(R.id.uploadImageButton);
         saveFoodButton = findViewById(R.id.saveFoodButton);
 
-        // Get the restaurantID from the Intent, and assign it to a final variable
+        // Lấy restaurantID từ Intent, và gán nó cho một biến cuối cùng
         restaurantID = getIntent().getStringExtra("restaurantID");
 
-        // Set the onClickListener for the upload image button
+        // Đặt onClickListener cho nút tải lên hình ảnh
         uploadImageButton.setOnClickListener(v -> onUploadImageClick());
 
-        // Set the onClickListener for the save food button
+        // Đặt onClickListener cho nút lưu thực phẩm
         saveFoodButton.setOnClickListener(v -> saveFood());
     }
 
-    // Method for the return button click (back navigation)
+    // Phương thức cho sự kiện nhấn nút quay lại (back navigation)
     public void onReturnButtonClick(View view) {
         onBackPressed();
     }
 
-    // Method to handle image upload action
+    // Phương thức để xử lý hành động tải lên hình ảnh
     private void onUploadImageClick() {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
@@ -89,7 +89,7 @@ public class AddFoodActivity extends Activity {
     }
 
     private void saveFood() {
-        // Disable the save button to prevent multiple clicks
+        // Vô hiệu hóa nút lưu để ngăn chặn nhiều lần nhấp chuột
         saveFoodButton.setEnabled(false);
 
         String foodName = foodNameEditText.getText().toString();
@@ -102,7 +102,7 @@ public class AddFoodActivity extends Activity {
             return;
         }
 
-        // Convert food price to double
+        // Chuyển đổi giá thực phẩm thành số thực
         final double foodPrice;  // Mark it as final
         try {
             foodPrice = Double.parseDouble(foodPriceStr);
@@ -112,22 +112,22 @@ public class AddFoodActivity extends Activity {
             return;
         }
 
-        // Upload image to Firebase Storage
+        // Tải hình ảnh lên Firebase Storage
         StorageReference storageRef = firebaseStorage.getReference("food_images/" + UUID.randomUUID().toString());
         UploadTask uploadTask = storageRef.putFile(imageUri);
 
         uploadTask.addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            // Get the image URL after upload
+            // Lấy URL hình ảnh sau khi tải lên
             String imageUrl = uri.toString();
 
-            // Create a food object without id (since id will be set after saving)
+            // Tạo một đối tượng thực phẩm không có id (since id will be set after saving)
             Food food = new Food(foodName, foodPrice, imageUrl, restaurantID, foodIngredients, true, new ArrayList<>());
 
-            // Generate a unique key for the food
+            // Tạo một khóa duy nhất cho món ăn
             String foodId = foodDatabaseRef.push().getKey();
-            food.setId(foodId); // Set the food's id
+            food.setId(foodId);
 
-            // Save the food data to Firebase Realtime Database with foodId as key
+            // Lưu dữ liệu thực phẩm vào Firebase Realtime Database với foodId làm khóa
             if (foodId != null) {
                 foodDatabaseRef.child(foodId).setValue(food)
                         .addOnCompleteListener(task -> {
@@ -137,14 +137,14 @@ public class AddFoodActivity extends Activity {
                             } else {
                                 Toast.makeText(AddFoodActivity.this, "Failed to add food", Toast.LENGTH_SHORT).show();
                             }
-                            saveFoodButton.setEnabled(true); // Re-enable the button
+                            saveFoodButton.setEnabled(true);
                         });
             } else {
-                saveFoodButton.setEnabled(true); // Re-enable the button if foodId is null
+                saveFoodButton.setEnabled(true);
             }
         })).addOnFailureListener(e -> {
             Toast.makeText(AddFoodActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
-            saveFoodButton.setEnabled(true); // Re-enable the button
+            saveFoodButton.setEnabled(true);
         });
     }
 

@@ -45,33 +45,33 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Initialize Firebase references
+        // Khởi tạo các tham chiếu Firebase
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         storageReference = FirebaseStorage.getInstance().getReference("Users_images");
 
-        // Retrieve user ID from SharedPreferences
+        // Lấy ID người dùng từ SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
         String userId = sharedPreferences.getString(CommonKey.USER_ID, null);
 
-        // Back button functionality
+        // Chức năng nút quay lại
         Button btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> finish()); // Close the activity and return to the previous one
 
         if (userId != null) {
-            // Query the database to get user information
+            // Truy vấn cơ sở dữ liệu để lấy thông tin người dùng
             databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         User user = dataSnapshot.getValue(User.class);
                         if (user != null) {
-                            // Populate the EditText fields with user data
+                            // Điền thông tin người dùng vào các trường EditText
                             et_name.setText(user.getFullName());
                             et_email.setText(user.getEmail());
                             et_phoneNumber.setText(user.getPhoneNumber());
                             et_address.setText(user.getAddress());
 
-                            // Load profile image if available
+                            // Tải hình ảnh hồ sơ nếu có
                             if (user.getImageUser() != null && !user.getImageUser().isEmpty()) {
                                 Glide.with(ProfileActivity.this)
                                      .load(user.getImageUser())
@@ -141,7 +141,7 @@ public class ProfileActivity extends AppCompatActivity {
                 return;
             }
 
-            // Create a User object with the updated fields
+            // Tạo đối tượng User với các trường đã cập nhật
             User updatedUser = new User();
             updatedUser.setId(userId);
             if (!name.isEmpty()) updatedUser.setFullName(name);
@@ -151,9 +151,9 @@ public class ProfileActivity extends AppCompatActivity {
 
             StringBuilder imageUrls = new StringBuilder(); // Use StringBuilder to concatenate URLs
 
-            // Check if new images are selected
+            // Kiểm tra xem có ảnh mới được chọn không
             if (selectedImgUris.isEmpty()) {
-                // If no new images are selected, keep the existing image URL
+                // Nếu không có ảnh mới, giữ nguyên URL ảnh hiện tại
                 databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -163,7 +163,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 updatedUser.setImageUser(existingUser.getImageUser()); // Retain existing image URL
                             }
                         }
-                        // Update the user profile in the database
+                        // Cập nhật hồ sơ người dùng trong cơ sở dữ liệu
                         databaseReference.child(userId).setValue(updatedUser)
                                 .addOnSuccessListener(aVoid -> {
                                     Toast.makeText(ProfileActivity.this, "Cập nhật hồ sơ thành công!", Toast.LENGTH_SHORT).show();
@@ -179,7 +179,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                // If new images are selected, upload them
+                // Nếu có ảnh mới được chọn, tải lên các ảnh đó
                 for (Uri uri : selectedImgUris) {
                     String fileName = userId + "_" + System.currentTimeMillis() + ".jpg";
                     StorageReference imageRef = storageReference.child(fileName);

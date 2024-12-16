@@ -47,16 +47,16 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="21dp"
                     android:layout_marginEnd="21dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/fav_button_bg"
                     android:button="@drawable/heart_checkbox"
                     android:checked="true"
+                    android:gravity="center"
                     android:scaleX="1.2"
-                    android:scaleY="1.2"
-                    android:gravity="center" />
+                    android:scaleY="1.2" />
 
                 <TextView
                     android:id="@+id/food_name"

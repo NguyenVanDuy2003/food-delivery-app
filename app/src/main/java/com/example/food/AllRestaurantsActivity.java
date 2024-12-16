@@ -90,10 +90,7 @@ public class AllRestaurantsActivity extends AppCompatActivity {
         ivSortIcon.setRotation(isAscending ? 180f : 0f);
     }
 
-    /**
-     * Filters restaurants based on search query
-     * @param query The search term to filter restaurants
-     */
+
     private void searchRestaurants(String query) {
         if (query.isEmpty()) {
             restaurantAdapter = new RestaurantAdapter(this,restaurants);

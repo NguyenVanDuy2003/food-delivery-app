@@ -1,7 +1,9 @@
+
 package com.example.food;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -23,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.food.Common.CommonKey;
+import com.example.food.Model.Order;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,11 +38,12 @@ import java.io.OutputStream;
 
 public class ThanhToanOnlActivity extends AppCompatActivity {
     // ánh xa
-    private DatabaseReference databaseReference,cartdatabaseReference;
+    private DatabaseReference databaseReference,cartdatabaseReference, userRef;
     private ImageView qrcode ;
     private TextView name, stk, price;
     private Button btnquaylai , btnluuanh;
     private String restaurantID;
+    String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,9 +125,6 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
                             Toast.makeText(ThanhToanOnlActivity.this, "Lưu ảnh thất bại", Toast.LENGTH_SHORT).show();
                             return;
                         }
-
-
-
                     } else {
                         // với phiên bản Android thấp hơn Androi 10, sử dụng File
                         File file = new File(Environment.getExternalStorageDirectory() + "/QRCode.png");
@@ -131,6 +132,9 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
                     }
                     // 6. Scan ảnh vào thư viện điện thoại
                     Toast.makeText(ThanhToanOnlActivity.this,"Ảnh được lưu tại: " + savedImageURL,Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ThanhToanOnlActivity.this, HomeActivity.class);
+                    startActivity(intent);  // Start the HomeActivity
+                    finish();
                 }catch(Exception e){
                     e.printStackTrace();
                     Toast.makeText(ThanhToanOnlActivity.this, "Lưu ảnh thất bại", Toast.LENGTH_SHORT).show();
@@ -140,10 +144,7 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
 
     }
 
-
     private void fetchRestaurantIdsForUser(String userId) {
-        Log.d("RestaurantID", "Fetching restaurant IDs for userId: " + userId);
-
         // Access the specific UserID node using the provided userId
         cartdatabaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -156,7 +157,6 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
                         price.setText(getIntent().getStringExtra("totalValue"));
 
                         if (restaurantId != null) {
-                            Log.d("RestaurantID", "Found restaurant_id: " + restaurantId);
                             // Query the restaurants node to get the restaurant name
                             databaseReference.child(restaurantId).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -191,6 +191,7 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
                                     Log.e("FirebaseError", "Failed to fetch restaurant data: " + databaseError.getMessage());
                                 }
                             });
+
                         } else {
                             Log.w("RestaurantID", "No restaurant_id found for this item.");
                         }
@@ -206,7 +207,5 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
 }

@@ -41,29 +41,29 @@ public class CategoryActivity extends AppCompatActivity {
         ImageButton backButton = findViewById(R.id.back);
         backButton.setOnClickListener(view -> onBackPressed());
 
-        // Step 1: Create sorting options
-        String[] sortOptions = {"Popular", "Low to High", "High to Low"};
+        // Bước 1: Tạo các tùy chọn sắp xếp
+        String[] sortOptions = {"Mặc định", "Thấp đến Cao", "Cao đến Thấp"};
 
-        // Step 2: Find Spinner in the layout
+        // Bước 2: Tìm Spinner trong bố cục
         Spinner spinnerSort = findViewById(R.id.spinnerSort);
 
-        // Step 3: Create ArrayAdapter for Spinner
+        // Bước 3: Tạo ArrayAdapter cho Spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, sortOptions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // Step 4: Set the Adapter for Spinner
+        // Bước 4: Đặt Adapter cho Spinner
         spinnerSort.setAdapter(adapter);
 
-        // Step 5: Handle item selection from the Spinner
+        // Bước 5: Xử lý việc chọn mục từ SpinneR
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selectedSort = parentView.getItemAtPosition(position).toString();
                 Toast.makeText(CategoryActivity.this, "Selected: " + selectedSort, Toast.LENGTH_SHORT).show();
 
-                // Sorting based on user selection
+                // Sắp xếp dựa trên lựa chọn của người dùng
                 switch (selectedSort) {
-                    case "Low to High":
+                    case "Thấp đến Cao":
                         Collections.sort(listFood, new Comparator<Food>() {
                             @Override
                             public int compare(Food f1, Food f2) {
@@ -72,7 +72,7 @@ public class CategoryActivity extends AppCompatActivity {
                         });
                         break;
 
-                    case "High to Low":
+                    case "Cao đến Thấp":
                         Collections.sort(listFood, new Comparator<Food>() {
                             @Override
                             public int compare(Food f1, Food f2) {
@@ -81,8 +81,7 @@ public class CategoryActivity extends AppCompatActivity {
                         });
                         break;
 
-                    case "Popular":
-                        // Handle other sorting logic if needed
+                    case "Mặc định":
                         break;
                 }
 
@@ -94,26 +93,24 @@ public class CategoryActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // No action needed
             }
         });
 
-        // Initialize Firebase Database
+        // Khởi tạo Firebase
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Food");
 
         String restaurantID = getIntent().getStringExtra("restaurantID");
         lvFood = findViewById(R.id.lvFood);
 
-        // Initialize food list
         listFood = new ArrayList<>();
 
-        // Load food data from Firebase Realtime Database
+        // Tải dữ liệu thực phẩm từ Firebase Realtime Database
         loadFoodData(restaurantID);
     }
 
     private void loadFoodData(String restaurantID) {
-        // Fetching food data from Firebase Realtime Database
+        // Lấy dữ liệu thực phẩm từ Firebase Realtime Database
         databaseReference.orderByChild("restaurantID").equalTo(restaurantID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -135,11 +132,11 @@ public class CategoryActivity extends AppCompatActivity {
                     tvEmptyMessage.setVisibility(View.GONE);
                 }
 
-                // Set up the adapter after fetching data
+                // Thiết lập adapter sau khi lấy dữ liệu
                 adapterFood = new foodAdapter(CategoryActivity.this, R.layout.fast_food_item, listFood);
                 lvFood.setAdapter(adapterFood);
 
-                // Notify adapter that data has changed
+                // Thông báo cho adapter rằng dữ liệu đã thay đổi
                 if (adapterFood != null) {
                     adapterFood.notifyDataSetChanged();
                 }
