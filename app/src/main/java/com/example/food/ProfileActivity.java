@@ -34,7 +34,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button btn_editProfile;
     ImageButton imgBProfile;
     ImageView imgVProfile;
-    EditText et_name, et_email, et_phoneNumber, et_address;
+    EditText et_name, et_email, et_phoneNumber, et_address, et_matkhau;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
 
@@ -70,6 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
                             et_email.setText(user.getEmail());
                             et_phoneNumber.setText(user.getPhoneNumber());
                             et_address.setText(user.getAddress());
+                            et_matkhau.setText(user.getPassword());
 
                             // Load profile image if available
                             if (user.getImageUser() != null && !user.getImageUser().isEmpty()) {
@@ -95,6 +96,7 @@ public class ProfileActivity extends AppCompatActivity {
         et_email = findViewById(R.id.et_email);
         et_phoneNumber = findViewById(R.id.et_phoneNumber);
         et_address = findViewById(R.id.et_address);
+        et_matkhau = findViewById(R.id.et_matkhau);
         btn_editProfile = findViewById(R.id.btn_editProfie);
         imgBProfile = findViewById(R.id.imgBProfie);
         imgVProfile = findViewById(R.id.imgVProfie);
@@ -134,6 +136,8 @@ public class ProfileActivity extends AppCompatActivity {
             String phoneNumber = et_phoneNumber.getText().toString();
             String email = et_email.getText().toString();
             String address = et_address.getText().toString();
+            String password = et_matkhau.getText().toString();
+
 
             // Use the retrieved user ID from SharedPreferences
             if (userId == null) {
@@ -148,6 +152,7 @@ public class ProfileActivity extends AppCompatActivity {
             if (!email.isEmpty()) updatedUser.setEmail(email);
             if (!phoneNumber.isEmpty()) updatedUser.setPhoneNumber(phoneNumber);
             if (!address.isEmpty()) updatedUser.setAddress(address);
+            if (!password.isEmpty()) updatedUser.setPassword(password);
 
             StringBuilder imageUrls = new StringBuilder(); // Use StringBuilder to concatenate URLs
 

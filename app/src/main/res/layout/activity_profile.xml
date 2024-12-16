@@ -126,6 +126,25 @@
             android:padding="16dp"
             android:textColor="#000000"
             android:textColorHint="#888888" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mật Khẩu"
+            android:textColor="#1B1717"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/et_matkhau"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_edittext"
+            android:hint="Mật Khẩu"
+            android:inputType="text"
+            android:padding="16dp"
+            android:textColor="#000000"
+            android:textColorHint="#888888" />
 
 
         <Button
