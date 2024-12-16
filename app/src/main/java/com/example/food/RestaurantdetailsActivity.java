@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,7 +35,7 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
     private StorageReference storageReference;
     ImageButton  imageResource, qrcode;
     EditText name, phone_number, stk, address,Mota;
-    Button btn_update, btn_xoa, btn_manage_food, exit;
+    Button btn_update, btn_xoa, btn_manage_food,exit, btn_order;
     ImageView imgRestaurantView, qrcodeView;
 
 
@@ -74,6 +75,7 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
         address = findViewById(R.id.address);
         btn_update = findViewById(R.id.btn_update);
         btn_xoa = findViewById(R.id.btn_xoa);
+        btn_order = findViewById(R.id.btn_order);
         imgRestaurantView = findViewById(R.id.imgRestaurantView);
         qrcodeView = findViewById(R.id.qrcodeView);
         Mota  = findViewById(R.id.Mota);
@@ -184,6 +186,18 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
                     .setNegativeButton("Không", null)
                     .show();
         });
+
+        ////order
+        btn_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Gọi phương thức xóa nhà hàng
+                Intent intent = new Intent(RestaurantdetailsActivity.this, OrderManagerActivity.class);
+                intent.putExtra("restaurantID", restaurantID);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void uploadQRCode(Restaurant updatedRestaurant) {
@@ -222,7 +236,7 @@ public class RestaurantdetailsActivity extends AppCompatActivity {
 
 
     private void loadRestaurantData(String restaurantID) {
-        databaseReference.child(restaurantID).get().addOnSuccessListener(snapshot ->  {
+            databaseReference.child(restaurantID).get().addOnSuccessListener(snapshot ->  {
             if (snapshot.exists()) {
                 Restaurant restaurant = snapshot.getValue(Restaurant.class);
                 // Hiển thị dữ liệu lên các trường nhập liệu

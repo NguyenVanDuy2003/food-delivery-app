@@ -55,7 +55,7 @@ public class AdminManagementActivity extends AppCompatActivity {
         listRestaurant = new ArrayList<>();
         adapterRestaurant = new RestaurantAdapter(this, listRestaurant);
 
-        // Set up RecyclerView
+        // Thiết lập RecyclerView
         rvNhaHang.setLayoutManager(new LinearLayoutManager(this));
         rvNhaHang.setAdapter(adapterRestaurant);
 

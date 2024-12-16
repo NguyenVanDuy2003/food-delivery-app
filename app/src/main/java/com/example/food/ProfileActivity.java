@@ -74,8 +74,8 @@ public class ProfileActivity extends AppCompatActivity {
                             // Load profile image if available
                             if (user.getImageUser() != null && !user.getImageUser().isEmpty()) {
                                 Glide.with(ProfileActivity.this)
-                                     .load(user.getImageUser())
-                                     .into(imgVProfile);
+                                        .load(user.getImageUser())
+                                        .into(imgVProfile);
                             }
                         }
                     }
@@ -178,8 +178,10 @@ public class ProfileActivity extends AppCompatActivity {
                         Toast.makeText(ProfileActivity.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-            } else {
-                // If new images are selected, upload them
+            }else {
+                // Nếu có ảnh mới, tải lên Firebase Storage
+                int[] uploadCount = {0}; // Biến đếm số ảnh đã tải thành công
+
                 for (Uri uri : selectedImgUris) {
                     String fileName = userId + "_" + System.currentTimeMillis() + ".jpg";
                     StorageReference imageRef = storageReference.child(fileName);
@@ -193,13 +195,15 @@ public class ProfileActivity extends AppCompatActivity {
                             })
                             .addOnSuccessListener(downloadUri -> {
                                 if (imageUrls.length() > 0) {
-                                    imageUrls.append(","); // Append a comma if there are already URLs
+                                    imageUrls.append(",");
                                 }
-                                imageUrls.append(downloadUri.toString()); // Append the new URL
+                                imageUrls.append(downloadUri.toString());
+                                uploadCount[0]++; // Tăng biến đếm
 
-                                if (imageUrls.length() == selectedImgUris.size()) {
-                                    updatedUser.setImageUser(imageUrls.toString()); // Set the concatenated string
-                                    databaseReference.child(userId).setValue(updatedUser) // Update existing user
+                                if (uploadCount[0] == selectedImgUris.size()) {
+                                    // Tất cả ảnh đã tải xong
+                                    updatedUser.setImageUser(imageUrls.toString());
+                                    databaseReference.child(userId).setValue(updatedUser)
                                             .addOnSuccessListener(aVoid -> {
                                                 Toast.makeText(ProfileActivity.this, "Cập nhật hồ sơ thành công!", Toast.LENGTH_SHORT).show();
                                             })

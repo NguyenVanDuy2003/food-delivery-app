@@ -64,7 +64,6 @@ public class foodAdapter extends ArrayAdapter<Food> {
         tvDescription.setText(food.getIngredients());
 
         customView.setOnClickListener(v -> {
-            Toast.makeText(context, "Item clicked: " + food.getName(), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, FoodDetailActivity.class);
             intent.putExtra("foodID", food.getId());
             context.startActivity(intent);

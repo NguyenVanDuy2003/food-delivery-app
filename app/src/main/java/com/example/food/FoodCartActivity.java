@@ -26,7 +26,7 @@ import java.util.List;
 public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapter.QuantityChangeListener {
 
     private RecyclerView foodCartItems;
-    private Button btn_checkout, return_btn;
+    private Button btn_checkout, return_btn, btn_thongbao;
     private TextView subtotalValue, taxValue, deliveryValue, totalValue, totalItem, empty_cart_text;
     private LinearLayout fees;
 
@@ -41,7 +41,7 @@ public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapt
 
         initializeUIComponents();
         setupButtonListeners();
-
+        setupButtonThongbaoListeners();
         cartReference = FirebaseDatabase.getInstance().getReference("Cart");
         foodCartList = new ArrayList<>();
 
@@ -64,15 +64,27 @@ public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapt
         totalItem = findViewById(R.id.totalItem);
         fees = findViewById(R.id.fees);
         empty_cart_text = findViewById(R.id.empty_cart_text);
+
+        btn_thongbao = findViewById(R.id.btn_thongbao);
     }
+
 
     private void setupButtonListeners() {
         btn_checkout.setOnClickListener(v -> {
             Intent intent = new Intent(this, CheckoutActivity.class);
+            intent.putExtra("totalValue", totalValue.getText().toString());
             startActivity(intent);
         });
         return_btn.setOnClickListener(v -> finish());
     }
+    private void setupButtonThongbaoListeners() {
+        btn_thongbao.setOnClickListener(v -> {
+            Intent intent = new Intent(this, publicizeMainActivity.class);
+            startActivity(intent);
+        });
+        return_btn.setOnClickListener(v -> finish());
+    }
+
 
     private void fetchCartItems() {
         cartReference.child(getUserId()).get().addOnSuccessListener(dataSnapshot -> {
@@ -123,10 +135,11 @@ public class FoodCartActivity extends AppCompatActivity implements FoodCartAdapt
             totalQuantity += model.getQuantity();
         }
 
+        Double deliveryFee = 1.0;
         subtotalValue.setText(String.format("$%.2f", subtotal));
         taxValue.setText(String.format("$%.2f", subtotal * 0.1));
-        deliveryValue.setText("1.0");
-        totalValue.setText(String.format("$%.2f", subtotal + subtotal * 0.1 + 5.0));
+        deliveryValue.setText(deliveryFee.toString());
+        totalValue.setText(String.format("$%.2f", subtotal + subtotal * 0.1 + deliveryFee));
         totalItem.setText(String.format("%d items", totalQuantity));
     }
 

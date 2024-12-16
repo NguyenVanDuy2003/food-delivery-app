@@ -13,7 +13,10 @@ public class Food implements Serializable {
     private String imageUrl;  // Changed from int imageResource to String imageUrl
     private String ingredients;
     private boolean isAvailable;
-    private List<String> toppings;  // List of toppings
+    private List<String> toppings;
+
+    // id người dùng
+    private String userId;
 
     // Default constructor (required for Firebase)
     public Food() {
@@ -30,6 +33,18 @@ public class Food implements Serializable {
         this.ingredients = ingredients;
         this.isAvailable = isAvailable;
         this.toppings = (toppings != null) ? toppings : new ArrayList<>();  // Ensure toppings is never null
+    }
+
+    public Food(String name, double price, String id, String restaurantID, String imageUrl, String ingredients, boolean isAvailable, String userId, List<String> toppings) {
+        this.name = name;
+        this.price = price;
+        this.id = id;
+        this.restaurantID = restaurantID;
+        this.imageUrl = imageUrl;
+        this.ingredients = ingredients;
+        this.isAvailable = isAvailable;
+        this.userId = userId;
+        this.toppings = toppings;
     }
 
     // Constructor without id (for creating new Food without an id initially)
@@ -106,5 +121,13 @@ public class Food implements Serializable {
 
     public void setToppings(List<String> toppings) {
         this.toppings = (toppings != null) ? toppings : new ArrayList<>();  // Prevent null list
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
