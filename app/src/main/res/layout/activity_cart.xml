@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="Giỏ hàng rỗng"
                 android:textSize="16sp"
-                android:textColor="@color/gray_100"
+                android:textColor="#EE4B2B"
                 android:gravity="center"
                 android:visibility="gone"
                 android:layout_marginTop="20dp" />
