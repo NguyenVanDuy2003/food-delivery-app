@@ -60,7 +60,7 @@ public class foodAdapter extends ArrayAdapter<Food> {
                 .into(image); // Set it into the ImageView
 
         tvNameFood.setText(food.getName());
-        tvPriceFood.setText(String.valueOf(food.getPrice()));
+        tvPriceFood.setText("$" + String.valueOf(food.getPrice()));
         tvDescription.setText(food.getIngredients());
 
         customView.setOnClickListener(v -> {
