@@ -2,15 +2,15 @@ package com.example.food;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,15 +21,25 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
+import com.example.food.Common.CommonKey;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 public class ThanhToanOnlActivity extends AppCompatActivity {
     // ánh xa
+    private DatabaseReference databaseReference,cartdatabaseReference;
     private ImageView qrcode ;
-    private TextView nameRestaurants , idstk, price ;
+    private TextView name, stk, price;
     private Button btnquaylai , btnluuanh;
+    private String restaurantID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +50,27 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        qrcode = findViewById(R.id.id_qrcode);
-        nameRestaurants = findViewById(R.id.nameRestaurants);
-        idstk = findViewById(R.id.id_stk);
+        // Ánh xạ
+        name = findViewById(R.id.name);
+        qrcode = findViewById(R.id.qrcode);
+        stk = findViewById(R.id.stk);
+        price = findViewById(R.id.price);
         btnquaylai = findViewById(R.id.btn_quaylai);
         btnluuanh = findViewById(R.id.btn_luuanh);
+
+        // Firebase reference
+        databaseReference = FirebaseDatabase.getInstance().getReference("restaurants");
+        cartdatabaseReference = FirebaseDatabase.getInstance().getReference("Cart");
+
+        // lấy userId từ SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
+        String userId = sharedPreferences.getString(CommonKey.USER_ID, null);
+
+        if (userId != null) {
+            fetchRestaurantIdsForUser(userId);
+        } else {
+            Log.w("UserID", "No userId found in SharedPreferences.");
+        }
 
         btnquaylai.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,5 +139,74 @@ public class ThanhToanOnlActivity extends AppCompatActivity {
         });
 
     }
+
+
+    private void fetchRestaurantIdsForUser(String userId) {
+        Log.d("RestaurantID", "Fetching restaurant IDs for userId: " + userId);
+
+        // Access the specific UserID node using the provided userId
+        cartdatabaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot foodItemSnapshot : dataSnapshot.getChildren()) {
+                        // Access restaurant_id under FoodID
+
+                        String restaurantId = foodItemSnapshot.child("restaurant_id").getValue(String.class);
+                        price.setText(getIntent().getStringExtra("totalValue"));
+
+                        if (restaurantId != null) {
+                            Log.d("RestaurantID", "Found restaurant_id: " + restaurantId);
+                            // Query the restaurants node to get the restaurant name
+                            databaseReference.child(restaurantId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        String restaurantName = snapshot.child("name").getValue(String.class);
+                                        name.setText(restaurantName);
+                                        String restaurantSTK = snapshot.child("stk").getValue(String.class);
+                                        stk.setText(restaurantSTK);
+                                        String imgqrcode = snapshot.child("qrcodeUrl").getValue(String.class);
+                                        // Handle QR code URL
+                                        if (imgqrcode != null && !imgqrcode.isEmpty()) {
+                                            Glide.with(ThanhToanOnlActivity.this) // "this" if in Activity context
+                                                    .load(imgqrcode) // Load the QR code image from URL
+                                                    .into(qrcode); // Display the image in the ImageView
+                                        }
+                                        if (restaurantName != null) {
+                                            Log.d("RestaurantName", "Restaurant name: " + restaurantName);
+                                        }
+                                        if (restaurantSTK != null){
+                                            Log.d("Restaurantstk", "Restaurant stk: " + restaurantSTK);
+                                        }
+                                        if (imgqrcode != null){
+                                            Log.d("Restaurantqrcode", "Restaurant qr: " + imgqrcode);
+                                        }
+                                    } else {
+                                        Log.w("RestaurantData", "No data found for restaurant_id: " + restaurantId);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.e("FirebaseError", "Failed to fetch restaurant data: " + databaseError.getMessage());
+                                }
+                            });
+                        } else {
+                            Log.w("RestaurantID", "No restaurant_id found for this item.");
+                        }
+                    }
+                } else {
+                    Log.w("Cart", "No data found for userId: " + userId);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("FirebaseError", "Failed to fetch cart data: " + databaseError.getMessage());
+            }
+        });
+    }
+
+
 
 }

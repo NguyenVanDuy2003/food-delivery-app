@@ -131,6 +131,11 @@ public class FoodDetailActivity extends AppCompatActivity {
                     cartRef.child("price").setValue(food.getPrice());
                     cartRef.child("name").setValue(food.getName());
                     cartRef.child("imageUrl").setValue(food.getImageUrl());
+                    cartRef.child("restaurant_id").setValue(food.getRestaurantID()); // Thêm thông tin restaurant_id
+                    cartRef.child("userId").setValue(userId);  // Lưu userId từ SharedPreferences
+
+
+
                     Toast.makeText(FoodDetailActivity.this, "Đã thêm" + currentQuantity + " sản phẩm" + food.getName() + " vào giỏ hàng", Toast.LENGTH_SHORT).show();
                 }
             }

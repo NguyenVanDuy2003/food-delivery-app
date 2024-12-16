@@ -6,4 +6,6 @@ public class CommonKey {
     public static final String USER_MAIL = "userEmail";
     public static final String USER_ID = "user_id";
     public static final String ROLE = "role";
+    /////
+    public static final String RESTAUNT_ID = "restaunt_id";
 }

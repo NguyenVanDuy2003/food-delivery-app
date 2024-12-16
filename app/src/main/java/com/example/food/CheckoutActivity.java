@@ -3,6 +3,7 @@ package com.example.food;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +16,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.food.Common.CommonKey;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class CheckoutActivity extends AppCompatActivity {
     private Button btnthanhtoanOnline, btnthanhtoanKhiNhanHang , btnquaylai;
+    private DatabaseReference cartRef;
+    private String currentUserId;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -33,12 +40,16 @@ public class CheckoutActivity extends AppCompatActivity {
         btnthanhtoanKhiNhanHang = findViewById(R.id.btn_ThanhToanKhiNhanHang);
         btnquaylai = findViewById(R.id.btn_quaylai);
 
+        String totalValue = getIntent().getStringExtra("totalValue");
+        SharedPreferences sharedPreferences = getSharedPreferences(CommonKey.MY_APP_PREFS, MODE_PRIVATE);
+        String currentUserId = sharedPreferences.getString(CommonKey.USER_ID, null);
+        cartRef = FirebaseDatabase.getInstance().getReference("Cart").child(currentUserId);
 
-        //
         btnthanhtoanOnline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CheckoutActivity.this, ThanhToanOnlActivity.class );
+                intent.putExtra("totalValue", totalValue);
                 startActivity(intent);
             }
         });
@@ -82,5 +93,4 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
     }
-
 }
