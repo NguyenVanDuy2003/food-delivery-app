@@ -17,15 +17,13 @@
 
         <!-- CardView chứa ImageView -->
 
-        <ImageButton
+        <Button
             android:id="@+id/exit"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/subtract_button_bg"
-            android:scaleType="centerCrop"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/thoat" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quay lại"
+            android:background="@color/primary"
+            android:layout_alignParentStart="true" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="TÊN CỬA HÀNG"
+                    android:text="Tên cửa hàng"
                     android:textColor="#282626"
                     android:textSize="18sp"
                     android:fontFamily="sans-serif-medium" />
@@ -79,6 +77,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nhập tên cửa hàng"
+                    android:background="@drawable/rounded_edittext"
+                    android:inputType="text"
+                    android:padding="16dp"
                     android:textColor="#282626"
                     android:paddingBottom="20dp"
                     android:paddingHorizontal="5dp" />
@@ -96,6 +97,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nhập mô tả cửa hàng"
+                    android:background="@drawable/rounded_edittext"
+                    android:inputType="text"
+                    android:padding="16dp"
                     android:textColor="#282626"
                     android:paddingBottom="20dp"
                     android:paddingHorizontal="5dp" />
@@ -103,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="SỐ ĐIỆN THOẠI: "
+                    android:text="Số điện thoại: "
                     android:textColor="#282626"
                     android:textSize="18sp"
                     android:fontFamily="sans-serif-medium" />
@@ -114,7 +118,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Nhập số điện thoại"
                     android:inputType="phone"
-
+                    android:background="@drawable/rounded_edittext"
+                    android:padding="16dp"
                     android:paddingBottom="20dp"
                     android:textColor="#282626"
                     android:paddingHorizontal="5dp" />
@@ -133,6 +138,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nhập số tài khoản"
+                    android:background="@drawable/rounded_edittext"
+                    android:inputType="number"
+                    android:padding="12dp"
                     android:paddingBottom="20dp"
                     android:paddingHorizontal="5dp"
                     android:textColor="#282626"/>
@@ -171,9 +179,10 @@
                     android:orientation="vertical">
                     <EditText
                         android:id="@+id/address"
-                        android:layout_width="300dp"
+                        android:layout_width="320dp"
                         android:layout_height="wrap_content"
                         android:hint="Địa chỉ cửa hàng"
+                        android:background="@drawable/rounded_edittext"
                         android:textColor="#282626"
                         android:paddingBottom="20dp"
                         android:paddingHorizontal="5dp" />
@@ -190,7 +199,7 @@
                     <Button
                         android:id="@+id/add_TaiKhoan"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="60dp"
                         android:text="Thêm"
                         android:textColor="@color/white"
                         android:background="@color/primary"
